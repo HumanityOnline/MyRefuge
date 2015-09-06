@@ -8,6 +8,8 @@ from django.http import HttpResponseRedirect
 
 from userena.forms import SignupForm
 from userena.models import UserenaSignup
+from userena import signals as userena_signals
+from common.helpers import unique_media_path
 from .forms import RefugeeSignUpBasic, FamilyMemberFormset, RefugeeSignUpAddress
 from .models import Refugee, FamilyMember
 
@@ -19,22 +21,20 @@ TEMPLATES = dict(zip(KEYS, ['refugee/' + k + '.html' for k in KEYS]))
 # Create your views here.
 class RefugeeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
-    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'refugee'))
+    file_storage = FileSystemStorage(location='/tmp/')
     instance_dict = {
         'family': FamilyMember.objects.none()
     }
 
     def done(self, form_list, form_dict, **kwargs):
         # Create the user
-        userena = form_dict['userena']
-        user = UserenaSignup.objects.create_user(
-            username=userena.cleaned_data.get('username'),
-            password=userena.cleaned_data.get('password1'),
-            email=userena.cleaned_data.get('email'),
-        )
-        user.is_active = True
-        user.mugshot = form_dict['basic'].cleaned_data.get('mugshot')
-        user.save()
+        user = form_dict['userena'].save()
+        mugshot = form_dict['basic'].cleaned_data.get('mugshot')
+        user.my_profile.mugshot = mugshot
+        user.my_profile.save()
+
+        # Send the signup complete signal
+        userena_signals.signup_complete.send(sender=None, user=user)
 
         # Concatenate all the information from the forms and save.
         refugee = Refugee(user=user)

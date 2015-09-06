@@ -15,7 +15,7 @@ INSTALLED_APPS += (
     'django_pdb',
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'changethisinproduction'
@@ -25,3 +25,4 @@ MIDDLEWARE_CLASSES += (
 )
 
 MEDIA_PATH = os.path.join(BASE_DIR, 'media')
+USERENA_MUGSHOT_PATH = os.path.join(MEDIA_PATH, 'mugshots/')

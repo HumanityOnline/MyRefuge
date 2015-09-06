@@ -1,4 +1,5 @@
 import os, uuid
+from django.conf import settings
 
 GENDER = (
     ('M', 'Male'),
@@ -22,5 +23,5 @@ def unique_media_path(root):
     def file_path(instance, filename):
         ext = filename.split('.')[-1]
         filename = "%s.%s" % (uuid.uuid4(), ext)
-        return os.path.join('media', root, filename)
+        return os.path.join(settings.MEDIA_PATH, root, filename)
     return file_path
