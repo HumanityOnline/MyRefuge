@@ -11,9 +11,14 @@ DATABASES = {
 
 INSTALLED_APPS += (
     'django_extensions',
+    'django_pdb',
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'changethisinproduction'
+
+MIDDLEWARE_CLASSES += (
+    'django_pdb.middleware.PdbMiddleware',
+)
