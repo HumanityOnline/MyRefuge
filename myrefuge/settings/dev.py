@@ -13,6 +13,7 @@ DATABASES = {
 INSTALLED_APPS += (
     'django_extensions',
     'django_pdb',
+    'debug_toolbar',
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
