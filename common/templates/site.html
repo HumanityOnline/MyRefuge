@@ -1,13 +1,22 @@
 {% load sekizai_tags staticfiles %}
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{% static "base.css" %}" />
 {% render_block "css" %}
-<script src="{% static "jquery-2.1.4.min.js" %}"></script>
 </head>
 <body>
 {% block content %}{% endblock %}
+<script src="{% static "jquery-2.1.4.min.js" %}"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+<script src="{% static "lib/moment/moment.js" %}"></script>
+<script src="{% static "lib/pikaday/pikaday.js" %}"></script>
+<script src="{% static "script.js" %}"></script>
 {% render_block "js" %}
 </body>
 </html>

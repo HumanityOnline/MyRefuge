@@ -1,0 +1,63 @@
+#signup {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding-top: 30px;
+	background: {
+		color: #EEE;
+		image: url($imgDir + '/login-bg.jpg');
+		size: cover;
+	}
+
+	.white-sheet {
+		width: 90%;
+		max-width: 400px;
+		margin: 0 auto;
+		@include card(2);
+		border-radius: 2px;
+		font-size: 0.875em;
+	}
+
+	.form-step {
+		background-color: $pink;
+		padding: 15px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+		font-weight: bold;
+		color: #FFF;
+		text-align: center;
+	}
+
+	form {
+		margin-top: 40px;
+		color: #565A5C;
+		text-align: center;
+	}
+
+	label {
+		display: block;
+		margin-bottom: $vertical-rhythm;
+	}
+
+	input {
+		width: 100%;
+	}
+
+	button {
+		margin-bottom: 0;
+		background-color: $purple;
+
+		&:hover {
+			background-color: $purple-light;
+		}
+	}
+
+	input[type="submit"] {
+		margin-top: 15px;
+		margin-bottom: 0;
+	}
+}

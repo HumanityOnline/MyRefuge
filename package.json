@@ -1,0 +1,32 @@
+{
+  "name": "myrefuge",
+  "version": "1.0.0",
+  "description": "MyRefuge web app",
+  "private": true,
+  "scripts": {
+    "sass": "node-sass --output-style compressed common/static/sass -o common/static",
+    "sass:dev": "node-sass --source-map true --output-style compressed -w -r common/static/sass -o common/static",
+    "sass:build": "node-sass --output-style compressed common/static/sass -o common/static",
+    "postcss:build": "postcss --use autoprefixer common/static/*.css -d common/static/",
+    "browser-sync": "browser-sync start --proxy localhost:8000 --files '**/*.css, **/*.html, **/*.js'",
+    "start": "parallelshell 'npm run sass' 'npm run sass:dev' 'npm run browser-sync'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HumanityOnline/MyRefuge.git"
+  },
+  "author": "Nelson Yeung <nelsyeung@icloud.com> (http://nelsyeung.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HumanityOnline/MyRefuge/issues"
+  },
+  "homepage": "https://github.com/HumanityOnline/MyRefuge#readme",
+  "devDependencies": {
+    "autoprefixer": "^6.0.0",
+    "browser-sync": "^2.9.1",
+    "node-sass": "^3.3.2",
+    "parallelshell": "^2.0.0",
+    "postcss-cli": "^2.1.0"
+  }
+}
