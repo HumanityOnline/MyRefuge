@@ -1,3 +1,4 @@
+import os
 from .common import *
 
 # Database
@@ -22,3 +23,5 @@ SECRET_KEY = 'changethisinproduction'
 MIDDLEWARE_CLASSES += (
     'django_pdb.middleware.PdbMiddleware',
 )
+
+MEDIA_PATH = os.path.join(BASE_DIR, 'media')

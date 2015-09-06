@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 from address.models import AddressField
-from common.helpers import GENDER
+from common.helpers import GENDER, unique_media_path
 from common.models import UserProfile
 from django_countries import countries
 from select_multiple_field.models import SelectMultipleField
@@ -37,5 +37,5 @@ class FamilyMember(models.Model):
         choices=GENDER,
     )
     relationship = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='family_photos')
+    image = models.ImageField(upload_to=unique_media_path('family_photos'))
     refugee = models.ForeignKey(Refugee)
