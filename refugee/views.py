@@ -20,6 +20,9 @@ TEMPLATES = dict(zip(KEYS, ['refugee/' + k + '.html' for k in KEYS]))
 class RefugeeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
     file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'refugee'))
+    instance_dict = {
+        'family': FamilyMember.objects.none()
+    }
 
     def done(self, form_list, form_dict, **kwargs):
         # Create the user
