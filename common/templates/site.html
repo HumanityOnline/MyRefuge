@@ -1,10 +1,13 @@
-{% load staticfiles %}
+{% load sekizai_tags staticfiles %}
 <!doctype html>
 <html>
 <head>
 <link rel="stylesheet" href="{% static "base.css" %}" />
+{% render_block "css" %}
+<script src="{% static "jquery-2.1.4.min.js" %}"></script>
 </head>
 <body>
 {% block content %}{% endblock %}
+{% render_block "js" %}
 </body>
 </html>
