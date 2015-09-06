@@ -1,0 +1,13 @@
+{
+	"browser": true,
+	"unused": true,
+	"devel": true,
+	"camelcase": true,
+	"curly": true,
+	"eqeqeq": true,
+	"quotmark": "single",
+	"strict": true,
+	"globals": {
+		"TweenMax": false
+	}
+}

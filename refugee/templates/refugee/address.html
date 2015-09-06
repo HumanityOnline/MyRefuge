@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "site.html" %}
 {% load i18n %}
 
 {% block head %}
@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+<div id="signup">
 <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
 <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 <table>
@@ -25,5 +26,5 @@
 {% endif %}
 <input type="submit" value="{% trans "submit" %}"/>
 </form>
+</div>
 {% endblock %}
-

@@ -1,0 +1,89 @@
+#home {
+	width: 100%;
+	height: 100%;
+	background: {
+		color: #FFF;
+		image: url($imgDir + '/home-bg.jpg');
+		size: cover;
+		repeat: no-repeat;
+	}
+	font-family: $oswald;
+
+	.wrapper {
+		@include absolute-center(350px);
+		padding: 0 20px;
+	}
+
+	.text {
+		margin-top: 2em;
+		text-align: center;
+		color: #000;
+		font-size: 1.1em;
+
+		p {
+			margin-bottom: 1em;
+			line-height: 1.5em;
+		}
+
+		a {
+			display: inline-block;
+			width: 190px;
+			padding: 10px 0;
+			margin-bottom: $vertical-rhythm;
+			border: 2px solid $pink;
+			transition: all 0.3;
+
+			&:hover {
+				background-color: $pink;
+				color: #FFF;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+#logo {
+	text-align: center;
+
+	.icon {
+		width: 59px;
+		height: 65px;
+		margin: {
+			right: auto;
+			bottom: 1em;
+			left: auto;
+		}
+		background: {
+			image: url($imgDir + '/logo.png');
+			size: 80%;
+			position: center;
+			repeat: no-repeat;
+		}
+	}
+
+	span {
+		font: {
+			family: $oswald;
+			size: 3em;
+		}
+		text-transform: uppercase;
+	}
+
+	#my {
+		color: #424242;
+	}
+
+	#refuge {
+		color: #E62565;
+	}
+}
+
+@media (min-width: $screen-sm-min) {
+	#home .text {
+		font-size: 1.4em;
+	}
+
+	#logo span {
+		font-size: 3.5em;
+	}
+}

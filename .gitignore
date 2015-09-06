@@ -4,3 +4,6 @@ db.sqlite3
 *.swo
 photologue
 media
+.DS_Store
+node_modules
+common/static/lib

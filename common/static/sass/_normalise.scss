@@ -1,0 +1,134 @@
+/**
+ * Own CSS Foundation
+ * Check http://jaydenseric.com/blog/forget-normalize-or-resets-lay-your-own-css-foundation
+ *
+ * This file should not contain any class nor id based styling.
+ */
+
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+    margin: 0;
+    font: 16px/1 sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+	background-color: #EEE;
+}
+
+/* Typography
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4,
+p,
+blockquote,
+figure,
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-size: inherit;
+}
+
+strong {
+    font-weight: bold;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+li {
+	margin-bottom: $vertical-rhythm;
+	line-height: normal;
+}
+
+/* Forms
+   ========================================================================== */
+
+input {
+	box-sizing: border-box;
+	display: block;
+	padding: 10px;
+	margin-bottom: $vertical-rhythm;
+	background-color: #FFF;
+	border-radius: 2px;
+	color: #565A5C;
+	font-size: 1em;
+	line-height: normal;
+	transition: 0.3s;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+	border: 1px solid #C4C4C4;
+	
+	&:hover,
+	&:focus {
+		border-color: #AAA;
+	}
+}
+
+input[type="submit"],
+input[type="button"],
+button {
+	-webkit-appearance: none;
+	border-radius: 2px;
+	padding: 10px;
+	background: $amber;
+    border: 0;
+    font: inherit;
+	font-weight: bold;
+    -webkit-font-smoothing: inherit;
+	color: #FFF;
+    letter-spacing: inherit;
+    overflow: visible;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+	&:hover {
+		background-color: $amber-light;
+	}
+}
+
+::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+:focus {
+    outline: 0;
+}
+
+/* Miscellaneous
+   ========================================================================== */
+
+main {
+    display: block;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border: 0;
+}
