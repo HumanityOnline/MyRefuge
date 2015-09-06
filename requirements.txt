@@ -1,0 +1,9 @@
+django
+IPython
+django-extensions
+django-formtools
+django-userena
+django-countries
+django-select-multiple-field
+django-photologue
+git+https://github.com/furious-luke/django-address.git
