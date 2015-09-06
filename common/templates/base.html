@@ -1,0 +1,34 @@
+{% load staticfiles sekizai_tags %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{% static "base.css" %}" />
+  <title>{% block title %}Userena{% endblock %}</title>
+  {% block meta %}{% endblock %}
+  {% render_block "css" %}
+</head>
+<body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+  <div id="body">
+    {% block body %}
+      <div class="content_title">
+        {% block content_title %}{% endblock %}
+      </div>
+      <div class="content">
+        {% block content %}{% endblock %}
+      </div>
+    {% endblock %}
+  </div>
+  <script src="{% static "jquery-2.1.4.min.js" %}"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+  <script src="{% static "lib/moment/moment.js" %}"></script>
+  <script src="{% static "lib/pikaday/pikaday.js" %}"></script>
+  <script src="{% static "script.js" %}"></script>
+</body>
+</html>
