@@ -5,7 +5,7 @@ Make sure you're on a NIX machine. I have no idea how windows works, so try at y
 `git clone` this repo, and `cd` into it.
 
 ```
-pip install -r requirements.txt
+pip install -r requirements/dev.txt
 ./manage.py syncdb
 ./manage.py check_permissions
 ```

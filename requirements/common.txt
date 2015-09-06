@@ -1,10 +1,8 @@
 django
-IPython
-django-extensions
 django-formtools
+django-sekizai
 django-userena
 django-countries
 django-select-multiple-field
 django-photologue
 git+https://github.com/furious-luke/django-address.git
-git+https://github.com/elo80ka/django-dynamic-formset.git
