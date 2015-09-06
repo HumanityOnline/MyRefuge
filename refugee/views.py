@@ -9,12 +9,10 @@ from django.http import HttpResponseRedirect
 from userena.forms import SignupForm
 from userena.models import UserenaSignup
 from .forms import RefugeeSignUpBasic, FamilyMemberFormset, RefugeeSignUpAddress
-from .models import Refugee
+from .models import Refugee, FamilyMember
 
-# KEYS = ['userena', 'basic', 'family', 'address']
-KEYS = ['userena', 'basic', 'address']
-# FORMS = [SignupForm, RefugeeSignUpBasic, FamilyMemberFormset, RefugeeSignUpAddress]
-FORMS = [SignupForm, RefugeeSignUpBasic, RefugeeSignUpAddress]
+KEYS = ['userena', 'basic', 'family', 'address']
+FORMS = [SignupForm, RefugeeSignUpBasic, FamilyMemberFormset, RefugeeSignUpAddress]
 FORM_LIST = zip(KEYS, FORMS)
 TEMPLATES = dict(zip(KEYS, ['refugee/' + k + '.html' for k in KEYS]))
 
@@ -37,13 +35,24 @@ class RefugeeSignupWizard(SessionWizardView):
 
         # Concatenate all the information from the forms and save.
         refugee = Refugee(user=user)
+        family_members = []
         for key in form_dict:
             if key == 'userena': continue
             form = form_dict[key]
-            for field in form.cleaned_data.keys():
-                if field == 'mugshot': continue
-                setattr(refugee, field, form.cleaned_data[field])
+            if key == 'family':
+                for dataset in form.cleaned_data:
+                    family_members.append(FamilyMember(**dataset))
+
+            else:
+                for field in form.cleaned_data.keys():
+                    if field == 'mugshot': continue
+                    setattr(refugee, field, form.cleaned_data[field])
+
         refugee.save()
+        for member in family_members:
+            member.refugee = refugee
+            member.save()
+
         return HttpResponseRedirect(reverse('userena_signup_complete', kwargs={'username': user.username}))
 
     def get_template_names(self):

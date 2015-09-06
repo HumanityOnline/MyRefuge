@@ -11,7 +11,7 @@ class RefugeeSignUpBasic(forms.ModelForm):
         fields = ('name', 'dob', 'gender',)
 
 FamilyMemberFormset = modelformset_factory(FamilyMember, fields=(
-    'name', 'dob', 'gender', 'relationship',
+    'name', 'dob', 'gender', 'relationship', 'image',
 ))
 
 class RefugeeSignUpAddress(forms.ModelForm):

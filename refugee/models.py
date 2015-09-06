@@ -37,5 +37,5 @@ class FamilyMember(models.Model):
         choices=GENDER,
     )
     relationship = models.CharField(max_length=255)
-    # image = models.ImageField(upload_to='family_photos')
+    image = models.ImageField(upload_to='family_photos')
     refugee = models.ForeignKey(Refugee)
