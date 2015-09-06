@@ -1,13 +1,16 @@
 from django.db import models
+from django.conf import settings
 
 from address.models import AddressField
 from common.helpers import GENDER
 from common.models import UserProfile
 from django_countries import countries
 from select_multiple_field.models import SelectMultipleField
+from userena.models import UserenaSignup
 
 # Create your models here.
-class Refugee(UserProfile):
+class Refugee(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
     name = models.CharField(
         max_length=1000,
     )
@@ -34,5 +37,5 @@ class FamilyMember(models.Model):
         choices=GENDER,
     )
     relationship = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='family_photos')
+    # image = models.ImageField(upload_to='family_photos')
     refugee = models.ForeignKey(Refugee)

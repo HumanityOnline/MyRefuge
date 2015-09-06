@@ -7,9 +7,9 @@
 
 {% block content %}
 <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-<form action="" method="post">{% csrf_token %}
-<table>
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 {{ wizard.management_form }}
+<table>
 {% if wizard.form.forms %}
     {{ wizard.form.management_form }}
     {% for form in wizard.form.forms %}
@@ -34,7 +34,7 @@
 <script type="text/javascript">
   $(function() {
     $('form table').formset({
-      'prefix': '{{ wizard.form.prefix }}'
+      //'prefix': '{{ wizard.form.prefix }}'
     });
   });
 </script>

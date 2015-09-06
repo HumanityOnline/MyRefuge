@@ -19,6 +19,7 @@ from refugee.views import RefugeeSignupWizard
 
 urlpatterns = [
     url(r'^$', 'common.views.home'),
+    url(r'account/', include('userena.urls')),
     url(r'refugee/', RefugeeSignupWizard.as_view()),
     url(r'^admin/', include(admin.site.urls)),
 ]

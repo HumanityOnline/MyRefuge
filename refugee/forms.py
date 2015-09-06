@@ -4,12 +4,14 @@ from refugee.models import Refugee, FamilyMember
 
 
 class RefugeeSignUpBasic(forms.ModelForm):
+    mugshot = forms.ImageField()
+
     class Meta:
         model = Refugee
-        fields = ('name', 'dob', 'gender', 'mugshot',)
+        fields = ('name', 'dob', 'gender',)
 
 FamilyMemberFormset = modelformset_factory(FamilyMember, fields=(
-    'name', 'dob', 'gender', 'relationship', 'image'
+    'name', 'dob', 'gender', 'relationship',
 ))
 
 class RefugeeSignUpAddress(forms.ModelForm):
