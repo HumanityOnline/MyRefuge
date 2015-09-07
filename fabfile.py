@@ -7,6 +7,7 @@ from fabric.api import abort, env, local, settings, task
 
 ########## GLOBALS
 env.run = 'heroku run python manage.py'
+env.local = 'python manage.py'
 HEROKU_ADDONS = (
     'cloudamqp:lemur',
     'heroku-postgresql',
@@ -60,6 +61,9 @@ def migrate(app=None):
         local('%s migrate %s --noinput' % (env.run, app))
     else:
         local('%(run)s migrate --noinput' % env)
+
+    # Ensure asinine check_permissions is run
+    local('%(run)s check_permissions' % env)
 
 
 @task
@@ -129,3 +133,11 @@ def deploy():
     cont('%(run)s newrelic-admin validate-config - stdout' % env,
             "Couldn't initialize New Relic, continue anyway?")
 ########## END HEROKU MANAGEMENT
+
+@task
+def install():
+    local('pip install -r requirements/dev.txt')
+    local('%(local)s migrate --no-initial-data' % env)
+    local('%(local)s migrate' % env)
+    local('%(local)s check_permissions')
+    local('%(local)s bower install' % env)

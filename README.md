@@ -5,17 +5,15 @@ Make sure you're on a NIX machine. I have no idea how windows works, so try at y
 `git clone` this repo, and `cd` into it.
 
 ```
-pip install -r requirements/dev.txt
-./manage.py syncdb
-./manage.py check_permissions
+pip install fabric
+fab install
 ```
 
 Since this is being heavily devved and modded, I may ask you to delete the database and recreate.
 
 ```
 rm myrefuge.db.sqlite3
-./manage.py syncdb
-./manage.py check_permissions
+fab install
 ```
 
 To run the server:
