@@ -13,8 +13,10 @@
 			<p>Are you a refugee or a citizen offering your home?</p>
 			<a href="/refugee">refugee</a>
 			<a href="/citizen-refuge">citizen refuge</a>
-      {% if not user.is_authenticated %}
-      <a href="{% url "userena_signin" %}">Login</a>
+      {% if user.is_authenticated %}
+      <a href="{% url 'userena_profile_detail' username=user.username %}">profile</a>
+      {% else %}
+      <a href="{% url "userena_signin" %}">login</a>
       {% endif %}
 		</div>
 	</div>

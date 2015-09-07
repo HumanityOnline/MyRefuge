@@ -20,6 +20,9 @@ from citizen_refuge.views import CitizenRefugeSignupWizard
 
 urlpatterns = [
     url(r'^$', 'common.views.home'),
+    url(r'^account/(?P<username>[\.\w-]+)/edit/$',
+        'common.views.edit_profile',
+        name='userena_profile_edit'),
     url(r'account/', include('userena.urls')),
     url(r'refugee/', RefugeeSignupWizard.as_view()),
     url(r'citizen-refuge/', CitizenRefugeSignupWizard.as_view()),

@@ -1,5 +1,6 @@
-import os, uuid
+import os, uuid, pdb
 from django.conf import settings
+from django.utils.deconstruct import deconstructible
 
 GENDER = (
     ('M', 'Male'),
@@ -19,9 +20,20 @@ CITIZEN_REFUGE_ADDITIONAL = (
     (3, 'hang out with the refugees'),
 )
 
-def unique_media_path(root):
-    def file_path(instance, filename):
+PROFILE_TYPES = (
+    ('C', 'Citizen refuge'),
+    ('R', 'Refugee'),
+)
+
+
+@deconstructible
+class UniqueMediaPath(object):
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
-        filename = "%s.%s" % (uuid.uuid4(), ext)
-        return os.path.join(settings.MEDIA_PATH, root, filename)
-    return file_path
+        # set filename as random string
+        filename = '{}.{}'.format(uuid.uuid4().hex, ext)
+        # return the whole path to the file
+        return os.path.join(settings.MEDIA_ROOT, self.path, filename)

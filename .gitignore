@@ -4,6 +4,7 @@ db.sqlite3
 *.swo
 photologue
 media
+mediafiles
 .DS_Store
 node_modules
 myrefuge/components

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import pdb
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 
 
-class MultiFileInput(forms.FileInput):
+class MultiFileInput(forms.ClearableFileInput):
     def __init__(self, max_num, min_num, *args, **kwargs):
         self.max_num = max_num
         self.min_num = min_num
@@ -15,7 +15,20 @@ class MultiFileInput(forms.FileInput):
         attrs['multiple'] = 'multiple'
         attrs['maxlength'] = self.max_num
         attrs['class'] = 'multi'
-        return super(MultiFileInput, self).render(name, value, attrs)
+        input = super(MultiFileInput, self).render(name, value, attrs)
+
+        formatted = []
+        template = 'Currently: %s<br/>%s'
+        for v in value:
+            template_item = '<a href="%(url)s">%(url)s</a>'
+            formatted.append(template_item % {
+                'url': v.url,
+            })
+
+        return mark_safe(template % (
+            '<br/>'.join(formatted),
+            input
+        ))
 
     def value_from_datadict(self, data, files, name):
         if hasattr(files, 'getlist'):
