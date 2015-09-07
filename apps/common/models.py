@@ -1,6 +1,6 @@
 from django.db import models
+from django.conf import settings
 from userena.models import UserenaLanguageBaseProfile
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 
 from .helpers import GENDER, PROFILE_TYPES, UniqueMediaPath
@@ -8,7 +8,7 @@ from .helpers import GENDER, PROFILE_TYPES, UniqueMediaPath
 # Create your models here.
 class UserProfile(UserenaLanguageBaseProfile):
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         unique=True,
         verbose_name=_('user'),
         related_name='my_profile')
