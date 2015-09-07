@@ -27,26 +27,26 @@ AUTHENTICATION_BACKENDS = (
 
 # Application definition
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'address',
+    'django_countries',
     'djangobower',
     'sekizai',
     'formtools',
     'multiupload',
     'common',
-    'userena',
     'guardian',
     'easy_thumbnails',
-    'address',
-    'django_countries',
     'select_multiple_field',
     'refugee',
     'citizen_refuge',
+    'userena',
 )
 
 MIDDLEWARE_CLASSES = (
