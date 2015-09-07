@@ -6,4 +6,4 @@ photologue
 media
 .DS_Store
 node_modules
-common/static/lib
+myrefuge/components

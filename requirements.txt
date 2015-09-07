@@ -1,0 +1,3 @@
+# Heroku reads this file
+-r common.txt
+-r prod.txt

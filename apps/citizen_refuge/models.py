@@ -1,7 +1,7 @@
 from django.db import models
 
 from address.models import AddressField
-from common.helpers import APPLICATION_STATUS, CITIZEN_REFUGE_ADDITIONAL
+from common.helpers import APPLICATION_STATUS, CITIZEN_REFUGE_ADDITIONAL, GENDER, unique_media_path
 from common.models import UserProfile
 from photologue.models import Gallery
 from refugee.models import Refugee
@@ -9,13 +9,18 @@ from select_multiple_field.models import SelectMultipleField
 
 # Create your models here.
 class CitizenRefuge(UserProfile):
+    name = models.CharField(max_length=255)
+    dob = models.DateField()
+    gender = models.CharField(max_length=1, choices=GENDER)
     address = AddressField()
     num_beds = models.IntegerField()
-    pictures = models.OneToOneField(Gallery)
-    additional = SelectMultipleField(
-        max_length=10,
-        choices=CITIZEN_REFUGE_ADDITIONAL,
-    )
+    short_description = models.CharField(max_length=255)
+    long_description = models.TextField()
+    wifi = models.BooleanField()
+
+class Photo(models.Model):
+    image = models.ImageField(upload_to=unique_media_path('refuge_photos'))
+    citizen_refuge = models.ForeignKey(CitizenRefuge)
 
 class DateRange(models.Model):
     start_date = models.DateField()

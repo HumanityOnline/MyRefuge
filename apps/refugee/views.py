@@ -1,6 +1,4 @@
-import pdb
 import os
-from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -19,7 +17,6 @@ FORMS = [SignupForm, RefugeeSignUpBasic, FamilyMemberFormset, RefugeeSignUpAddre
 FORM_LIST = zip(KEYS, FORMS)
 TEMPLATES = dict(zip(KEYS, ['refugee/' + k + '.html' for k in KEYS]))
 
-# Create your views here.
 class RefugeeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
     file_storage = FileSystemStorage(location='/tmp/')
@@ -33,9 +30,6 @@ class RefugeeSignupWizard(SessionWizardView):
         mugshot = form_dict['basic'].cleaned_data.get('mugshot')
         user.my_profile.mugshot = mugshot
         user.my_profile.save()
-
-        # Send the signup complete signal
-        userena_signals.signup_complete.send(sender=None, user=user)
 
         # Concatenate all the information from the forms and save.
         refugee = Refugee(user=user)

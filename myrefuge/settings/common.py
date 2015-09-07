@@ -11,18 +11,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os, sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-SECRET_KEY = 'qwgh)jpa=p5ntli(fcrznm@u!uxm@9zmtu8dq-97xded)hza(3'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+sys.path.insert(0, os.path.join(BASE_DIR, '../apps'))
 
 ALLOWED_HOSTS = []
 
@@ -42,6 +34,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'common',
+    'djangobower',
     'sekizai',
     'userena',
     'guardian',
@@ -54,6 +47,7 @@ INSTALLED_APPS = (
     'refugee',
     'citizen_refuge',
     'formtools',
+    'multiupload',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,7 +102,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'staticfiles'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+)
 AUTH_PROFILE_MODULE = 'common.UserProfile'
 PHOTOLOGUE_MULTISITE = False
 SITE_ID = 1
 ANONYMOUS_USER_ID = -1
+
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+BOWER_INSTALLED_APPS = (
+    'moment',
+    'multifile',
+    'pikaday',
+    'susy',
+)

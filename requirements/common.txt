@@ -4,5 +4,7 @@ django-sekizai
 django-userena
 django-countries
 django-select-multiple-field
-django-photologue
+dj-database-url
+django-bower
+whitenoise
 git+https://github.com/furious-luke/django-address.git

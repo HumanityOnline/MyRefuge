@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from refugee.views import RefugeeSignupWizard
+from citizen_refuge.views import CitizenRefugeSignupWizard
 
 urlpatterns = [
     url(r'^$', 'common.views.home'),
     url(r'account/', include('userena.urls')),
     url(r'refugee/', RefugeeSignupWizard.as_view()),
+    url(r'citizen-refuge/', CitizenRefugeSignupWizard.as_view()),
     url(r'^admin/', include(admin.site.urls)),
 ]
