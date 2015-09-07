@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
-from common.form_container import FormContainer
 
 from citizen_refuge.views import edit_profile as cr
 from refugee.views import edit_profile as r

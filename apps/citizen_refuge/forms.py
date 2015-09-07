@@ -1,5 +1,4 @@
 from django import forms
-from common.form_container import FormContainer
 from userena.forms import EditProfileForm, SignupForm
 from django.forms.models import inlineformset_factory
 
