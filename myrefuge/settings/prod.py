@@ -41,3 +41,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 MIGRATION_MODULES = {
     'userena': 'delete_when_userena_commits.migrations'
 }
+
+ADMINS = (
+    (os.environ.get('ADMIN_NAME'), os.environ.get('ADMIN_EMAIL'))
+)
