@@ -12,6 +12,7 @@ ALLOWED_HOSTS = ['myrefuge.herokuapp.com']
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+
 LOGGING = {
     'version': 1,
     'handlers': {
@@ -28,3 +29,11 @@ LOGGING = {
         }
     },
 }
+
+
+# Email settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
