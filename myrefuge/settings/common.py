@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os, sys
 
+SITE_ID = 1
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, '../apps'))
 
@@ -41,8 +42,6 @@ INSTALLED_APPS = (
     'easy_thumbnails',
     'address',
     'django_countries',
-    'photologue',
-    'sortedm2m',
     'select_multiple_field',
     'refugee',
     'citizen_refuge',
@@ -110,13 +109,11 @@ STATICFILES_FINDERS = (
 )
 AUTH_PROFILE_MODULE = 'common.UserProfile'
 PHOTOLOGUE_MULTISITE = False
-SITE_ID = 1
 ANONYMOUS_USER_ID = -1
 
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 BOWER_INSTALLED_APPS = (
     'moment',
-    'multifile',
     'pikaday',
     'susy',
 )

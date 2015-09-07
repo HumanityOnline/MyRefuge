@@ -3,7 +3,6 @@ from django.db import models
 from address.models import AddressField
 from common.helpers import APPLICATION_STATUS, CITIZEN_REFUGE_ADDITIONAL, GENDER, unique_media_path
 from common.models import UserProfile
-from photologue.models import Gallery
 from refugee.models import Refugee
 from select_multiple_field.models import SelectMultipleField
 

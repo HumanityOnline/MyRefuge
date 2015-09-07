@@ -28,5 +28,8 @@
     "node-sass": "^3.3.2",
     "parallelshell": "^2.0.0",
     "postcss-cli": "^2.1.0"
+  },
+  "dependencies": {
+    "bower": "^1.5.2"
   }
 }

@@ -1,16 +1,30 @@
 import os
 import dj_database_url
+from .common import *
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DATABASES = {
     'default': dj_database_url.config()
 }
 
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+ALLOWED_HOSTS = ['myrefuge.herokuapp.com']
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers':['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        }
+    },
+}
