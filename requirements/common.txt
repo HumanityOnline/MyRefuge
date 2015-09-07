@@ -6,5 +6,6 @@ django-countries
 django-select-multiple-field
 dj-database-url
 django-bower
+whitenoise
 django-rednoise
 git+https://github.com/furious-luke/django-address.git

@@ -101,16 +101,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
 )
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '../mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 AUTH_PROFILE_MODULE = 'common.UserProfile'
-PHOTOLOGUE_MULTISITE = False
 ANONYMOUS_USER_ID = -1
 
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
