@@ -50,12 +50,6 @@ def cont(cmd, message):
 
 ########## DATABASE MANAGEMENT
 @task
-def syncdb():
-    """Run a syncdb."""
-    local('%(run)s syncdb --noinput' % env)
-
-
-@task
 def migrate(app=None):
     """Apply one (or more) migrations. If no app is specified, fabric will
     attempt to run a site-wide migration.
@@ -66,6 +60,19 @@ def migrate(app=None):
         local('%s migrate %s --noinput' % (env.run, app))
     else:
         local('%(run)s migrate --noinput' % env)
+
+
+@task
+def makemigrations(app=None):
+    """Apply one (or more) migrations. If no app is specified, fabric will
+    attempt to run a site-wide migration.
+
+    :param str app: Django app name to migrate.
+    """
+    if app:
+        local('%s makemigrations %s --noinput' % (env.run, app))
+    else:
+        local('%(run)s makemigrations --noinput' % env)
 ########## END DATABASE MANAGEMENT
 
 
@@ -117,7 +124,6 @@ def deploy():
     cont('git push heroku master',
             "Couldn't push your application to Heroku, continue anyway?")
 
-    syncdb()
     migrate()
 
     cont('%(run)s newrelic-admin validate-config - stdout' % env,
