@@ -68,13 +68,6 @@
 /* Variables
    ========================================================================== */
 
-$susy: (
-	columns: 12,
-	container: 1200px,
-	global-box-sizing: border-box,
-	// debug: (image: show)
-);
-
 $imgDir: '/static/images';
 $oswald: 'Oswald', sans-serif;
 
@@ -82,7 +75,6 @@ $oswald: 'Oswald', sans-serif;
  * Dimensions
  */
 
-$screen-sm-min: 768px;
 $vertical-rhythm: 8px;
 $top-bar-height: 56px;
 
@@ -90,8 +82,9 @@ $top-bar-height: 56px;
  * Color values
  */
 
+$red: #A94442;
 $pink: #E62565;
-$amber: #FF8F00;
-$amber-light: #FFA000;
-$purple: #673AB7;
-$purple-light: #7E57C2;
+$btn-primary-bg: #FF5A5F;
+$font-size-large: 16px;
+$btn-border-radius-base: 2px;
+$btn-border-radius-large: 2px;

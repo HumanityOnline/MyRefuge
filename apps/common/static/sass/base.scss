@@ -1,7 +1,5 @@
-@import "../lib/susy/sass/susy";
 @import "init";
-@import "normalise";
-@import "modules/misc";
-@import "modules/form";
+@import "bootstrap";
+@import "misc";
 @import "pages/home";
 @import "pages/signup";
