@@ -139,5 +139,5 @@ def install():
     local('pip install -r requirements/dev.txt')
     local('%(local)s migrate --no-initial-data' % env)
     local('%(local)s migrate' % env)
-    local('%(local)s check_permissions')
+    local('%(local)s check_permissions' % env)
     local('%(local)s bower install' % env)
