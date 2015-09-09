@@ -16,6 +16,7 @@
       {% if user.is_authenticated %}
       <a href="{% url 'userena_profile_detail' username=user.username %}">profile</a>
       {% else %}
+	  <br>
       <a href="{% url "userena_signin" %}">login</a>
       {% endif %}
 		</div>

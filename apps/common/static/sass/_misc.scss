@@ -1,0 +1,21 @@
+#body {
+	width: 100%;
+	height: 100%;
+
+	.content {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.vr-1 {
+	margin-bottom: $vertical-rhythm;
+}
+
+.vr-2 {
+	margin-bottom: $vertical-rhythm * 2;
+}
+
+.err-msg {
+	color: $red;
+}

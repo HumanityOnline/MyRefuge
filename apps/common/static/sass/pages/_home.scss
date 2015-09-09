@@ -31,7 +31,8 @@
 			padding: 10px 0;
 			margin-bottom: $vertical-rhythm;
 			border: 2px solid $pink;
-			transition: all 0.3;
+			color: #000;
+			transition: all 0.3s;
 
 			&:hover {
 				background-color: $pink;
