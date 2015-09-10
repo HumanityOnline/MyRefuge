@@ -3,7 +3,7 @@
 	height: 100%;
 	background: {
 		color: #FFF;
-		image: url($imgDir + '/home-bg.jpg');
+		image: url($imgDir + '/main-bg.jpg');
 		size: cover;
 		repeat: no-repeat;
 	}
@@ -17,7 +17,7 @@
 	.text {
 		margin-top: 2em;
 		text-align: center;
-		color: #000;
+		color: #FFF;
 		font-size: 1.1em;
 
 		p {
@@ -31,7 +31,7 @@
 			padding: 10px 0;
 			margin-bottom: $vertical-rhythm;
 			border: 2px solid $pink;
-			color: #000;
+			color: #FFF;
 			transition: all 0.3s;
 
 			&:hover {
@@ -71,7 +71,8 @@
 	}
 
 	#my {
-		color: #424242;
+		// color: #424242;
+		color: rgba(255, 255, 255, 0.8);
 	}
 
 	#refuge {

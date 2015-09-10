@@ -16,6 +16,16 @@
 	margin-bottom: $vertical-rhythm * 2;
 }
 
-.err-msg {
-	color: $red;
+.white-sheet {
+	box-sizing: border-box;
+	padding: 20px;
+	position: relative;
+	background: #FFF;
+	border-radius: 2px;
+	@include card();
+}
+
+.formset-control {
+	display: block;
+	text-align: center;
 }

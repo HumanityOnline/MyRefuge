@@ -1,0 +1,8 @@
+{% load i18n %}
+
+{% if steps.prev %}
+	<div class="vr-1 text-center">
+		<button class="btn btn-default" name="wizard_goto_step" type="submit" value="{{ steps.first }}">{% trans "First step" %}</button>
+		<button class="btn btn-default" name="wizard_goto_step" type="submit" value="{{ steps.prev }}">{% trans "Prev step" %}</button>
+	</div>
+{% endif %}

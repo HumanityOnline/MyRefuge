@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% if field.errors %}
+	<div class="vr-1 invalid">
+	{% for error in field.errors %}
+		<label class="invalid">{{ error | escape }}</label>
+	{% endfor %}
+		<label class="sr-only" for="{{ field.id_for_label }}">{% trans label %}</label>
+		<input id="{{ field.id_for_label }}" class="invalid" type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" maxlength="{{ field.field.max_length }}" value="{{ field.value | default_if_none:"" }}" placeholder="{% trans label %}">
+	</div>
+{% else %}
+	<div class="vr-1">
+		<label class="sr-only" for="{{ field.id_for_label }}">{% trans label %}</label>
+		<input id="{{ field.id_for_label }}" type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" maxlength="{{ field.field.max_length }}" value="{{ field.value | default_if_none:"" }}" placeholder="{% trans label %}">
+	</div>
+{% endif %}

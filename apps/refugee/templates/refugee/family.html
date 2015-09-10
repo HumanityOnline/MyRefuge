@@ -5,10 +5,15 @@
 {{ wizard.form.media }}
 {% endblock %}
 
+{% block title %}MyRefuge - {% trans "Family details" %}{% endblock %}
+
 {% block content %}
-<div id="signup">
+<div id="account">
 	<div class="white-sheet">
-		<div class="form-step">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Family details" %}</div>
+		<div class="text-center vr-2">
+			<strong>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Family details" %}</strong>
+		</div>
+
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 			{{ wizard.management_form }}
 			<div>
@@ -16,7 +21,12 @@
 					{{ wizard.form.management_form }}
 					<div class="to-clone">
 						{% for form in wizard.form.forms %}
-							{{ form }}
+							{% include "form/input.html" with field=form.name label=form.name.label %}
+							{% include "form/input.html" with field=form.dob label="Date of Birth (DD/MM/YYYY)" %}
+							{% include "form/select.html" with field=form.gender %}
+							{% include "form/input.html" with field=form.relationship label=form.relationship.label %}
+							<label>Photo</label>
+							{% include "form/input.html" with field=form.image label=form.image.label %}
 						{% endfor %}
 					</div>
 				{% else %}
@@ -24,12 +34,7 @@
 				{% endif %}
 			</div>
 
-			{% if wizard.steps.prev %}
-				<div class="vr-1">
-					<button class="btn btn-default" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
-					<button class="btn btn-default" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
-				</div>
-			{% endif %}
+			{% include "form/step_btns.html" with steps=wizard.steps %}
 
 			<input class="btn btn-block btn-primary btn-lg" type="submit" value="{% trans "Submit" %}"/>
 		</form>
@@ -39,13 +44,34 @@
 		{% endaddtoblock %}
 
 		{% addtoblock "js" %}
-		<script type="text/javascript">
-$(function() {
-	$('form .to-clone').formset({
-		'prefix': '{{ wizard.form.prefix }}'
-	});
-});
-		</script>
+			<script type="text/javascript">
+				function createPikaday(id) {
+					var picker = new Pikaday({
+						field: document.getElementById(id),
+						format: 'DD/MM/YYYY',
+						minDate: moment("1915-01-01").toDate(),
+						maxDate: new Date(),
+						yearRange: [1915, 2015]
+					});
+				}
+
+				$(function() {
+					$('form .to-clone').formset({
+						prefix: '{{ wizard.form.prefix }}',
+						addText: 'Add another',
+						deleteText: 'Remove',
+						addCssClass: 'formset-control vr-2',
+						deleteCssClass: 'formset-control vr-1'
+					});
+
+					$('.formset-control.vr-2').click(function () {
+						var id = $('.to-clone').last().find('input[type="text"]:eq(1)').attr('id');
+						createPikaday(id);
+					});
+
+					createPikaday('id_family-0-dob');
+				});
+			</script>
 		{% endaddtoblock %}
 	</div>
 </div>

@@ -6,6 +6,10 @@
 // Normalize non-controls
 //
 // Restyle and baseline non-control form elements.
+//
+form {
+	color: #565A5C;
+}
 
 fieldset {
   padding: 0;
@@ -222,9 +226,21 @@ input[type="search"] {
 }
 
 [type="text"], [type="password"], [type="search"], [type="email"], [type="url"], [type="number"], [type="tel"], textarea, select, input[type="radio"], input[type="checkbox"] {
-    transition: border-color 0.2s ease 0s;
+    transition: border-color 0.2s;
 }
 
+input::-moz-placeholder, textarea::-moz-placeholder, .input-prefix::-moz-placeholder, .input-suffix::-moz-placeholder {
+    color: #717779;
+}
+
+.invalid[type="text"], .invalid[type="password"], .invalid[type="search"], .invalid[type="email"], .invalid[type="url"], .invalid[type="number"], .invalid[type="tel"], textarea.invalid, select.invalid, input.invalid[type="radio"], input.invalid[type="checkbox"], [type="text"]:invalid, [type="password"]:invalid, [type="search"]:invalid, [type="email"]:invalid, [type="url"]:invalid, [type="number"]:invalid, [type="tel"]:invalid, textarea:invalid, select:invalid, input[type="radio"]:invalid, input[type="checkbox"]:invalid {
+	background-color: #fff8e6;
+	border-color: #ffb400;
+}
+
+label.invalid {
+	color: $red;
+}
 
 // Form groups
 //

@@ -1,0 +1,22 @@
+{% load i18n %}
+
+{% if field.errors %}
+	<div class="vr-1 invalid">
+	{% for error in field.errors %}
+		<label class="invalid">{{ error | escape }}</label>
+	{% endfor %}
+		<select id="{{ field.id_for_label }}" class="invalid" name="{{ field.html_name }}">
+			{% for value, key in field.field.choices %}
+				<option value="{{ value }}">{{ key }}</option>
+			{% endfor %}
+		</select>
+	</div>
+{% else %}
+	<div class="vr-1">
+		<select id="{{ field.id_for_label }}" name="{{ field.html_name }}">
+			{% for value, key in field.field.choices %}
+				<option value="{{ value }}">{{ key }}</option>
+			{% endfor %}
+		</select>
+	</div>
+{% endif %}
