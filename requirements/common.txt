@@ -8,4 +8,5 @@ dj-database-url
 django-bower
 whitenoise<2
 django-rednoise
+psycopg2
 git+https://github.com/furious-luke/django-address.git
