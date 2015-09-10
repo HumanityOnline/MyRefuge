@@ -5,10 +5,15 @@
 {{ wizard.form.media }}
 {% endblock %}
 
+{% block title %}MyRefuge - {% trans "Personal details" %}{% endblock %}
+
 {% block content %}
-<div id="signup">
+<div id="account">
 	<div class="white-sheet">
-		<div class="form-step">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Personal details" %}</div>
+		<div class="text-center vr-2">
+			<strong>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Personal details" %}</strong>
+		</div>
+
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 			{{ wizard.management_form }}
 			{% if wizard.form.forms %}
@@ -17,33 +22,14 @@
 					{{ form }}
 				{% endfor %}
 			{% else %}
-				<label for="{{ wizard.form.dob.id_for_label }}">{% trans "Date of Birth" %}</label>
-				{% include "error_message.html" with field=wizard.form.dob %}
-				<div class="vr-1">{{ wizard.form.dob }}</div>
-
-				<label for="{{ wizard.form.gender.id_for_label }}">{{ wizard.form.gender.label }}</label>
-				{% include "error_message.html" with field=wizard.form.gender %}
-				<div class="vr-1">{{ wizard.form.gender }}</div>
-
-				<label for="{{ wizard.form.address.id_for_label }}">{{ wizard.form.address.label }}</label>
-				{% include "error_message.html" with field=wizard.form.address %}
-				<div class="vr-1">{{ wizard.form.address }}</div>
-
-				<label for="{{ wizard.form.first_name.id_for_label }}">{{ wizard.form.first_name.label }}</label>
-				{% include "error_message.html" with field=wizard.form.first_name %}
-				<div class="vr-1">{{ wizard.form.first_name }}</div>
-
-				<label for="{{ wizard.form.last_name.id_for_label }}">{{ wizard.form.last_name.label }}</label>
-				{% include "error_message.html" with field=wizard.form.last_name %}
-				<div class="vr-1">{{ wizard.form.last_name }}</div>
+				{% include "form/input.html" with field=wizard.form.first_name label=wizard.form.first_name.label %}
+				{% include "form/input.html" with field=wizard.form.last_name label=wizard.form.last_name.label %}
+				{% include "form/select.html" with field=wizard.form.gender %}
+				{% include "form/input.html" with field=wizard.form.dob label="Date of Birth" %}
+				{% include "form/input.html" with field=wizard.form.address label=wizard.form.address.label %}
 			{% endif %}
 
-			{% if wizard.steps.prev %}
-				<div class="vr-1">
-					<button class="btn btn-default" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
-					<button class="btn btn-default" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
-				</div>
-			{% endif %}
+			{% include "form/step_btns.html" with steps=wizard.steps %}
 
 			<input class="btn btn-block btn-primary btn-lg" type="submit" value="{% trans "Submit" %}"/>
 		</form>

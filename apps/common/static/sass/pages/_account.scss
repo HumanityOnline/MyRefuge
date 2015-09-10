@@ -1,0 +1,24 @@
+#account {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 100%;
+	padding-top: 30px;
+	background: {
+		color: #EEE;
+		image: url($imgDir + '/main-bg.jpg');
+		size: cover;
+	}
+
+	.white-sheet {
+		width: 90%;
+		max-width: 350px;
+		margin: 0 auto;
+		@include card(2);
+	}
+
+	.form-title {
+		font-weight: bold;
+		color: #000;
+		text-align: center;
+	}
+}

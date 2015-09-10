@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% if field.errors %}
+	<div class="vr-1 invalid">
+	{% for error in field.errors %}
+		<label class="invalid">{{ error | escape }}</label>
+	{% endfor %}
+		<label class="sr-only" for="{{ field.id_for_label }}">{% trans label %}</label>
+		<textarea id="{{ field.id_for_label }}" class="invalid" name="{{ field.html_name }}" rows="{{ rows }}" placeholder="{% trans label %}">{{ field.value | default_if_none:"" }}</textarea>
+	</div>
+{% else %}
+	<div class="vr-1">
+		<label class="sr-only" for="{{ field.id_for_label }}">{% trans label %}</label>
+		<textarea id="{{ field.id_for_label }}" name="{{ field.html_name }}" rows="{{ rows }}" placeholder="{% trans label %}">{{ field.value | default_if_none:"" }}</textarea>
+	</div>
+{% endif %}

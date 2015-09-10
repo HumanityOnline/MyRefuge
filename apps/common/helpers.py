@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils.deconstruct import deconstructible
 
 GENDER = (
+    ('', 'Gender'),
     ('M', 'Male'),
     ('F', 'Female'),
     ('U', 'Prefer not to say')

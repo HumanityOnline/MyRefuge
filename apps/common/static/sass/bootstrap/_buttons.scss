@@ -70,6 +70,17 @@ a.btn {
 }
 .btn-primary {
   @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  &:focus,
+  &.focus {
+    color: $btn-primary-color;
+    background-color: lighten($btn-primary-bg, 10%);
+        border-color: lighten($btn-primary-border, 25%);
+  }
+  &:hover {
+    color: $btn-primary-color;
+    background-color: lighten($btn-primary-bg, 10%);
+        border-color: lighten($btn-primary-border, 12%);
+  }
 }
 // Success appears as green
 .btn-success {
