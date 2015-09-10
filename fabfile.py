@@ -136,6 +136,7 @@ def deploy():
 
 @task
 def install():
+    cont('bash postgres.sh', 'There were errors, continue?')
     local('pip install -r requirements/dev.txt')
     local('%(local)s migrate --no-initial-data' % env)
     local('%(local)s migrate' % env)
