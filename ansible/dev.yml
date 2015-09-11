@@ -79,5 +79,8 @@
     - name: migrate
       django_manage: command=migrate app_path=/vagrant
 
+    - name: check permissions
+      django_manage: command="check_permissions" app_path=/vagrant
+
     - name: bower install
       django_manage: command="bower install" app_path=/vagrant
