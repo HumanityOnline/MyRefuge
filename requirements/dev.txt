@@ -3,3 +3,4 @@ IPython
 django-extensions
 django-debug-toolbar
 fabric
+django_pdb

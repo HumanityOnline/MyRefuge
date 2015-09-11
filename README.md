@@ -2,48 +2,27 @@
 
 Make sure you're on a NIX machine. I have no idea how windows works, so try at your own peril.
 
-`git clone` this repo, and `cd` into it.
+# Requirements
 
-If you don't have Bower installed, please check [bower.io](http://bower.io/) on how to install.
-
-Make sure you've installed postgres and postgis. On Ubuntu:
-
-```
-sudo apt-get -y install postgresql postgresql-client postgresql-contrib
-sudo apt-get install -y postgis postgresql-9.3-postgis-2.1 postgresql-server-dev-9.3
-```
+- [virtualbox.org](http://virtualbox.org)
+- [vagrant](https://www.vagrantup.com/)
+- [ansible](http://ansible.com)
+- [git](https://git-scm.com)
 
 ```
-pip install fabric
-fab install
+git clone [this repo]
+cd [this repo]
+vagrant up --provision
 ```
 
-This will ask you to define a password, type in `myrefuge` twice.
-The next steps will fail with horrible error messages.
-This appears to be a rather nasty postgres related bug in Django.
-
-The first time errors happen, run:
-
-`./manage.py migrate auth`.
-
-That will fail. Now run:
+That will trundle along, do its thing for a while. When complete:
 
 ```
-./manage.py migrate sites
-./manage.py migrate address
-./manage.py migrate
+vagrant ssh
+cd /vagrant
+./manage.py runserver 0.0.0.0:8000
 ```
 
-Finally, import the cities with:
+Now navigate to `http://localhost:8001` and there's the site :)
 
-`./manage.py cities --import=all`
-
-This will take a while, but dev work can still happen.
-
-To run the server:
-
-`./manage.py runserver`
-
-Visit the URL that pops up.
-
-Happy devving!
+You can dev locally as the repo is mounted onto the vagrant box.

@@ -1,0 +1,83 @@
+---
+- hosts: all
+  user: vagrant
+  sudo: yes
+
+  tasks:
+    - name: add node
+      shell: "curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -"
+
+    - name: install base packages
+      apt: pkg="{{ item }}" state=installed
+      with_items:
+        - build-essential
+        - python-setuptools
+        - python-dev
+        - python-software-properties
+        - git
+        - postgresql-9.3
+        - postgresql-client
+        - postgresql-contrib
+        - postgis
+        - postgresql-9.3-postgis-2.1
+        - postgresql-server-dev-9.3
+        - nodejs
+
+    - name: install pip
+      easy_install: name=pip
+
+    - name: install python packages
+      pip: requirements=/vagrant/requirements/dev.txt
+
+    - name: install bower
+      npm: name=bower global=yes
+
+  handlers:
+    - name: restart postgresql
+      service: name=postgresql state=restarted
+
+
+- hosts: all
+  user: vagrant
+  sudo: yes
+  sudo_user: postgres
+
+  tasks:
+    - name: create template db
+      postgresql_db: name=template_postgis
+                      encoding='UTF-8'
+                      template='template0'
+
+    - name: ensure postgis_extension is installed
+      command: /usr/bin/psql -d template_postgis -c 'CREATE EXTENSION IF NOT EXISTS postgis;'
+
+    - name: create postgresql user
+      postgresql_user: db=template_postgis user=myrefuge password=myrefuge priv=ALL/spatial_ref_sys:ALL
+
+    - name: create postgresql database
+      postgresql_db: db=myrefuge owner=myrefuge template='template_postgis'
+
+- hosts: all
+  user: vagrant
+  sudo: no
+  tasks:
+    - name: migrate database
+      django_manage: command=migrate app_path=/vagrant
+      ignore_errors: yes
+
+    - name: migrate auth
+      django_manage: command="migrate auth" app_path=/vagrant
+      ignore_errors: yes
+
+    - name: migrate sites
+      django_manage: command="migrate sites" app_path=/vagrant
+      ignore_errors: yes
+
+    - name: migrate address
+      django_manage: command="migrate address" app_path=/vagrant
+
+    - name: migrate
+      django_manage: command=migrate app_path=/vagrant
+
+    - name: bower install
+      django_manage: command="bower install" app_path=/vagrant
