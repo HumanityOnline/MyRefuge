@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n sekizai_tags staticfiles %}
 
 {% block head %}
 {{ wizard.form.media }}
@@ -35,4 +35,19 @@
 		</form>
 	</div>
 </div>
+
+{% addtoblock "js" %}
+	<script type="text/javascript">
+		(function () {
+			var picker = new Pikaday({
+				field: document.getElementById('id_about-dob'),
+				format: 'DD/MM/YYYY',
+				minDate: moment("1915-01-01").toDate(),
+				maxDate: new Date(),
+				yearRange: [1915, 2015]
+			});
+		})();
+	</script>
+{% endaddtoblock %}
+
 {% endblock %}
