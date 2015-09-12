@@ -3,11 +3,18 @@
 {% load url from future %}
 
 
-{% block title %}{% trans "Account re-activation succeeded." %}{% endblock %}
-{% block content_title %}<h2>{% trans "Account re-activation" %}</h2>{% endblock %}
+{% block title %}MyRefuge - {% trans "Account re-activation succeeded." %}{% endblock %}
 
 {% block content %}
-<p>{% blocktrans %}You requested a new activation of your account..{% endblocktrans %}</p>
-<p>{% blocktrans %}You have been sent an e-mail with an activation link to the supplied email.{% endblocktrans %}</p>
-<p>{% blocktrans %}We will store your signup information for {{ userena_activation_days }} days on our server. {% endblocktrans %}</p>
+<div id="account">
+	<div class="white-sheet text-center">
+		<div class="vr-2">
+			<h4>{% trans "Account re-activation" %}</h4>
+		</div>
+
+		<p>{% blocktrans %}You requested a new activation of your account..{% endblocktrans %}</p>
+		<p>{% blocktrans %}You have been sent an e-mail with an activation link to the supplied email.{% endblocktrans %}</p>
+		<p>{% blocktrans %}We will store your signup information for {{ userena_activation_days }} days on our server. {% endblocktrans %}</p>
+	</div>
+</div>
 {% endblock %}

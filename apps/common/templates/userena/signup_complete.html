@@ -1,17 +1,20 @@
 {% extends 'userena/base_userena.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Signup almost done!" %}{% endblock %}
-
-{% block content_title %}<h2>{% trans "Signup" %}</h2>{% endblock %}
+{% block title %}MyRefuge - {% trans "Signup almost done!" %}{% endblock %}
 
 {% block content %}
-<p>{% trans "Thank you for signing up with us!" %}</p>
+<div id="account">
+	<div class="white-sheet text-center">
+		<div class="vr-2">
+			<h4>{% trans "Thank you for signing up with us!" %}</h4>
+		</div>
 
-{% if userena_activation_required %}
-<p>{% blocktrans %}You have been sent an e-mail with an activation link to the supplied email.{% endblocktrans %}</p>
-<p>{% blocktrans %}We will store your signup information for {{ userena_activation_days }} days on our server. {% endblocktrans %}</p>
-{% else  %}
-<p>{% blocktrans %}You can now use the supplied credentials to signin.{% endblocktrans %}</p>
-{% endif %}
+		{% if userena_activation_required %}
+			<p>{% blocktrans %}You have been sent an e-mail with an activation link to the supplied email.{% endblocktrans %}</p>
+			<p>{% blocktrans %}We will store your signup information for {{ userena_activation_days }} days on our server. {% endblocktrans %}</p>
+		{% else  %}
+			<p>{% blocktrans %}You can now use the supplied credentials to signin.{% endblocktrans %}</p>
+		{% endif %}
+</div>
 {% endblock %}
