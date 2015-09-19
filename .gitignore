@@ -12,3 +12,5 @@ myrefuge/components
 # intealliJ
 .idea
 *.iml
+
+npm-debug*

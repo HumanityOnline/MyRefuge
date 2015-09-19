@@ -33,10 +33,21 @@
     - name: install bower
       npm: name=bower global=yes
 
+    - name: install sass
+      gem: name=sass state=latest
+
   handlers:
     - name: restart postgresql
       service: name=postgresql state=restarted
 
+# not stable enough
+#- hosts: all
+#  user: vagrant
+#  sudo: no
+#
+#  tasks:
+#    - name: npm install
+#      npm: path=/vagrant
 
 - hosts: all
   user: vagrant
