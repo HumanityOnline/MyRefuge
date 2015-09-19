@@ -22,6 +22,8 @@ INSTALLED_APPS += (
     'debug_toolbar',
 )
 
+INTERNAL_IPS = ('10.0.2.2', '127.0.0.1', '0.0.0.0')
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # SECURITY WARNING: keep the secret key used in production secret!
