@@ -7,6 +7,8 @@ class RefugeeSignUpBasic(forms.ModelForm):
     first_name = forms.CharField(max_length=255)
     last_name = forms.CharField(max_length=255)
     mugshot = forms.ImageField()
+    dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',))
 
     def save(self, *args, **kwargs):
         refugee = super(RefugeeSignUpBasic, self).save(commit=False)
@@ -40,6 +42,8 @@ class RefugeeSignUpPreferences(forms.ModelForm):
 class RefugeeAboutForm(forms.ModelForm):
     first_name = forms.CharField(max_length=255)
     last_name = forms.CharField(max_length=255)
+    dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',))
 
     def __init__(self, *args, **kwargs):
         super(RefugeeAboutForm, self).__init__(*args, **kwargs)
@@ -62,4 +66,5 @@ class RefugeeAboutForm(forms.ModelForm):
 
     class Meta:
         model = Refugee
-        fields = ('dob', 'gender', 'current_address', 'hometown', 'current_address', 'story', 'countries')
+        fields = ('dob', 'gender', 'current_address', 'hometown', 'current_address', 'story',
+                  'countries')

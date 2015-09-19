@@ -17,6 +17,8 @@ class CitizenSignupBasicForm(SignupForm):
 class CitizenRefugeAboutForm(forms.ModelForm):
     first_name = forms.CharField(max_length=255)
     last_name = forms.CharField(max_length=255)
+    dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',))
 
     def __init__(self, *args, **kwargs):
         super(CitizenRefugeAboutForm, self).__init__(*args, **kwargs)

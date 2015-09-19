@@ -9,3 +9,6 @@ mediafiles
 node_modules
 myrefuge/components
 .vagrant
+# intealliJ
+.idea
+*.iml
