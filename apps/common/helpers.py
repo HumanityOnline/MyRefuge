@@ -22,7 +22,7 @@ CITIZEN_REFUGE_ADDITIONAL = (
 )
 
 PROFILE_TYPES = (
-    ('C', 'Citizen refuge'),
+    ('C', 'Refuge provider'),
     ('R', 'Refugee'),
 )
 
