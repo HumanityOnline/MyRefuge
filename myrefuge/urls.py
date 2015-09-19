@@ -24,7 +24,7 @@ urlpatterns = [
         'common.views.edit_profile',
         name='userena_profile_edit'),
     url(r'^account/', include('userena.urls')),
-    url(r'^refugee/', RefugeeSignupWizard.as_view()),
-    url(r'^citizen-refuge/', CitizenRefugeSignupWizard.as_view()),
+    url(r'^refugee/', RefugeeSignupWizard.as_view(), name='refugee'),
+    url(r'^refuge-provider/', CitizenRefugeSignupWizard.as_view(), name='refuge_provider'),
     url(r'^admin/', include(admin.site.urls)),
 ]
