@@ -1,5 +1,6 @@
 {% extends 'userena/base_userena.html' %}
 {% load i18n %}
+{% load common_filters %}
 {% load url from future %}
 
 {% block title %}{% blocktrans with profile.user.username as username %}{{ username }}'s profile.{% endblocktrans %}{% endblock %}
