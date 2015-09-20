@@ -12,7 +12,10 @@
 <div id="account">
 	<div class="white-sheet">
 		<div class="text-center vr-2">
-			<strong>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Login details" %}</strong>
+			<strong>
+				<!-- Step  {{ wizard.steps.step1 }} of {{ wizard.steps.count }} -  -->
+				{% trans "Login details" %}
+			</strong>
 		</div>
 
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n sekizai_tags staticfiles %}
+
+{% block head %}
+{{ wizard.form.media }}
+{% endblock %}
+
+{% block title %}MyRefuge - {% trans "Where to go?" %}{% endblock %}
+
+{% block content %}
+<div id="account">
+    <div class="white-sheet">
+        <div class="text-center vr-2">
+            <strong>
+                {% trans "Where do you want to go?" %}
+            </strong>
+        </div>
+
+        <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+                {{ wizard.form.management_form }}
+                {% for form in wizard.form.forms %}
+                    {{ form }}
+                {% endfor %}
+            {% else %}
+                {% include "form/select.html" with field=wizard.form.countries label=wizard.form.countries.label multiple=True %}
+                
+                {% include "form/checkbox.html" with field=wizard.form.agree label=wizard.form.agree.label label="I agree to the terms and conditions" %}
+            {% endif %}
+
+            <input class="btn btn-block btn-primary" type="submit" value="{% trans "Finish! Search places!" %}"/>
+        </form>
+    </div>
+</div>
+
+
+{% addtoblock "js" %}
+    <script type="text/javascript">
+        (function () {
+            // deselect first
+            $('#id_country-countries option').attr('selected', false);
+            $('#id_country-countries').selectize();
+        })();
+    </script>
+{% endaddtoblock %}
+
+{% endblock %}

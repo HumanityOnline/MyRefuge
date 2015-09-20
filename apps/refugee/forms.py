@@ -32,9 +32,18 @@ InlineFamilyMemberFormset = inlineformset_factory(Refugee, FamilyMember, fields=
 class RefugeeSignUpAddress(forms.ModelForm):
     class Meta:
         model = Refugee
-        fields = ('hometown', 'current_address', 'story')
+        fields = ('hometown', 'full_address', 'current_address', 'story')
 
 class RefugeeSignUpPreferences(forms.ModelForm):
+    agree = forms.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        super(RefugeeSignUpPreferences, self).__init__(*args, **kwargs)
+        self.fields['agree'].initial = False
+
+    def save():
+        raise forms.ValidationError('Passwords do not match.')
+
     class Meta:
         model = Refugee
         fields = ('countries',)
@@ -66,5 +75,6 @@ class RefugeeAboutForm(forms.ModelForm):
 
     class Meta:
         model = Refugee
-        fields = ('dob', 'gender', 'current_address', 'hometown', 'current_address', 'story',
-                  'countries')
+
+        fields = ('dob', 'gender', 'full_address', 'hometown', 'current_address', 'story', 
+            'countries')

@@ -7,6 +7,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{% static "selectize/dist/css/selectize.bootstrap3.css" %}" />
   <link rel="stylesheet" href="{% static "base.css" %}" />
   <title>{% block title %}Userena{% endblock %}</title>
   {% block meta %}{% endblock %}
@@ -29,6 +30,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
   <script src="{% static "moment/moment.js" %}"></script>
   <script src="{% static "pikaday/pikaday.js" %}"></script>
+  <script src="{% static "jquery-date-dropdowns/dist/jquery.date-dropdowns.js" %}"></script>
+  <script src="{% static "microplugin/src/microplugin.js" %}"></script>
+  <script src="{% static "sifter/sifter.min.js" %}"></script>
+  <script src="{% static "selectize/dist/js/selectize.min.js" %}"></script>
   <script src="{% static "js/script.js" %}"></script>
   {% render_block "js" %}
 </body>

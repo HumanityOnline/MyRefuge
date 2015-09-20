@@ -5,7 +5,7 @@
 	{% for error in field.errors %}
 		<label class="invalid">{{ error | escape }}</label>
 	{% endfor %}
-		<select id="{{ field.id_for_label }}" class="invalid" name="{{ field.html_name }}">
+		<select id="{{ field.id_for_label }}" class="invalid" name="{{ field.html_name }}" {% if multiple == True %}multiple{% endif %}>
 			{% for value, key in field.field.choices %}
 				<option value="{{ value }}">{{ key }}</option>
 			{% endfor %}
@@ -13,7 +13,7 @@
 	</div>
 {% else %}
 	<div class="vr-1">
-		<select id="{{ field.id_for_label }}" name="{{ field.html_name }}">
+		<select id="{{ field.id_for_label }}" name="{{ field.html_name }}" {% if multiple == True %}multiple{% endif %}>
 			{% for value, key in field.field.choices %}
 				<option value="{{ value }}">{{ key }}</option>
 			{% endfor %}

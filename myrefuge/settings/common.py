@@ -116,5 +116,7 @@ ANONYMOUS_USER_ID = -1
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 BOWER_INSTALLED_APPS = (
     'moment',
-    'pikaday'
+    'pikaday',
+    'jquery-date-dropdowns',
+    'selectize',
 )

@@ -9,7 +9,10 @@
 <div id="account">
 	<div class="white-sheet">
 		<div class="text-center vr-2">
-			<strong>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Address" %}</strong>
+			<strong>
+				<!-- Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} -  -->
+				{% trans "Where are you from?" %}
+			</strong>
 		</div>
 
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -21,13 +24,12 @@
 				{% endfor %}
 			{% else %}
 				{% include "form/input.html" with field=wizard.form.hometown label=wizard.form.hometown.label %}
+				{% include "form/input.html" with field=wizard.form.full_address label=wizard.form.full_address.label %}
 				{% include "form/input.html" with field=wizard.form.current_address label=wizard.form.current_address.label %}
 				{% include "form/textarea.html" with field=wizard.form.story label=wizard.form.story.label rows="10" %}
 			{% endif %}
 
-			{% include "form/step_btns.html" with steps=wizard.steps %}
-
-			<input class="btn btn-block btn-primary btn-lg" type="submit" value="{% trans "Submit" %}"/>
+			<input class="btn btn-block btn-primary" type="submit" value="{% trans "Next where do you want to go?" %}"/>
 		</form>
 	</div>
 </div>

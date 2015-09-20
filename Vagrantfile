@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "myrefuge"
   config.vm.network "forwarded_port", guest: 8000, host: 8001
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true

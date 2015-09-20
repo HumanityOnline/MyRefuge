@@ -1,0 +1,44 @@
+{% load i18n %}
+
+{% if field.errors %}
+    <div class="vr-1 invalid">
+    {% for error in field.errors %}
+        <label class="invalid">{{ error | escape }}</label>
+    {% endfor %}
+
+        {% if field.value.raw %}
+            
+            <div class="checkbox">
+                <label>
+                   <input id="{{ field.id_for_label }}" class="invalid" type="checkbox" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} {% if field.value.raw %}checked{% endif %}> {% trans label %}
+                </label>
+            </div>
+        {% else %}
+            <div class="checkbox">
+                <label>
+                   <input id="{{ field.id_for_label }}" class="invalid" type="checkbox" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} {% if field.value %}checked{% endif %}> {% trans label %}
+                </label>
+            </div>
+        {% endif %}
+    </div>
+{% else %}
+    
+
+    <div class="vr-1">
+
+        {% if field.value.raw %}
+            
+            <div class="checkbox">
+                <label>
+                   <input id="{{ field.id_for_label }}" class="invalid" type="checkbox" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} {% if field.value.raw %}checked{% endif %}> {% trans label %}
+                </label>
+            </div>
+        {% else %}
+            <div class="checkbox">
+                <label>
+                   <input id="{{ field.id_for_label }}" class="invalid" type="checkbox" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} {% if field.value %}checked{% endif %}> {% trans label %}
+                </label>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

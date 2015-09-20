@@ -1,0 +1,21 @@
+.container-inner {
+    &.narrow {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+
+@media(min-width: 768px) {
+
+    .profile {
+        .media-left {
+            .media-inner {
+                width: 130px;
+                display: block;
+            }
+            
+        }
+    }
+
+}

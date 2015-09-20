@@ -23,6 +23,11 @@ urlpatterns = [
     url(r'^account/(?P<username>[\.\w-]+)/edit/$',
         'common.views.edit_profile',
         name='userena_profile_edit'),
+    
+    url(r'^account/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/$',
+       'common.views.profile_detail',
+       name='userena_profile_detail'),
+    
     url(r'^account/', include('userena.urls')),
     url(r'^refugee/', RefugeeSignupWizard.as_view(), name='refugee'),
     url(r'^refuge-provider/', CitizenRefugeSignupWizard.as_view(), name='refuge_provider'),

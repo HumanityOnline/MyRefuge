@@ -91,3 +91,6 @@ def edit_profile(request):
             ret[k + '_form'] = forms[k](instance=instances[k])
 
     return render(request, 'citizen_refuge/edit_profile.html', ret)
+
+def profile_detail(request):
+    return render(request, 'citizen_refuge/profile_detail.html', {})

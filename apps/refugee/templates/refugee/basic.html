@@ -12,7 +12,9 @@
 <div id="account">
 	<div class="white-sheet">
 		<div class="text-center vr-2">
-			<strong>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Personal details" %}</strong>
+			<strong>
+				<!-- Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} -  -->
+				{% trans "Tell us about yourself" %}</strong>
 		</div>
 
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -25,15 +27,13 @@
 			{% else %}
 				{% include "form/input.html" with field=wizard.form.first_name label=wizard.form.first_name.label %}
 				{% include "form/input.html" with field=wizard.form.last_name label=wizard.form.last_name.label %}
+				{% include "form/input.html" with field=wizard.form.dob label="Date of Birth" type="hidden" sr=False name="basic-dob_" %}
 				{% include "form/select.html" with field=wizard.form.gender %}
-				{% include "form/input.html" with field=wizard.form.dob label="Date of Birth (DD/MM/YYYY)" %}
-				<label>Photo</label>
-				{% include "form/input.html" with field=wizard.form.mugshot label=wizard.form.mugshot.label %}
+				{% include "form/input.html" with field=wizard.form.mugshot label="Photo" sr=False %}
 			{% endif %}
 
-			{% include "form/step_btns.html" with steps=wizard.steps %}
-
-			<input class="btn btn-block btn-primary btn-lg" type="submit" value="{% trans "Submit" %}"/>
+			<button class="btn btn-primary" name="skip_family" type="submit" value="1">{% trans "Traveling on my own. Next" %}</button>
+			<button class="btn btn-primary" type="submit" value="">{% trans "Add family member" %}</button>
 		</form>
 	</div>
 </div>
@@ -41,12 +41,10 @@
 {% addtoblock "js" %}
 	<script type="text/javascript">
 		(function () {
-			var picker = new Pikaday({
-				field: document.getElementById('id_basic-dob'),
-				format: 'DD/MM/YYYY',
-				minDate: moment("1915-01-01").toDate(),
-				maxDate: new Date(),
-				yearRange: [1915, 2015]
+			$("#id_basic-dob").dateDropdowns({
+				submitFormat: "dd/mm/yyyy",
+				submitFieldName: "basic-dob",
+				wrapperClass: "date-dropdowns inline",
 			});
 		})();
 	</script>

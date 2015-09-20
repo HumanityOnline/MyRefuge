@@ -11,9 +11,11 @@
 <div id="account">
 	<div class="white-sheet">
 		<div class="text-center vr-2">
-			<strong>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Family details" %}</strong>
+			<strong>
+				<!-- Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} -  -->
+				{% trans "About your family member" %}
+			</strong>
 		</div>
-
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 			{{ wizard.management_form }}
 			<div>
@@ -22,11 +24,10 @@
 					<div class="to-clone">
 						{% for form in wizard.form.forms %}
 							{% include "form/input.html" with field=form.name label=form.name.label %}
-							{% include "form/input.html" with field=form.dob label="Date of Birth (DD/MM/YYYY)" %}
+							{% include "form/input.html" with field=form.dob label="Date of Birth" type="hidden" sr=False name="family-0-dob_" %}
 							{% include "form/select.html" with field=form.gender %}
 							{% include "form/input.html" with field=form.relationship label=form.relationship.label %}
-							<label>Photo</label>
-							{% include "form/input.html" with field=form.image label=form.image.label %}
+							{% include "form/input.html" with field=form.image label=form.image.label sr=False label="Photo" %}
 						{% endfor %}
 					</div>
 				{% else %}
@@ -34,9 +35,7 @@
 				{% endif %}
 			</div>
 
-			{% include "form/step_btns.html" with steps=wizard.steps %}
-
-			<input class="btn btn-block btn-primary btn-lg" type="submit" value="{% trans "Submit" %}"/>
+			<input class="btn btn-block btn-primary" type="submit" value="{% trans "Finish adding family. Next" %}"/>
 		</form>
 
 		{% addtoblock "js" %}
@@ -45,13 +44,20 @@
 
 		{% addtoblock "js" %}
 			<script type="text/javascript">
-				function createPikaday(id) {
-					var picker = new Pikaday({
+				function createDatepicker(id) {
+					/*var picker = new Pikaday({
 						field: document.getElementById(id),
 						format: 'DD/MM/YYYY',
 						minDate: moment("1915-01-01").toDate(),
 						maxDate: new Date(),
 						yearRange: [1915, 2015]
+					});*/
+
+					$('#' + id).dateDropdowns({
+						submitFormat: "dd/mm/yyyy",
+						submitFieldName: id.replace('id_',''),
+						wrapperClass: "date-dropdowns inline",
+						minYear: 1915,
 					});
 				}
 
@@ -60,16 +66,16 @@
 						prefix: '{{ wizard.form.prefix }}',
 						addText: 'Add another',
 						deleteText: 'Remove',
-						addCssClass: 'formset-control vr-2',
+						addCssClass: 'formset-control vr-2 btn btn-block btn-primary',
 						deleteCssClass: 'formset-control vr-1'
 					});
 
 					$('.formset-control.vr-2').click(function () {
 						var id = $('.to-clone').last().find('input[type="text"]:eq(1)').attr('id');
-						createPikaday(id);
+						createDatepicker(id);
 					});
 
-					createPikaday('id_family-0-dob');
+					createDatepicker('id_family-0-dob');
 				});
 			</script>
 		{% endaddtoblock %}

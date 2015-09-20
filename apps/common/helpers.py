@@ -1,6 +1,7 @@
 import os, uuid, pdb
 from django.conf import settings
 from django.utils.deconstruct import deconstructible
+from django.template.defaulttags import register
 
 GENDER = (
     ('', 'Gender'),
@@ -38,3 +39,7 @@ class UniqueMediaPath(object):
         filename = '{}.{}'.format(uuid.uuid4().hex, ext)
         # return the whole path to the file
         return os.path.join(settings.MEDIA_ROOT, self.path, filename)
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

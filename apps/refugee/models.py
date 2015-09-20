@@ -15,12 +15,16 @@ class Refugee(models.Model):
         max_length=1,
         choices=GENDER,
     )
-    current_address = AddressField()
+    current_address = AddressField(blank=True, null=True)
     dob = models.DateField()
     hometown = models.CharField(
         max_length=255,
     )
-    story = models.TextField()
+    full_address = models.CharField(
+        max_length=500,
+        default=""
+    )
+    story = models.TextField(blank=True)
     countries = SelectMultipleField(
         max_length=1000,
         choices=tuple(countries),
