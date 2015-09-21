@@ -15,10 +15,11 @@ APPLICATION_STATUS = (
     ('A', 'Accepted'),
 )
 
-CITIZEN_REFUGE_ADDITIONAL = (
-    (1, 'provide free food'),
-    (2, 'share advice about the city and its services'),
-    (3, 'hang out with the refugees'),
+CITIZEN_SPACE_ADDITIONAL = (
+    (1, 'wifi available'),
+    (2, 'provide free food'),
+    (3, 'share advice about the city and its services'),
+    (4, 'hang out with the refugees'),
 )
 
 PROFILE_TYPES = (

@@ -2,7 +2,8 @@ from django import forms
 from userena.forms import EditProfileForm, SignupForm
 from django.forms.models import inlineformset_factory
 
-from .models import CitizenRefuge, DateRange
+from .models import CitizenRefuge, CitizenSpace, DateRange
+
 
 class CitizenSignupBasicForm(SignupForm):
     mugshot = forms.ImageField()
@@ -41,16 +42,16 @@ class CitizenRefugeAboutForm(forms.ModelForm):
 
     class Meta:
         model = CitizenRefuge
-        fields = ('dob', 'gender', 'address',)
+        fields = ('dob', 'gender', 'address')
 
 
 class CitizenRefugeSpaceForm(forms.ModelForm):
     class Meta:
-        model = CitizenRefuge
-        fields = ('wifi', 'num_beds', 'short_description', 'long_description',)
+        model = CitizenSpace
+        fields = ('headline', 'address', 'guests', 'additional', 'full_description')
 
 CitizenRefugeDatesFormset = inlineformset_factory(
-    CitizenRefuge,
+    CitizenSpace,
     DateRange,
     fields=('start_date', 'end_date'),
     extra=1)
