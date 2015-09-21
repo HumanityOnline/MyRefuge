@@ -1,9 +1,11 @@
 @import "init";
 @import "bootstrap";
+@import "variables";
 @import "mixins";
 @import "pikaday";
-@import "misc";
 @import "components/form";
+@import "components/navigation";
+@import "components/buttons";
 @import "layout/content";
 @import "pages/home";
 @import "pages/account";

@@ -1,0 +1,54 @@
+.navbar-refugee {
+    background-color: $white;
+    margin-bottom: 0;
+    border: 0 none;
+    border-bottom: 1px solid $gray-darken;
+
+    border-radius: 0 0 0;
+
+    .navbar-nav {
+        & > li {
+            > a:not(.btn) {
+                color: $navbar-color;
+
+                &:hover, &:focus {
+                    color: $navbar-color;
+                    background-color: transparent;
+                }
+            }
+
+            &.active {
+                > a {
+                    &, &:hover, &:focus {
+                        background-color: #880000;
+                        color: $navbar-color;
+                    }
+                }
+            }
+        }
+
+        .btn {
+            line-height: 18px;
+        }
+    }
+
+    .navbar-brand {
+        padding-left: 65px;
+        background: url(../images/logo.png) no-repeat 15px center;
+        background-size: 35px;
+        color: $navbar-color;
+        font-size: 18px;
+        font-weight: 600;
+
+        &:hover, &:focus {
+            color: #FFB4B4;
+        }
+    }
+
+    .navbar-toggle {
+        border-color: $navbar-color;
+        .icon-bar {
+            background-color: $navbar-color;
+        }
+    }
+}

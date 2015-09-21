@@ -1,29 +1,29 @@
 {% load i18n %}
 
 {% if field.errors %}
-	<div class="vr-1 invalid">
-	{% for error in field.errors %}
-		<label class="invalid">{{ error | escape }}</label>
-	{% endfor %}
+	<div class="vr-1 invalid {% if required %}required{% endif %} {% if class %}{{class}}{% endif %}">
+		<label class="form-label {% if sr != False %}sr-only{% endif %}" for="{{ field.id_for_label }}">{% trans label %}</label>
 
-		<label {% if sr != False %}class="sr-only"{% endif %} for="{{ field.id_for_label }}">{% trans label %}</label>
+		{% for error in field.errors %}
+			<label class="invalid">{{ error | escape }}</label>
+		{% endfor %}
 
 		{% if field.value.raw %}
 			<input id="{{ field.id_for_label }}" class="invalid" type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" value="{{ field.value.raw | default_if_none:"" }}" placeholder="{% trans label %}">
 		{% else %}
-			<input id="{{ field.id_for_label }}" class="invalid" type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" value="{{ field.value | default_if_none:"" }}" placeholder="{% trans label %}">
+			<input id="{{ field.id_for_label }}" class="invalid" {% if revealType == True %}{% if field.value != "0" %}value="{{ field.value | default_if_none:"" }}"{% else %}value=""{% endif %}{% else %}value="{{ field.value | default_if_none:"" }}"{% endif %} type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" placeholder="{% trans label %}">
 		{% endif %}
 	</div>
 {% else %}
 	
 
-	<div class="vr-1">
-		<label {% if sr != False %}class="sr-only"{% endif %} for="{{ field.id_for_label }}">{% trans label %}</label>
+	<div class="vr-1 {% if required %}required{% endif %} {% if class %}{{class}}{% endif %}">
+		<label class="form-label {% if sr != False %}sr-only{% endif %}" for="{{ field.id_for_label }}">{% trans label %}</label>
 
 		{% if field.value.raw %}
 			<input id="{{ field.id_for_label }}" type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" value="{{ field.value.raw | default_if_none:"" }}" placeholder="{% trans label %}">
 		{% else %}
-			<input id="{{ field.id_for_label }}" type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" value="{{ field.value | default_if_none:"" }}" placeholder="{% trans label %}">
+			<input id="{{ field.id_for_label }}" {% if revealType == True %}{% if field.value != "0" %}value="{{ field.value | default_if_none:"" }}"{% else %}value=""{% endif %}{% else %}value="{{ field.value | default_if_none:"" }}"{% endif %} type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" placeholder="{% trans label %}">
 			{% endif %}
 	</div>
 {% endif %}

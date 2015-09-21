@@ -4,3 +4,22 @@
     text-indent: 1px;
     text-overflow: '';
 }
+
+@mixin placeholer-color($color: #fff) {
+    
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+    &:-moz-placeholder {
+        /* FF 4-18 */
+        color: $color;
+    }
+    &::-moz-placeholder {
+        /* FF 19+ */
+        color: $color;
+    }
+    &:-ms-input-placeholder {
+        /* IE 10+ */
+        color: $color;
+    }
+}

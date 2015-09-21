@@ -7,15 +7,13 @@
 
 {% block title %}MyRefuge - {% trans "Personal details" %}{% endblock %}
 
+{% block header %}{% endblock %}
+
 {% block content %}
 
 <div id="account">
 	<div class="white-sheet">
-		<div class="text-center vr-2">
-			<strong>
-				<!-- Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} -  -->
-				{% trans "Tell us about yourself" %}</strong>
-		</div>
+		<h4 class="title">{% trans "Tell us about yourself" %}</h4>
 
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 			{{ wizard.management_form }}
@@ -25,15 +23,15 @@
 					{{ form }}
 				{% endfor %}
 			{% else %}
-				{% include "form/input.html" with field=wizard.form.first_name label=wizard.form.first_name.label %}
-				{% include "form/input.html" with field=wizard.form.last_name label=wizard.form.last_name.label %}
-				{% include "form/input.html" with field=wizard.form.dob label="Date of Birth" type="hidden" sr=False name="basic-dob_" %}
-				{% include "form/select.html" with field=wizard.form.gender %}
+				{% include "form/input.html" with field=wizard.form.first_name label=wizard.form.first_name.label required=wizard.form.fields.first_name.required %}
+				{% include "form/input.html" with field=wizard.form.last_name label=wizard.form.last_name.label required=wizard.form.fields.last_name.required %}
+				{% include "form/input.html" with field=wizard.form.dob label="Date of Birth" type="hidden" sr=False name="basic-dob_" required=wizard.form.fields.dob.required class="date-block right" %}
+				{% include "form/select.html" with field=wizard.form.gender required=wizard.form.fields.gender.required %}
 				{% include "form/input.html" with field=wizard.form.mugshot label="Photo" sr=False %}
 			{% endif %}
 
 			<button class="btn btn-primary" name="skip_family" type="submit" value="1">{% trans "Traveling on my own. Next" %}</button>
-			<button class="btn btn-primary" type="submit" value="">{% trans "Add family member" %}</button>
+			<button class="btn btn-primary btn-right" type="submit" value="">{% trans "Add family member" %}</button>
 		</form>
 	</div>
 </div>
@@ -45,6 +43,8 @@
 				submitFormat: "dd/mm/yyyy",
 				submitFieldName: "basic-dob",
 				wrapperClass: "date-dropdowns inline",
+				defaultDateFormat: "dd/mm/yyyy",
+				defaultDate: $("#id_basic-dob").val()
 			});
 		})();
 	</script>

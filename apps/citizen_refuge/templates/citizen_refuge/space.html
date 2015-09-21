@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load i18n sekizai_tags staticfiles %}
+
+{% block head %}
+{{ wizard.form.media }}
+{% endblock %}
+
+{% block title %}MyRefuge - {% trans "Provide Space" %}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<div id="account">
+    <div class="white-sheet">
+        <div class="text-center vr-2">
+            <strong>{% trans "Describle your space" %}</strong>
+        </div>
+
+        <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+                {{ wizard.form.management_form }}
+                {% for form in wizard.form.forms %}
+                    {{ form }}
+                {% endfor %}
+            {% else %}
+                {% include "form/input.html" with field=wizard.form.headline label="Headline description" required=wizard.form.fields.headline.required %}
+                {% include "form/input.html" with field=wizard.form.address label="Address of the available space" required=wizard.form.fields.address.required %}
+                {% include "form/input.html" with field=wizard.form.guests label="Number of guests to accommodate" revealType=True required=wizard.form.fields.guests.required %}
+                <div class="vr-1 checkboxs inline">
+                    {{wizard.form.additional}}
+                </div>
+
+                <label class="vr-1 form-title">Avalibility</label>
+                {% include "form/input.html" with field=wizard.form.start_date label="From" type="hidden" sr=False name="space-start_date_" required=wizard.form.fields.start_date.required class="date-block right" %}
+                {% include "form/input.html" with field=wizard.form.end_date label="To" type="hidden" sr=False name="space-end_date_" required=wizard.form.fields.end_date.required class="date-block right" %}
+
+                {% include "form/textarea.html" with field=wizard.form.full_description label=wizard.form.full_description.label required=wizard.form.fields.full_description.required %}
+                {% include "form/input.html" with field=wizard.form.mugshot label="Photo" sr=False %}
+            {% endif %}
+
+            <input class="btn btn-block btn-primary" type="submit" value="{% trans "Share this space with a refugee!" %}"/>
+        </form>
+    </div>
+</div>
+
+{% addtoblock "js" %}
+    <script type="text/javascript">
+        (function () {
+            $("#id_space-start_date").dateDropdowns({
+                submitFormat: "dd/mm/yyyy",
+                submitFieldName: "space-start_date",
+                wrapperClass: "date-dropdowns inline",
+                defaultDateFormat: "dd/mm/yyyy",
+                defaultDate: $("#id_space-start_date").val()
+            });
+            $("#id_space-end_date").dateDropdowns({
+                submitFormat: "dd/mm/yyyy",
+                submitFieldName: "space-end_date",
+                wrapperClass: "date-dropdowns inline",
+                defaultDateFormat: "dd/mm/yyyy",
+                defaultDate: $("#id_space-end_date").val()
+            });
+        })();
+    </script>
+{% endaddtoblock %}
+
+{% endblock %}

@@ -10,6 +10,10 @@ class RefugeeSignUpBasic(forms.ModelForm):
     dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
                           input_formats=('%d/%m/%Y',))
 
+    def __init__(self, *args, **kwargs):
+        super(RefugeeSignUpBasic, self).__init__(*args, **kwargs)
+        print(dir(self.fields['first_name']))
+
     def save(self, *args, **kwargs):
         refugee = super(RefugeeSignUpBasic, self).save(commit=False)
         user = refugee.user

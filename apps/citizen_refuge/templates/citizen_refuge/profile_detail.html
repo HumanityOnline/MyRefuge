@@ -1,74 +1,98 @@
 {% extends 'userena/base_userena.html' %}
 {% load i18n %}
 {% load url from future %}
+{% load common_filters %}
 
 {% block title %}{% blocktrans with profile.user.username as username %}{{ username }}'s profile.{% endblocktrans %}{% endblock %}
 
 
-{% block body %}
+{% block content %}
 <div class="container">
-  <div class="container-inner narrow">
-    {{profile.user.refugee.full_address}}
-    <h2>{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h2>
-    {% block profile_details %}
-    <div class="media">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object" src="{{profile.get_mugshot_url}}" alt="{{ profile.user.username }}">
-        </a>
-      </div>
-      <div class="media-body">
-        <h4 class="media-heading">{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h4>
-        <dl class="profile-definition">
-          {% block profile_definition_list %}
-          {% if profile.user.gender %}
-          <dt class="sr-only">{% trans "Gender" %}</dt>
-          <dd>{{ profile.user.gender }}</dd>
-          {% endif %}
-          {% if profile.user.email and not hide_email %}
-          <dt class="sr-only">{% trans "Email" %}</dt>
-          <dd>{{ profile.user.email }}</dd>
-          {% endif %}
-          {% if profile.age %}
-          <dt class="sr-only">{% trans "Age" %}</dt>
-          <dd>{{ profile.age }}</dd>
-          {% endif %}
-          {% if profile.website %}
-          <dt class="sr-only">{% trans "Website" %}</dt>
-          <dd>{{ profile.website|urlize }}</dd>
-          {% endif %}
-          {% if profile.location %}
-          <dt class="sr-only">{% trans "Location" %}</dt>
-          <dd>{{ profile.location }}</dd>
-          {% endif %}
-          {% if profile.about_me %}
-          <dt class="sr-only">{% trans "About me" %}</dt>
-          <dd>{{ profile.about_me }}</dd>
-          {% endif %}
-          {% endblock %}
-        </dl>
-      </div>
+    <div class="profile container-inner narrow">
+        {% block profile_details %}
+            <div class="media">
+                <div class="media-left">
+                    <a class="media-inner" href="#">
+                        <img class="media-object" src="{{profile.get_mugshot_url}}" alt="{{ profile.user.username }}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h4>
+                    <dl class="profile-definition">
+                        {% block profile_definition_list %}
+                            {% if citizen.gender %}
+                                <dt class="sr-only">{% trans "Gender" %}</dt>
+                                <dd>{{ citizen.gender }}</dd>
+                            {% endif %}
+                            {% if profile.user.email and not hide_email %}
+                                <dt class="sr-only">{% trans "Email" %}</dt>
+                                <dd>{{ profile.user.email }}</dd>
+                            {% endif %}
+                            {% if profile.age %}
+                                <dt class="sr-only">{% trans "Age" %}</dt>
+                                <dd>{{ profile.age }}</dd>
+                            {% endif %}
+                            {% if profile.website %}
+                                <dt class="sr-only">{% trans "Website" %}</dt>
+                                <dd>{{ profile.website|urlize }}</dd>
+                            {% endif %}
+                            {% if profile.location %}
+                                <dt class="sr-only">{% trans "Location" %}</dt>
+                                <dd>{{ profile.location }}</dd>
+                            {% endif %}
+                            {% if profile.about_me %}
+                                <dt class="sr-only">{% trans "About me" %}</dt>
+                                <dd>{{ profile.about_me }}</dd>
+                            {% endif %}
+                        {% endblock %}
+                    </dl>
+                </div>
+            </div>
+            {% for space in spaces %}
+                <div class="media">
+                    <div class="media-left">
+                        <a class="media-inner" href="#">
+                          {% for photo in space.spacephoto_set.all %}
+                            <img class="media-object" src="{{photo.image}}" alt="{{ profile.user.username }}">
+                          {% endfor %}
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">My space</h4>
+                        <dl class="profile-definition">
+                          {% if space.headline %}
+                              <dt>{% trans "Headline" %}</dt>
+                              <dd>{{ space.headline }}</dd>
+                          {% endif %}
+                          {% if space.address %}
+                              <dt>{% trans "Address" %}</dt>
+                              <dd>{{ space.address }}</dd>
+                          {% endif %}
+                          {% if space.full_description %}
+                              <dt>{% trans "Description" %}</dt>
+                              <dd>{{ space.full_description }}</dd>
+                          {% endif %}
+                          {% if space.guests %}
+                              <dt>{% trans "Guests" %}</dt>
+                              <dd>{{ space.guests }}</dd>
+                          {% endif %}
+                          {% if space.additional %}
+                              <dt>{% trans "Additional" %}</dt>
+                              <dd>
+                                {% for ad in space.additional%}
+                                  {{ space_list|get_item:ad }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                              </dd>
+                          {% endif %}
+                        </dl>
+                    </div>
+                </div>
+            {% endfor %}
+          
+        {% endblock %}
     </div>
-
-    {% endblock %}
-
-    {% block profile_navigation %}
-    {% comment %}Dirty hack. Will use django-guardian in the future.{% endcomment %}
-    {% if user.username == profile.user.username %}
-    <ul id="box-nav">
-      {% block profile_navigation_items %}
-      <li><a href="{% url 'userena_profile_detail' user.username %}">{% trans "View profile" %}</a></li>
-      <li><a href="{% url 'userena_profile_edit' user.username %}">{% trans "Edit details" %}</a></li>
-      <li><a href="{% url 'userena_password_change' user.username %}">{% trans "Change password" %}</a></li>
-      <li><a href="{% url 'userena_email_change' user.username %}">{% trans "Change email" %}</a></li>
-      {% endblock %}
-    </ul>
-    {% endif %}
-    {% endblock %}
-
-    <div id="details">
-
-    </div>
-  </div>
 </div>
+{% endblock %}
+{% block profile_navigation_items %}
+  <li><a href="{% url 'userena_profile_detail' user.username %}">{% trans "Offered spaces" %}</a></li>
 {% endblock %}

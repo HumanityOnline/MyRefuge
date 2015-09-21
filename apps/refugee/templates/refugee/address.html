@@ -5,6 +5,8 @@
 {{ wizard.form.media }}
 {% endblock %}
 
+{% block header %}{% endblock %}
+
 {% block content %}
 <div id="account">
 	<div class="white-sheet">
@@ -23,10 +25,10 @@
 					{{ form }}
 				{% endfor %}
 			{% else %}
-				{% include "form/input.html" with field=wizard.form.hometown label=wizard.form.hometown.label %}
-				{% include "form/input.html" with field=wizard.form.full_address label=wizard.form.full_address.label %}
-				{% include "form/input.html" with field=wizard.form.current_address label=wizard.form.current_address.label %}
-				{% include "form/textarea.html" with field=wizard.form.story label=wizard.form.story.label rows="10" %}
+				{% include "form/input.html" with field=wizard.form.hometown label=wizard.form.hometown.label required=wizard.form.fields.hometown.required %}
+				{% include "form/input.html" with field=wizard.form.full_address label=wizard.form.full_address.label required=wizard.form.fields.full_address.required %}
+				{% include "form/input.html" with field=wizard.form.current_address label="Current address (if applicable)" %}
+				{% include "form/textarea.html" with field=wizard.form.story label="Your Story (optional)" rows="10" %}
 			{% endif %}
 
 			<input class="btn btn-block btn-primary" type="submit" value="{% trans "Next where do you want to go?" %}"/>

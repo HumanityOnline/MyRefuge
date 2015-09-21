@@ -117,6 +117,8 @@ BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 BOWER_INSTALLED_APPS = (
     'moment',
     'pikaday',
+    'bootstrap#3.3.5',
     'jquery-date-dropdowns',
     'selectize',
+    'fontawesome',
 )

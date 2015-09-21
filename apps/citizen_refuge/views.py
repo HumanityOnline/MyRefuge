@@ -6,10 +6,11 @@ from formtools.wizard.views import SessionWizardView
 
 from common.forms import UserenaEditProfileForm
 from .forms import *
-from .models import CitizenRefuge
+from .models import CitizenRefuge, SpacePhoto, DateRange
+from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
 
-KEYS = ['userena', 'about',]
-FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm]
+KEYS = ['userena', 'about', 'space']
+FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
 FORM_LIST = zip(KEYS, FORMS)
 TEMPLATES = dict(zip(KEYS, ['citizen_refuge/' + k + '.html' for k in KEYS]))
 
@@ -33,25 +34,60 @@ class CitizenRefugeSignupWizard(SessionWizardView):
         user.last_name = about.cleaned_data.get('last_name')
         user.save()
 
+        # Create a citizen space
+        space_form = form_dict['space']
+        space = space_form.save(commit=False)
+        space.citizen = citizen
+        space.save()
+
+        sp = SpacePhoto(image=space_form.cleaned_data.get('mugshot'), space=space)
+        sp.save()
+
+
+        dr = DateRange(start_date=space_form.cleaned_data.get('start_date'),
+                end_date=space_form.cleaned_data.get('end_date'), space=space)
+        dr.save()
+
         return HttpResponseRedirect(reverse('userena_signup_complete', kwargs={'username': user.username}))
+
+    # def post(self, *args, **kwargs):
+    #     if self.steps.current == 'space':
+    #         form = SpacePhotoFormset(self.request.POST, self.request.FILES)
+    #         print ('form.is_valid()', form.is_valid())
+    #         raise Exception('asf')
+    #     return super(CitizenRefugeSignupWizard, self).post(*args, **kwargs)
+
+
+    def get_context_data(self, form, **kwargs):
+        context = super(CitizenRefugeSignupWizard, self).get_context_data(form=form, **kwargs)
+        if (self.steps.current == 'space'):
+            context['spacePhoto'] = {
+                'form': SpacePhotoFormset(),
+            }
+
+        return context
 
     def get_template_names(self):
         return [TEMPLATES[self.steps.current]]
 
+"""
+
+
+"""
 
 def edit_profile(request):
     forms = {
         'about': CitizenRefugeAboutForm,
         'profile': UserenaEditProfileForm,
         'space': CitizenRefugeSpaceForm,
-        'dates': CitizenRefugeDatesFormset,
+        #'dates': CitizenRefugeDatesFormset,
     }
 
     instances = {
         'about': request.user.citizenrefuge,
         'profile': request.user.my_profile,
         'space': request.user.citizenrefuge,
-        'dates': request.user.citizenrefuge,
+        #'dates': request.user.citizenrefuge,
     }
 
     ret = {}
@@ -93,5 +129,14 @@ def edit_profile(request):
     return render(request, 'citizen_refuge/edit_profile.html', ret)
 
 def profile_detail(request):
-    return render(request, 'citizen_refuge/profile_detail.html',
-                  {'profile': request.user.my_profile})
+    citizen = request.user.citizenrefuge
+    spaces = citizen.citizenspace_set.all()
+    return render(request, 'citizen_refuge/profile_detail.html', {
+                      'profile': request.user.my_profile,
+                      'citizen': citizen,
+                      'space_list': CITIZEN_SPACE_ADDITIONAL_SHORT,
+                      'spaces': spaces
+                  })
+"""'_check_model', '_check_ordering', '_check_swappable', '_check_unique_together', '_citizenrefuge_cache', '_default_manager', '_deferred', '_do_insert', '_do_update', '_get_FIELD_display', '_get_next_or_previous_by_FIELD', '_get_next_or_previous_in_order', '_get_pk_val', '_get_unique_checks', '_meta', '_my_profile_cache', '_perform_date_checks', '_perform_unique_checks', '_save_parents', '_save_table', '_set_pk_val', '_state', 'add_obj_perm', 'check', 'check_password', 'citizenrefuge', 'clean', 'clean_fields', 'date_error_message', 'date_joined', 'del_obj_perm', 'delete', 'email', 'email_user', 'first_name', 'from_db', 'full_clean', 'get_all_permissions', 'get_anonymous', 'get_deferred_fields', 'get_full_name', 'get_group_permissions', 'get_next_by_date_joined', 'get_previous_by_date_joined', 'get_session_auth_hash', 'get_short_name', 'get_username', 'groups', 'has_module_perms', 'has_perm', 'has_perms', 'has_usable_password', 'id', 'is_active', 'is_anonymous', 'is_authenticated', 'is_staff', 'is_superuser', 'last_login', 'last_name', 'logentry_set', 'my_profile', 'natural_key', 'objects', 'password', 'pk', 'prepare_database_save', 'refresh_from_db', 'refugee', 'save', 'save_base', 'serializable_value', 'set_password', 'set_unusable_password', 'unique_error_message', 'user_permissions', 'userena_signup', 'username', 'userobjectpermission_set', 'validate_unique']
+
+"""

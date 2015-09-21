@@ -11,7 +11,7 @@ class CitizenRefuge(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
     dob = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER)
-    address = AddressField()
+    address = AddressField(default="")
 
 
 class CitizenSpace(models.Model):

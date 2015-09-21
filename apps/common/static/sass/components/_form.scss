@@ -1,12 +1,14 @@
-.date-dropdowns {
-    &.inline {
-        display: inline-block;
-        select {
-            display: inline;
-            width: 70px;
-            margin-left: 5px;
+select {
+    background: url(images/select-arrow.png) no-repeat right center;
+    background-size: auto 34px;
+    @include hide-select-arrow();
+}
 
-            @include hide-select-arrow();
-        }
+label {
+    color: $black;
+    .help-text {
+        font-weight: 300;
+        color: $dark-light;
+        margin: 15px 0;
     }
 }

@@ -7,14 +7,12 @@
 
 {% block title %}MyRefuge - {% trans "Where to go?" %}{% endblock %}
 
+{% block header %}{% endblock %}
+
 {% block content %}
 <div id="account">
     <div class="white-sheet">
-        <div class="text-center vr-2">
-            <strong>
-                {% trans "Where do you want to go?" %}
-            </strong>
-        </div>
+        <h4 class="title">{% trans "Where do you want to go?" %}</h4>
 
         <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
             {{ wizard.management_form }}
@@ -26,7 +24,7 @@
             {% else %}
                 {% include "form/select.html" with field=wizard.form.countries label=wizard.form.countries.label multiple=True %}
                 
-                {% include "form/checkbox.html" with field=wizard.form.agree label=wizard.form.agree.label label="I agree to the terms and conditions" %}
+                {% include "form/checkbox.html" with field=wizard.form.agree label=wizard.form.agree.label label='I agree to the terms and conditions <div class="help-text"> - We will not share your personal information with anyone<br>- In providing shelter, we will give you the option to connect with or be contacted by relevant services or authorities as and when needed in processes of asylum<br>- MyRefuge is providing a matchmaking service. You agree to abide by the laws of relevant countries with regards to Asylum.</div>' %}
             {% endif %}
 
             <input class="btn btn-block btn-primary" type="submit" value="{% trans "Finish! Search places!" %}"/>
@@ -40,7 +38,9 @@
         (function () {
             // deselect first
             $('#id_country-countries option').attr('selected', false);
-            $('#id_country-countries').selectize();
+            $('#id_country-countries').selectize({
+                placeholder: "Country names",
+            });
         })();
     </script>
 {% endaddtoblock %}

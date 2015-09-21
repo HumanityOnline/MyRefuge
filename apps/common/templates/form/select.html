@@ -1,21 +1,21 @@
 {% load i18n %}
 
 {% if field.errors %}
-	<div class="vr-1 invalid">
+	<div class="vr-1 invalid {% if required %}required{% endif %}">
 	{% for error in field.errors %}
 		<label class="invalid">{{ error | escape }}</label>
 	{% endfor %}
-		<select id="{{ field.id_for_label }}" class="invalid" name="{{ field.html_name }}" {% if multiple == True %}multiple{% endif %}>
+		<select id="{{ field.id_for_label }}" class="invalid" name="{{ field.html_name }}" {% if multiple == True %}multiple{% else %}autocomplete="off"{% endif %}>
 			{% for value, key in field.field.choices %}
-				<option value="{{ value }}">{{ key }}</option>
+				<option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ key }}</option>
 			{% endfor %}
 		</select>
 	</div>
 {% else %}
-	<div class="vr-1">
-		<select id="{{ field.id_for_label }}" name="{{ field.html_name }}" {% if multiple == True %}multiple{% endif %}>
+	<div class="vr-1 {% if required %}required{% endif %}">
+		<select id="{{ field.id_for_label }}" name="{{ field.html_name }}" {% if multiple == True %}multiple{% else %}autocomplete="off"{% endif %}>
 			{% for value, key in field.field.choices %}
-				<option value="{{ value }}">{{ key }}</option>
+				<option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ key }}</option>
 			{% endfor %}
 		</select>
 	</div>

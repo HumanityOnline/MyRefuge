@@ -7,15 +7,12 @@
 
 {% block title %}MyRefuge - {% trans "Family details" %}{% endblock %}
 
+{% block header %}{% endblock %}
+
 {% block content %}
 <div id="account">
 	<div class="white-sheet">
-		<div class="text-center vr-2">
-			<strong>
-				<!-- Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} -  -->
-				{% trans "About your family member" %}
-			</strong>
-		</div>
+		<h4 class="title">{% trans "About your family member" %}</h4>
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 			{{ wizard.management_form }}
 			<div>
@@ -23,11 +20,13 @@
 					{{ wizard.form.management_form }}
 					<div class="to-clone">
 						{% for form in wizard.form.forms %}
-							{% include "form/input.html" with field=form.name label=form.name.label %}
-							{% include "form/input.html" with field=form.dob label="Date of Birth" type="hidden" sr=False name="family-0-dob_" %}
-							{% include "form/select.html" with field=form.gender %}
-							{% include "form/input.html" with field=form.relationship label=form.relationship.label %}
+						<div class="form-inner">
+							{% include "form/input.html" with field=form.name label=form.name.label required=form.fields.name.required %}
+							{% include "form/input.html" with field=form.dob label="Date of Birth" type="hidden" sr=False name="family-0-dob_" required=form.fields.dob.required class="date-block right" %}
+							{% include "form/select.html" with field=form.gender required=form.fields.gender.required %}
+							{% include "form/input.html" with field=form.relationship label=form.relationship.label required=form.fields.relationship.required %}
 							{% include "form/input.html" with field=form.image label=form.image.label sr=False label="Photo" %}
+						</div>
 						{% endfor %}
 					</div>
 				{% else %}
@@ -58,24 +57,31 @@
 						submitFieldName: id.replace('id_',''),
 						wrapperClass: "date-dropdowns inline",
 						minYear: 1915,
+						defaultDateFormat: "dd/mm/yyyy",
+						defaultDate: $('#' + id).val()
 					});
+					
 				}
 
 				$(function() {
-					$('form .to-clone').formset({
+					$('form .form-inner').formset({
 						prefix: '{{ wizard.form.prefix }}',
 						addText: 'Add another',
 						deleteText: 'Remove',
-						addCssClass: 'formset-control vr-2 btn btn-block btn-primary',
+						addCssClass: 'btn-add-form btn btn-block btn-primary',
 						deleteCssClass: 'formset-control vr-1'
 					});
 
-					$('.formset-control.vr-2').click(function () {
-						var id = $('.to-clone').last().find('input[type="text"]:eq(1)').attr('id');
+					$('.btn-add-form').click(function () {
+						var id = $('.form-inner').last().find('.date-block input').attr('id');
 						createDatepicker(id);
 					});
 
-					createDatepicker('id_family-0-dob');
+					$('.date-block input').each(function() {
+						createDatepicker($(this).attr('id'));
+					});
+
+					
 				});
 			</script>
 		{% endaddtoblock %}

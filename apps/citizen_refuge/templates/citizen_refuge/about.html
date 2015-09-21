@@ -7,11 +7,13 @@
 
 {% block title %}MyRefuge - {% trans "Personal details" %}{% endblock %}
 
+{% block header %}{% endblock %}
+
 {% block content %}
 <div id="account">
 	<div class="white-sheet">
 		<div class="text-center vr-2">
-			<strong>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} - {% trans "Personal details" %}</strong>
+			<strong>{% trans "Tell us about yourself" %}</strong>
 		</div>
 
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -22,29 +24,50 @@
 					{{ form }}
 				{% endfor %}
 			{% else %}
-				{% include "form/input.html" with field=wizard.form.first_name label=wizard.form.first_name.label %}
-				{% include "form/input.html" with field=wizard.form.last_name label=wizard.form.last_name.label %}
-				{% include "form/select.html" with field=wizard.form.gender %}
-				{% include "form/input.html" with field=wizard.form.dob label="Date of Birth" %}
-				{% include "form/input.html" with field=wizard.form.address label=wizard.form.address.label %}
+				{% include "form/input.html" with field=wizard.form.first_name label=wizard.form.first_name.label required=wizard.form.fields.first_name.required %}
+				{% include "form/input.html" with field=wizard.form.last_name label=wizard.form.last_name.label required=wizard.form.fields.last_name.required %}
+				{% include "form/input.html" with field=wizard.form.dob label="Date of Birth" type="hidden" sr=False name="about-dob_" required=wizard.form.fields.dob.required class="date-block right" %}
+				{% include "form/select.html" with field=wizard.form.gender required=wizard.form.fields.gender.required %}
+				{% include "form/input.html" with field=wizard.form.address label=wizard.form.address.label required=wizard.form.fields.address.required  %}
+				
+				{% include "form/input.html" with field=wizard.form.mugshot label="Photo" sr=False %}
+				{% include "form/checkbox.html" with field=wizard.form.agree label='I agree to the terms and conditions <a href="#" data-toggle="modal" data-target="#term"><i class="dark fa fa-info-circle"></i></a>' %}
+				
 			{% endif %}
 
-			{% include "form/step_btns.html" with steps=wizard.steps %}
-
-			<input class="btn btn-block btn-primary btn-lg" type="submit" value="{% trans "Submit" %}"/>
+			<input class="btn btn-block btn-primary" type="submit" value="{% trans "Register" %}"/>
 		</form>
 	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="term" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Terms &amp; Conditions</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+- We will not share your personal information with anyone<br>
+- In providing shelter, we will give you the option to connect with or be contacted by relevant services or authorities as and when needed in processes of asylum<br>
+- MyRefuge is providing a matchmaking service. You agree to abide by the laws of relevant countries with regards to Asylum.
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% addtoblock "js" %}
 	<script type="text/javascript">
 		(function () {
-			var picker = new Pikaday({
-				field: document.getElementById('id_about-dob'),
-				format: 'DD/MM/YYYY',
-				minDate: moment("1915-01-01").toDate(),
-				maxDate: new Date(),
-				yearRange: [1915, 2015]
+			$("#id_about-dob").dateDropdowns({
+				submitFormat: "dd/mm/yyyy",
+				submitFieldName: "about-dob",
+				defaultDateFormat: "dd/mm/yyyy",
+				wrapperClass: "date-dropdowns inline",
+				minYear: 1915,
+				defaultDate: $("#id_about-dob").val()
 			});
 		})();
 	</script>
