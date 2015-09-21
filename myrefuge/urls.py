@@ -20,15 +20,15 @@ from citizen_refuge.views import CitizenRefugeSignupWizard
 
 urlpatterns = [
     url(r'^$', 'common.views.home'),
-    url(r'^account/(?P<username>[\.\w-]+)/edit/$',
+    url(r'^accounts/(?P<username>[\.\w-]+)/edit/$',
         'common.views.edit_profile',
         name='userena_profile_edit'),
     
-    url(r'^account/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/$',
+    url(r'^accounts?/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/$',
        'common.views.profile_detail',
        name='userena_profile_detail'),
     
-    url(r'^account/', include('userena.urls')),
+    url(r'^accounts/', include('userena.urls')),
     url(r'^refugee/', RefugeeSignupWizard.as_view(), name='refugee'),
     url(r'^refuge-provider/', CitizenRefugeSignupWizard.as_view(), name='refuge_provider'),
     url(r'^admin/', include(admin.site.urls)),
