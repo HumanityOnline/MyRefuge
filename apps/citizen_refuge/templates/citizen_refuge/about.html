@@ -76,7 +76,10 @@
 	{{ wizard.form.fields.address.widget.media }}
 	<script type="text/javascript">
 		(function () {
-			$("#id_about-address").geocomplete();
+			whenAvailable('google', function() {
+				$("#id_about-address").geocomplete();
+			});
+			
 		})();
 	</script>
 {% endaddtoblock %}

@@ -38,8 +38,10 @@
 	{{ wizard.form.fields.full_address.widget.media }}
     <script type="text/javascript">
         (function () {
-            $("#id_address-full_address").geocomplete();
-            $("#id_address-current_address").geocomplete()
+			whenAvailable('google', function() {
+				$("#id_address-full_address").geocomplete();
+				$("#id_address-current_address").geocomplete()
+			});
         })();
     </script>
 {% endaddtoblock %}

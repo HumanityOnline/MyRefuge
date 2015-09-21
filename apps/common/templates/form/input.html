@@ -11,7 +11,7 @@
 		{% if field.value.raw %}
 			<input id="{{ field.id_for_label }}" class="invalid" type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" value="{{ field.value.raw | default_if_none:"" }}" placeholder="{% trans label %}">
 		{% else %}
-			<input id="{{ field.id_for_label }}" class="invalid" {% if revealType == True %}{% if field.value != "0" %}value="{{ field.value | default_if_none:"" }}"{% else %}value=""{% endif %}{% else %}value="{{ field.value | default_if_none:"" }}"{% endif %} type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" placeholder="{% trans label %}">
+			<input id="{{ field.id_for_label }}" class="invalid" {% if revealType == True %}{% if field.value != 0 %}value="{{ field.value | default_if_none:"" }}"{% else %}value=""{% endif %}{% else %}value="{{ field.value | default_if_none:"" }}"{% endif %} type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" placeholder="{% trans label %}">
 		{% endif %}
 	</div>
 {% else %}
@@ -23,7 +23,7 @@
 		{% if field.value.raw %}
 			<input id="{{ field.id_for_label }}" type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" value="{{ field.value.raw | default_if_none:"" }}" placeholder="{% trans label %}">
 		{% else %}
-			<input id="{{ field.id_for_label }}" {% if revealType == True %}{% if field.value != "0" %}value="{{ field.value | default_if_none:"" }}"{% else %}value=""{% endif %}{% else %}value="{{ field.value | default_if_none:"" }}"{% endif %} type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" placeholder="{% trans label %}">
+			<input id="{{ field.id_for_label }}" {% if revealType == True %}{% if field.value != 0 %}value="{{ field.value | default_if_none:"" }}"{% else %}value=""{% endif %}{% else %}value="{{ field.value | default_if_none:"" }}"{% endif %} type="{{ field.field.widget.input_type }}" {% if name %}name="{{name}}"{% else %}name="{{ field.html_name }}"{% endif %} maxlength="{{ field.field.max_length }}" placeholder="{% trans label %}">
 			{% endif %}
 	</div>
 {% endif %}
