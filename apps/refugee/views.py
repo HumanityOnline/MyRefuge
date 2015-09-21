@@ -128,9 +128,6 @@ def edit_profile(request):
 
 def profile_detail(request):
     request.family_members = request.user.refugee.familymember_set.all()
-    return render(request, 'refugee/profile_detail.html', {'profile': request, 'countries_list': countries})
+    return render(request, 'refugee/profile_detail.html', {'profile': request.user.my_profile,
+                                                           'countries_list': countries})
 
-"""
-['DoesNotExist', 'MultipleObjectsReturned', '__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__getattribute__', '__hash__', '__init__', u'__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_base_manager', '_check_column_name_clashes', '_check_field_name_clashes', '_check_fields', '_check_id_field', '_check_index_together', '_check_local_fields', '_check_long_column_names', '_check_m2m_through_same_relationship', '_check_managers', '_check_model', '_check_ordering', '_check_swappable', '_check_unique_together', '_default_manager', '_deferred', '_do_insert', '_do_update', '_get_FIELD_display', '_get_next_or_previous_by_FIELD', '_get_next_or_previous_in_order', '_get_pk_val', '_get_unique_checks', '_meta', '_perform_date_checks', '_perform_unique_checks', '_save_parents', '_save_table', '_set_pk_val', '_state', '_user_cache', 'application', 'check', 'clean', 'clean_fields', 'countries', 'current_address', 'current_address_id', 'date_error_message', 'delete', 'dob', 'familymember_set', 'from_db', 'full_address', 'full_clean', 'gender', 'get_countries_display', 'get_deferred_fields', 'get_gender_display', 'get_next_by_dob', 'get_previous_by_dob', 'hometown', 'id', 'objects', 'pk', 'prepare_database_save', 'refresh_from_db', 'save', 'save_base', 'serializable_value', 'story', 'unique_error_message', 'user', 'user_id', 'validate_unique']
-
-"""

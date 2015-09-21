@@ -93,4 +93,5 @@ def edit_profile(request):
     return render(request, 'citizen_refuge/edit_profile.html', ret)
 
 def profile_detail(request):
-    return render(request, 'citizen_refuge/profile_detail.html', {})
+    return render(request, 'citizen_refuge/profile_detail.html',
+                  {'profile': request.user.my_profile})

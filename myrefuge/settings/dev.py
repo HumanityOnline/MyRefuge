@@ -32,5 +32,3 @@ SECRET_KEY = 'changethisinproduction'
 MIDDLEWARE_CLASSES += (
     'django_pdb.middleware.PdbMiddleware',
 )
-
-USERENA_MUGSHOT_PATH = os.path.join(MEDIA_ROOT, 'mugshots/')

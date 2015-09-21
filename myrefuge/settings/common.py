@@ -45,9 +45,9 @@ INSTALLED_APPS = (
     'guardian',
     'easy_thumbnails',
     'select_multiple_field',
+    'userena',
     'refugee',
     'citizen_refuge',
-    'userena',
 )
 
 MIDDLEWARE_CLASSES = (
