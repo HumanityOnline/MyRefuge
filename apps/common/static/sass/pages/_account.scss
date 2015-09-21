@@ -33,6 +33,10 @@
 		@include placeholer-color($black);
 	}
 
+	.selectize-control.multi .selectize-input > div {
+		background-color: $white;
+	}
+
 	.selectize-input {
 		border-radius: 0 0 0;
 	}

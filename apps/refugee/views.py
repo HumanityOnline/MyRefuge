@@ -28,9 +28,6 @@ def skip_family(wizard):
 class RefugeeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
     file_storage = FileSystemStorage(location='/tmp/')
-    instance_dict = {
-        'family': FamilyMember.objects.none()
-    }
 
     condition_dict = {
         'family': skip_family
@@ -61,7 +58,8 @@ class RefugeeSignupWizard(SessionWizardView):
             form = form_dict[key]
             if key == 'family':
                 for dataset in form.cleaned_data:
-                    family_members.append(FamilyMember(**dataset))
+                    if len(dataset):
+                        family_members.append(FamilyMember(**dataset))
 
             else:
                 for field in form.cleaned_data.keys():

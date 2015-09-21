@@ -65,4 +65,13 @@
     </script>
 {% endaddtoblock %}
 
+{% addtoblock "js" %}
+    {{ wizard.form.fields.address.widget.media }}
+    <script type="text/javascript">
+        (function () {
+            $("#id_space-address").geocomplete();
+        })();
+    </script>
+{% endaddtoblock %}
+
 {% endblock %}

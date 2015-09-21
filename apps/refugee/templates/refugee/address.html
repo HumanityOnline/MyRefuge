@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-
-{% block head %}
-{{ wizard.form.media }}
-{% endblock %}
+{% load i18n sekizai_tags staticfiles %}
 
 {% block header %}{% endblock %}
 
@@ -35,4 +32,16 @@
 		</form>
 	</div>
 </div>
+
+
+{% addtoblock "js" %}
+	{{ wizard.form.fields.full_address.widget.media }}
+    <script type="text/javascript">
+        (function () {
+            $("#id_address-full_address").geocomplete();
+            $("#id_address-current_address").geocomplete()
+        })();
+    </script>
+{% endaddtoblock %}
+
 {% endblock %}

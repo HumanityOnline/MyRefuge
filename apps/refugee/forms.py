@@ -1,6 +1,7 @@
 from django import forms
-from django.forms.models import inlineformset_factory, modelformset_factory
+from django.forms.models import inlineformset_factory, modelformset_factory, BaseInlineFormSet
 from refugee.models import Refugee, FamilyMember
+from address.forms import AddressField
 
 
 class RefugeeSignUpBasic(forms.ModelForm):
@@ -12,7 +13,6 @@ class RefugeeSignUpBasic(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RefugeeSignUpBasic, self).__init__(*args, **kwargs)
-        print(dir(self.fields['first_name']))
 
     def save(self, *args, **kwargs):
         refugee = super(RefugeeSignUpBasic, self).save(commit=False)
@@ -26,6 +26,11 @@ class RefugeeSignUpBasic(forms.ModelForm):
         model = Refugee
         fields = ('dob', 'gender',)
 
+
+class CustomFamilyMemberFormset(BaseInlineFormSet):
+    dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',))
+    
 FamilyMemberFormset = modelformset_factory(FamilyMember, fields=(
     'name', 'dob', 'gender', 'relationship', 'image',
 ))
@@ -34,6 +39,13 @@ InlineFamilyMemberFormset = inlineformset_factory(Refugee, FamilyMember, fields=
 ), extra=1)
 
 class RefugeeSignUpAddress(forms.ModelForm):
+    full_address = AddressField()
+
+    def __init__(self, *args, **kwargs):
+        super(RefugeeSignUpAddress, self).__init__(*args, **kwargs)
+
+        print(dir(self.fields['full_address']))
+
     class Meta:
         model = Refugee
         fields = ('hometown', 'full_address', 'current_address', 'story')

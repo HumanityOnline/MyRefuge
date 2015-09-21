@@ -21,6 +21,8 @@ class CitizenRefugeSignupWizard(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         user = form_dict['userena'].save()
         user.my_profile.type = 'C'
+        mugshot = form_dict['about'].cleaned_data.get('mugshot')
+        user.my_profile.mugshot = mugshot
         user.my_profile.save()
 
         # Create a citizen refuge
