@@ -35,8 +35,8 @@ class SpacePhoto(models.Model):
 
 
 class Application(models.Model):
-    refugee = models.OneToOneField(Refugee)
-    space = models.OneToOneField(CitizenSpace)
+    refugee = models.ForeignKey(Refugee)
+    space = models.ForeignKey(CitizenSpace)
     status = models.CharField(
         max_length=1,
         choices=APPLICATION_STATUS,
