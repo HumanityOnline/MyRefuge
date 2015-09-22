@@ -24,7 +24,7 @@
             <div class="row space-info">
               <div class="col-sm-2 space-item">
                 <i class="fa fa-bed"></i><br>
-                {{ citizenspace.guests }} bed
+                {{ citizenspace.guests }} guest(s)
               </div>
               {% for ad in citizenspace.additional%}
                 <div class="col-sm-2 space-item">
@@ -42,7 +42,7 @@
         <h3 class="entry-subtitle">Photos</h3>
         {% for photo in citizenspace.spacephoto_set.all %}
                   
-            <img class="img-full" src="{{photo.image}}" alt="{{ profile.user.username }}" style="background-image: url({{photo.image}});">
+            <img class="img-full" src="{{photo.image.url|media}}" alt="{{ profile.user.username }}" style="background-image: url({{photo.image.url|media}});">
           
         {% endfor %}
     </div>
