@@ -36,7 +36,7 @@ class CitizenRefuge(models.Model):
 
 class CitizenSpaceManager(gis_models.GeoManager):
 
-    # TODO(hoatle): implement this
+    # TODO(hoatle): improve this, speed it up
     # this could help: http://www.rkblog.rk.edu.pl/w/p/shops-near-you-geographic-features-geodjango/
     # sort by distance
     def search(self, address, date_range, guests, distance=20000, **kwargs):
@@ -44,7 +44,7 @@ class CitizenSpaceManager(gis_models.GeoManager):
         :param address the raw address
         :date_range the sequence of 2 dates: start and end date
         :guests the number of guests that a space could accommodate
-        :distance the meters from the raw address to look for, default: 10 km
+        :distance the meters from the raw address to look for, default: 20 km
         """
         start_date, end_date = date_range
         query = self.filter(guests__gte=guests)
@@ -62,8 +62,7 @@ class CitizenSpaceManager(gis_models.GeoManager):
         distance_from_point = {'m': distance}
         query = query.filter(location__distance_lte=(current_point,
                                                      measure.D(**distance_from_point)))
-        query = query.distance(current_point).order_by('distance')
-        return query.distance(current_point)
+        return query.distance(current_point).order_by('distance')
 
 
 class CitizenSpace(models.Model):
