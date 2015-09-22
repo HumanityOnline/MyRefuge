@@ -9,11 +9,11 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from common.forms import UserenaEditProfileForm
 from .forms import *
-from .models import CitizenRefuge, SpacePhoto, DateRange
+from .models import CitizenRefuge, SpacePhoto, DateRange, CitizenSpace
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
 
 KEYS = ['userena', 'about', 'space']
-FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
+FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceCombineForm]
 FORM_LIST = zip(KEYS, FORMS)
 TEMPLATES = dict(zip(KEYS, ['citizen_refuge/' + k + '.html' for k in KEYS]))
 
@@ -21,7 +21,41 @@ class CitizenRefugeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
     file_storage = FileSystemStorage(location='/tmp/')
 
+    # instance_dict = {
+    #     'space': CitizenSpace.objects.none()
+    # }
+    """
+    ('space_form', ['__bool__', '__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__getitem__', '__hash__', '__html__', '__init__', '__iter__', '__len__', '__module__', '__new__', '__nonzero__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__unicode__', '__weakref__', '_construct_form', '_errors', '_existing_object', '_get_to_python', '_non_form_errors', '_pk_field', '_should_delete_form', u'absolute_max', 'add_fields', 'add_prefix', 'as_p', 'as_table', 'as_ul', 'auto_id', u'can_delete', u'can_order', 'clean', 'cleaned_data', 'data', 'deleted_forms', 'empty_form', 'error_class', 'errors', u'extra', 'extra_forms', 'files', 'fk', u'form', 'forms', 'full_clean', 'get_date_error_message', 'get_default_prefix', 'get_form_error', 'get_queryset', 'get_unique_error_message', 'has_changed', 'initial', 'initial_extra', 'initial_form_count', 'initial_forms', 'instance', 'is_bound', 'is_multipart', 'is_valid', 'management_form', u'max_num', 'media', u'min_num', 'model', 'non_form_errors', 'ordered_forms', 'prefix', 'queryset', 'save', 'save_as_new', 'save_existing', 'save_existing_objects', 'save_new', 'save_new_objects', 'total_error_count', 'total_form_count', u'validate_max', u'validate_min', 'validate_unique'])
+, 'total_form_count', u'validate_max', u'validate_min', 'validate_unique'])
+
+('space_form', <MultiValueDict: {u'space-0-headline': [u'DD'], u'space-0-start_date': [u'01/02/2114'], u'space-0-end_date_[month]': [u'04'], u'space-1-end_date_[month]': [u'07'], u'space-0-additional': [u'3', u'4'], u'space-MAX_NUM_FORMS': [u'1000'], u'space-1-start_date_[month]': [u'02'], u'space-0-start_date_[year]': [u'2114'], u'space-0-full_description': [u'DSFSD'], u'space-0-guests': [u'2'], u'space-0-end_date': [u'02/04/2113'], u'space-1-end_date_[year]': [u'2102'], u'space-1-start_date_[year]': [u'2101'], u'space-1-start_date': [u'16/02/2101'], u'space-1-end_date_[day]': [u'12'], u'space-0-start_date_[month]': [u'02'], u'space-1-start_date_[day]': [u'16'], u'space-TOTAL_FORMS': [u'2'], u'space-0-end_date_[day]': [u'02'], u'space-0-start_date_[day]': [u'01'], u'space-0-end_date_[year]': [u'2113'], u'space-MIN_NUM_FORMS': [u'1'], u'citizen_refuge_signup_wizard-current_step': [u'space'], u'space-INITIAL_FORMS': [u'0'], u'space-0-address': [u'FFF'], u'csrfmiddlewaretoken': [u'dxUEOxEyFFBRnKVuJcBmyNySwfPoBQqx'], u'space-1-end_date': [u'12/07/2102']}>)
+
+
+    """
     def done(self, form_list, form_dict, **kwargs):
+        space_form = form_dict['space']
+        
+        print('space_form', space_form.is_valid())
+        dr = DateRange(start_date=space_form.cleaned_data.get('start_date'),
+                end_date=space_form.cleaned_data.get('end_date'), space=space)
+
+        family_members = []
+        for key in form_dict:
+            if key == 'userena': continue
+            form = form_dict[key]
+            if key == 'family':
+                for dataset in form.cleaned_data:
+                    if len(dataset):
+                        family_members.append(FamilyMember(**dataset))
+
+            else:
+                for field in form.cleaned_data.keys():
+                    if field == 'mugshot': continue
+                    setattr(refugee, field, form.cleaned_data[field])
+
+
+
+        raise Exception
         user = form_dict['userena'].save()
         user.my_profile.type = 'C'
         mugshot = form_dict['about'].cleaned_data.get('mugshot')
@@ -63,14 +97,14 @@ class CitizenRefugeSignupWizard(SessionWizardView):
     #     return super(CitizenRefugeSignupWizard, self).post(*args, **kwargs)
 
 
-    def get_context_data(self, form, **kwargs):
-        context = super(CitizenRefugeSignupWizard, self).get_context_data(form=form, **kwargs)
-        if (self.steps.current == 'space'):
-            context['spacePhoto'] = {
-                'form': SpacePhotoFormset(),
-            }
+    # def get_context_data(self, form, **kwargs):
+    #     context = super(CitizenRefugeSignupWizard, self).get_context_data(form=form, **kwargs)
+    #     if (self.steps.current == 'space'):
+    #         context['spacePhoto'] = {
+    #             'form': SpacePhotoFormset(),
+    #         }
 
-        return context
+    #     return context
 
     def get_template_names(self):
         return [TEMPLATES[self.steps.current]]
@@ -93,6 +127,18 @@ class CitizenRefugeSpaceList(ListView):
 
 class CitizenRefugeSpaceDetail(DetailView):
     model = CitizenSpace
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSpaceDetail, self).get_context_data(**kwargs)
+        context['space_list'] = CITIZEN_SPACE_ADDITIONAL_SHORT
+        context['space_list_icon'] = {
+            '1': 'wifi',
+            '2': 'spoon',
+            '3': 'life-saver',
+            '4': 'group',
+
+        }
+        return context
 
 
 def edit_profile(request):

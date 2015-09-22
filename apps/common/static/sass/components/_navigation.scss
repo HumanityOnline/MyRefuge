@@ -51,4 +51,19 @@
             background-color: $navbar-color;
         }
     }
+
+    .hide-brand & {
+        background-color: transparent;
+        border: 0 none;
+
+        .navbar-brand {
+            display: none;
+        }
+
+        .navbar-right {
+            background-color: $white;
+            margin-right: -30px;
+        }
+    }
 }
+

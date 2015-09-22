@@ -1,10 +1,17 @@
 .thumbnail {
-    &.card {
+    &.flat {
+        border-radius: 0 0 0;
         .img-full {
             width: 100%;
             max-width: 100%;
 
             @include tera-image-cover-format();
+        }
+    }
+
+    .caption {
+        a {
+            color: $black-light;
         }
     }
 

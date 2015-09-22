@@ -24,6 +24,7 @@
               <footer class="footer">
                 <strong>Availabilities</strong>
                 <p>
+                  {{space.daterange}}
                   {% for ad in space.additional%}
                     {{ space_list|get_item:ad }}{% if not forloop.last %}, {% endif %}
                   {% endfor %}

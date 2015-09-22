@@ -1,0 +1,55 @@
+.space {
+    .media-object {
+        border-radius: 50%;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    .media-inner {
+        display: block;
+        text-align: center;
+        color: $black-light;
+    }
+
+    .media-body {
+        .entry-title {
+            margin: 0 0 30px;
+        }
+    }
+}
+
+.space-info {
+    .fa {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .space-item {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+}
+
+.space-banner {
+    background-image: url('images/space-bg.png');
+    background-color: $blur;
+    width: 100%;
+    display: block;
+    height: 300px;
+    margin-top: -51px;
+
+    @include tera-background-format();
+}
+
+@media(min-width: 768px) {
+
+    .space {
+        .media-object {
+            width: 100px;
+        }
+        .media-inner {
+            width: 130px;
+        }
+    }
+
+
+}

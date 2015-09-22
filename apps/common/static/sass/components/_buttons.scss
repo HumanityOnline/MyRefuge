@@ -7,3 +7,25 @@
         margin-bottom: 10px;
     }
 }
+
+.btn-add-form {
+    &.primary {
+        color: $black;
+        display: block;
+        margin: 10px 0;
+        font-weight: 600;
+
+        &:before {
+            content: "+";
+            margin: 0 10px;
+        }
+    }
+}
+.btn-remove-form {
+    &.primary {
+        color: $red;
+        font-weight: 600;
+        display: block;
+        text-align: right;
+    }
+}
