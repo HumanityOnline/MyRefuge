@@ -7,7 +7,8 @@ from select_multiple_field.models import SelectMultipleField
 from address.models import AddressField
 
 from common.helpers import APPLICATION_STATUS, CITIZEN_SPACE_ADDITIONAL, GENDER, UniqueMediaPath
-from common.geo import address_to_location, location_to_latlon, location_to_city
+from common.geo import (address_to_location, location_to_latlon, location_to_city,
+                        location_to_country)
 from refugee.models import Refugee
 
 
@@ -45,6 +46,8 @@ class CitizenSpace(models.Model):
     address = AddressField()
     # auto set from address field
     city = models.CharField(max_length=255, blank=True, null=True)
+    # auto set from address field
+    country = models.CharField(max_length=255, blank=True, null=True)
     guests = models.IntegerField(default=0)  # number of guests to be accommodated
     additional = SelectMultipleField(max_length=4, choices=CITIZEN_SPACE_ADDITIONAL)
     # auto set from address field
@@ -60,11 +63,13 @@ class CitizenSpace(models.Model):
         location = address_to_location(self.address.raw)
 
         lat, lon = location_to_latlon(location)
-        point = "POINT(%s %s)" % (lon, lat)
+        point = 'POINT(%s %s)' % (lon, lat)
         self.location = geos.fromstr(point)
 
-        city = location_to_city(location)
-        self.city = city
+        self.city = location_to_city(location)
+
+        self.country = location_to_country(location)
+
         super(CitizenSpace, self).save()
 
     def __repr__(self):
