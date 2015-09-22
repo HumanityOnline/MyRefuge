@@ -56,30 +56,29 @@
   </div>
 </div>
 
-{% addtoblock "js" %}
-	<script type="text/javascript">
-		(function () {
-			$("#id_about-dob").dateDropdowns({
-				submitFormat: "dd/mm/yyyy",
-				submitFieldName: "about-dob",
-				defaultDateFormat: "dd/mm/yyyy",
-				wrapperClass: "date-dropdowns inline",
-				minYear: 1915,
-				defaultDate: $("#id_about-dob").val()
-			});
-		})();
-	</script>
-{% endaddtoblock %}
-{% addtoblock "js" %}
-	{{ wizard.form.fields.address.widget.media }}
-	<script type="text/javascript">
-		(function () {
+{% endblock %}
+
+{% block js_ %}
+    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false" type="text/javascript"></script>
+    <script src="{% static "js/jquery.geocomplete.min.js" %}" type="text/javascript"></script>
+    <script src="{% static "address/js/address.js" %}" type="text/javascript"></script>
+    <script type="text/javascript">
+        (function () {
 			whenAvailable('google', function() {
 				$("#id_about-address").geocomplete();
 			});
 			
+			$(function() {
+                $("#id_about-dob").dateDropdowns({
+					submitFormat: "dd/mm/yyyy",
+					submitFieldName: "about-dob",
+					defaultDateFormat: "dd/mm/yyyy",
+					wrapperClass: "date-dropdowns inline",
+					minYear: 1915,
+					defaultDate: $("#id_about-dob").val()
+				});
+            });
+			
 		})();
-	</script>
-{% endaddtoblock %}
-
+    </script>
 {% endblock %}

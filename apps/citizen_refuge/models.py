@@ -49,10 +49,13 @@ class CitizenSpace(models.Model):
     # auto set from address field
     country = models.CharField(max_length=255, blank=True, null=True)
     guests = models.IntegerField(default=0)  # number of guests to be accommodated
-    additional = SelectMultipleField(max_length=4, choices=CITIZEN_SPACE_ADDITIONAL)
+
     # auto set from address field
     location = gis_models.PointField(u"longitude/latitude",
                                      geography=True, blank=True, null=True)
+
+    additional = SelectMultipleField(max_length=10, choices=CITIZEN_SPACE_ADDITIONAL)
+
     citizen = models.ForeignKey(CitizenRefuge)
 
     objects = CitizenSpaceManager()

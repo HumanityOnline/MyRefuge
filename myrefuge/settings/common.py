@@ -124,4 +124,5 @@ BOWER_INSTALLED_APPS = (
     'jquery-date-dropdowns',
     'selectize',
     'fontawesome',
+    'bootstrap-datepicker#1.4.1'
 )

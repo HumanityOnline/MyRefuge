@@ -9,17 +9,17 @@
 
 {% block header %}{% endblock %}
 
+{% block css_ %}
+<link rel="stylesheet" href="{% static "bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" %}" />
+{% endblock %}
+
 {% block content %}
+
 <div id="account">
     <div class="white-sheet">
         <h4 class="title">{% trans "Describle your space" %}</h4>
 
         <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-            {% for dict in wizard.errors %}
-    {% for error in dict.values %}
-        Please correct the error: {{ error }}
-    {% endfor %}
-{% endfor %}
             {{ wizard.management_form }}
             {% if wizard.form.forms %}
                 {{ wizard.form.management_form }}
@@ -32,10 +32,11 @@
                     </div>
 
                     <label class="vr-1 form-title">Avalibility</label>
-                    {% for dateform in wizard.form.forms %}
+                    {{ date_form.management_form }}
+                    {% for dateform in date_form %}
                     <div class="form-inner">
-                        {% include "form/input.html" with field=dateform.start_date label="From" type="hidden" sr=False name="space-start_date_" required=dateform.fields.start_date.required class="date-block right" %}
-                        {% include "form/input.html" with field=dateform.end_date label="To" type="hidden" sr=False name="space-end_date_" required=dateform.fields.end_date.required class="date-block right" %}
+                        {% include "form/input.html" with field=dateform.start_date label="From" type="hidden" sr=False required=dateform.fields.start_date.required class="date-block right from" %}
+                        {% include "form/input.html" with field=dateform.end_date label="To" type="hidden" sr=False required=dateform.fields.end_date.required class="date-block right to" %}
                     </div>
                     {% endfor %}
 
@@ -47,14 +48,20 @@
                 {% include "form/input.html" with field=wizard.form.address label="Address of the available space" required=wizard.form.fields.address.required %}
                 {% include "form/input.html" with field=wizard.form.guests label="Number of guests to accommodate" revealType=True required=wizard.form.fields.guests.required %}
                 <div class="vr-1 checkboxs inline">
+                    {% for additional_error in wizard.form.additional.errors %}
+                        <label class="invalid">{{ additional_error | escape }}</label>
+                    {% endfor %}
                     {{wizard.form.additional}}
                 </div>
 
                 <label class="vr-1 form-title">Avalibility</label>
+                {{ date_form.management_form }}
+                {% for dateform in date_form %}
                 <div class="form-inner">
-                    {% include "form/input.html" with field=wizard.form.start_date label="From" type="hidden" sr=False name="space-start_date_" required=wizard.form.fields.start_date.required class="date-block right" %}
-                    {% include "form/input.html" with field=wizard.form.end_date label="To" type="hidden" sr=False name="space-end_date_" required=wizard.form.fields.end_date.required class="date-block right" %}
+                    {% include "form/input.html" with field=dateform.start_date label="From" type="hidden" sr=False required=dateform.fields.start_date.required class="date-block right from" %}
+                    {% include "form/input.html" with field=dateform.end_date label="To" type="hidden" sr=False required=dateform.fields.end_date.required class="date-block right to" %}
                 </div>
+                {% endfor %}
 
                 {% include "form/textarea.html" with field=wizard.form.full_description label=wizard.form.full_description.label required=wizard.form.fields.full_description.required %}
                 {% include "form/input.html" with field=wizard.form.mugshot label="Photo" sr=False %}
@@ -73,26 +80,48 @@
     <script src="{% static "js/jquery.geocomplete.min.js" %}" type="text/javascript"></script>
     <script src="{% static "address/js/address.js" %}" type="text/javascript"></script>
     <script src="{% static "js/jquery.formset.js" %}" type="text/javascript"></script>
+    <script src="{% static "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
         (function () {
             whenAvailable('google', function() {
                 $("#id_space-address").geocomplete();
             });
-            function createDatepicker(id) {
-                $('#' + id).dateDropdowns({
-                    submitFormat: "dd/mm/yyyy",
-                    submitFieldName: id.replace('id_',''),
-                    wrapperClass: "date-dropdowns inline",
-                    defaultDateFormat: "dd/mm/yyyy",
-                    defaultDate: $('#' + id).val(),
-                    minAge: -100,
-                    maxAge: -1
-                });
+
+            function createDatepicker($wrap) {
+                (function() {
+                    var $from = $wrap.find('.date-block.from input'),
+                        $to = $wrap.find('.date-block.to input');
+                     
+                    $from.datepicker({
+                            format: 'dd/mm/yyyy',
+                            startDate: '0d'
+                        })
+                        .on('changeDate', function(ev) {
+                            if (ev.date.valueOf() > checkout.viewDate.valueOf()) {
+                                checkout.setStartDate(ev.date);
+                            }
+                            checkin.hide();
+                            $to.focus();
+                        });
+
+                    $to.datepicker({
+                            format: 'dd/mm/yyyy',
+                            startDate: '1d'
+                        })
+                        .on('changeDate', function(ev) {
+                            checkout.hide();
+                        });
+
+                    var checkin = $from.data('datepicker'),
+                        checkout = $to.data('datepicker');
+                })();
+                
+
             }
 
             $(function() {
                 $('form .form-inner').formset({
-                    prefix: '{{ wizard.form.prefix }}',
+                    prefix: '{{ date_form.prefix }}',
                     addText: 'Add period of availability',
                     deleteText: 'Remove',
                     addCssClass: 'btn-add-form primary',
@@ -100,13 +129,12 @@
                 });
 
                 $('.btn-add-form').click(function () {
-                    $('.form-inner').last().find('.date-block input').each(function() {
-                        createDatepicker($(this).attr('id'));
-                    });
+                    createDatepicker($('.form-inner').last());
                 });
-                $('.date-block input').each(function() {
-                    createDatepicker($(this).attr('id'));
+                $('.form-inner').each(function() {
+                    createDatepicker($(this));
                 });
+                
             });
         })();
         

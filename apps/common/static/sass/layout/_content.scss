@@ -84,6 +84,17 @@ body {
     .form-label {
         margin-top: 5px;
     }
+
+    &.from, &.to {
+        &.right {
+            input {
+                float: right;
+                max-width: 290px;
+                width: 100%;
+            }
+        }
+        
+    }
 }
 
 .checkboxs {
