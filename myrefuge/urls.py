@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from refugee.views import RefugeeSignupWizard
-from citizen_refuge.views import CitizenRefugeSignupWizard
+from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceList,
+        CitizenRefugeSpaceDetail)
 
 urlpatterns = [
     url(r'^$', 'common.views.home'),
@@ -32,4 +33,8 @@ urlpatterns = [
     url(r'^refugee/', RefugeeSignupWizard.as_view(), name='refugee'),
     url(r'^refuge-provider/', CitizenRefugeSignupWizard.as_view(), name='refuge_provider'),
     url(r'^admin/', include(admin.site.urls)),
+    
+    url(r'^refugee-spaces/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceDetail.as_view(),
+        name='refugee_space_detail'),
+    url(r'^refugee-spaces/', CitizenRefugeSpaceList.as_view(), name='refugee_space_list'),
 ]

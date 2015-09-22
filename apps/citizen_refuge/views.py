@@ -1,8 +1,11 @@
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 from formtools.wizard.views import SessionWizardView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required, permission_required
 
 from common.forms import UserenaEditProfileForm
 from .forms import *
@@ -72,10 +75,25 @@ class CitizenRefugeSignupWizard(SessionWizardView):
     def get_template_names(self):
         return [TEMPLATES[self.steps.current]]
 
-"""
+class CitizenRefugeSpaceList(ListView):
+    model = CitizenSpace
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CitizenRefugeSpaceList, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model._default_manager.filter(citizen=self.request.user.citizenrefuge)
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSpaceList, self).get_context_data(**kwargs)
+        context['space_list'] = CITIZEN_SPACE_ADDITIONAL_SHORT
+        return context
 
 
-"""
+class CitizenRefugeSpaceDetail(DetailView):
+    model = CitizenSpace
+
 
 def edit_profile(request):
     forms = {

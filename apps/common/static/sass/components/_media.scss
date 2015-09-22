@@ -1,0 +1,17 @@
+.thumbnail {
+    &.card {
+        .img-full {
+            width: 100%;
+            max-width: 100%;
+
+            @include tera-image-cover-format();
+        }
+    }
+
+    footer, .footer {
+        border-top: 1px solid $blur;
+        margin-left: -4px;
+        margin-right: -4px;
+        padding: 15px;
+    }
+}

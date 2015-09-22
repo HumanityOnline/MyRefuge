@@ -113,6 +113,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 AUTH_PROFILE_MODULE = 'common.UserProfile'
 ANONYMOUS_USER_ID = -1
 
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_URL = '/accounts/signout/'
+
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 BOWER_INSTALLED_APPS = (
     'moment',

@@ -23,3 +23,20 @@
         color: $color;
     }
 }
+
+@mixin tera-rectangle() {
+    padding-bottom: $rectangle-percent;
+    height: 0;
+    width: 100%;
+}
+
+@mixin tera-background-format() {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+@mixin tera-image-cover-format() {
+    @include tera-rectangle();
+    @include tera-background-format();
+}

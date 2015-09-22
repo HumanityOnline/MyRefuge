@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load url from future %}
+{% load common_filters %}
+
+{% block title %}{% blocktrans with user.username as username %}{{ username }}'s refuge spaces.{% endblocktrans %}{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="container-inner">
+        
+        <div class="media">
+          <div class="media-left">
+              <a class="media-inner" href="#">
+                  <img class="media-object" src="{{ citizenspace.citizen.user.my_profile.get_mugshot_url }}" alt="{{ citizenspace.citizen.user.first_name }}">
+                  {{ citizenspace.citizen.user.first_name }}
+              </a>
+          </div>
+          <div class="media-body">
+            <h1 class="entry-title">{{ citizenspace.headline }}</h1>
+            <div class="row">
+              <div class="col-sm-2">
+                {{ citizenspace.guests }} bed
+              </div>
+              {% for ad in space.additional%}
+                <div class="col-sm-2">
+                  {{ space_list|get_item:ad }}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <hr>
+        <h3 class="entry-subtitle">Description</h3>
+        <p>{{ citizenspace.full_description }}</p>
+        <hr>
+        <h3 class="entry-subtitle">Photos</h3>
+        {% for photo in space.spacephoto_set.all %}
+                  
+            <img class="img-full" src="{{photo.image}}" alt="{{ profile.user.username }}" style="background-image: url({{photo.image}});">
+          
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
