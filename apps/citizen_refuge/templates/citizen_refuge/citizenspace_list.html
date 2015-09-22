@@ -13,7 +13,7 @@
         <div class="row">
           {% for space in citizenspace_list %}
           <div class="col-sm-4">
-            <div class="thumbnail card">
+            <div class="thumbnail flat">
               <a href="{% url 'refuge_space_detail' space.id %}">
                 <img class="img-full" src="{{space.spacephoto_set.all.0.image.url|media}}" alt="{{ space.headline }}" style="background-image: url({{space.spacephoto_set.all.0.image.url|media}});">
               </a>

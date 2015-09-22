@@ -7,6 +7,11 @@
 
             @include tera-image-cover-format();
         }
+
+        & > a {
+            display: block;
+            margin: -5px;
+        }
     }
 
     .caption {
