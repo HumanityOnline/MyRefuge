@@ -24,7 +24,7 @@
             {% else %}
                 {% include "form/select.html" with field=wizard.form.countries label=wizard.form.countries.label multiple=True %}
                 
-                {% include "form/checkbox.html" with field=wizard.form.agree label=wizard.form.agree.label label='I agree to the terms and conditions <div class="help-text"> - We will not share your personal information with anyone<br>- In providing shelter, we will give you the option to connect with or be contacted by relevant services or authorities as and when needed in processes of asylum<br>- MyRefuge is providing a matchmaking service. You agree to abide by the laws of relevant countries with regards to Asylum.</div>' %}
+                {% include "form/checkbox.html" with field=wizard.form.agree label=wizard.form.agree.label label='I agree to the terms and conditions <div class="help-text"><ul><li>We will not share your personal information with anyone</li><li>In providing shelter, we will give you the option to connect with or be contacted by relevant services or authorities as and when needed in processes of asylum</li><li>MyRefuge is providing a matchmaking service. You agree to abide by the laws of relevant countries with regards to Asylum.</li></ul></div>' %}
             {% endif %}
 
             <input class="btn btn-block btn-primary" type="submit" value="{% trans "Finish! Search places!" %}"/>

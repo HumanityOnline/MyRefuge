@@ -29,6 +29,10 @@ class RefugeeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
     file_storage = FileSystemStorage(location='/tmp/')
 
+    instance_dict = {
+        'family': FamilyMember.objects.none()
+    }
+
     condition_dict = {
         'family': skip_family
     }

@@ -1,0 +1,15 @@
+
+.help-text {
+    @extend .font-body;
+    ol, ul {
+        list-style: none;
+        margin-left: 0;
+        padding-left: 20px;
+        & > li:before {
+            display: inline-block;
+            content: "-";
+            width: 20px;
+            margin-left: -20px;
+        }
+    }
+}

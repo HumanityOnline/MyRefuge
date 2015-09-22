@@ -12,9 +12,7 @@
 {% block content %}
 <div id="account">
     <div class="white-sheet">
-        <div class="text-center vr-2">
-            <strong>{% trans "Describle your space" %}</strong>
-        </div>
+        <h4 class="title">{% trans "Describle your space" %}</h4>
 
         <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
             {{ wizard.management_form }}
@@ -52,14 +50,18 @@
                 submitFieldName: "space-start_date",
                 wrapperClass: "date-dropdowns inline",
                 defaultDateFormat: "dd/mm/yyyy",
-                defaultDate: $("#id_space-start_date").val()
+                defaultDate: $("#id_space-start_date").val(),
+                minAge: -30,
+                maxAge: 0
             });
             $("#id_space-end_date").dateDropdowns({
                 submitFormat: "dd/mm/yyyy",
                 submitFieldName: "space-end_date",
                 wrapperClass: "date-dropdowns inline",
                 defaultDateFormat: "dd/mm/yyyy",
-                defaultDate: $("#id_space-end_date").val()
+                defaultDate: $("#id_space-end_date").val(),
+                minAge: -100,
+                maxAge: -1
             });
         })();
     </script>

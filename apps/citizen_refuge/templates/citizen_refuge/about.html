@@ -12,9 +12,7 @@
 {% block content %}
 <div id="account">
 	<div class="white-sheet">
-		<div class="text-center vr-2">
-			<strong>{% trans "Tell us about yourself" %}</strong>
-		</div>
+		<h4 class="title">{% trans "Tell us about yourself" %}</h4>
 
 		<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 			{{ wizard.management_form }}
@@ -47,12 +45,12 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Terms &amp; Conditions</h4>
       </div>
-      <div class="modal-body">
-        <p>
-- We will not share your personal information with anyone<br>
-- In providing shelter, we will give you the option to connect with or be contacted by relevant services or authorities as and when needed in processes of asylum<br>
-- MyRefuge is providing a matchmaking service. You agree to abide by the laws of relevant countries with regards to Asylum.
-        </p>
+      <div class="modal-body help-text">
+        <ol>
+			<li>We will not share your personal information with anyone</li>
+			<li>In providing shelter, we will give you the option to connect with or be contacted by relevant services or authorities as and when needed in processes of asylum</li>
+			<li>MyRefuge is providing a matchmaking service. You agree to abide by the laws of relevant countries with regards to Asylum.</li>
+        </ol>
       </div>
     </div>
   </div>

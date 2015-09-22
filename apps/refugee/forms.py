@@ -1,5 +1,6 @@
 from django import forms
-from django.forms.models import inlineformset_factory, modelformset_factory, BaseInlineFormSet
+from django.forms.models import (inlineformset_factory, modelformset_factory, BaseInlineFormSet,
+    formset_factory)
 from refugee.models import Refugee, FamilyMember
 from address.forms import AddressField
 
@@ -27,11 +28,13 @@ class RefugeeSignUpBasic(forms.ModelForm):
         fields = ('dob', 'gender',)
 
 
-class CustomFamilyMemberFormset(BaseInlineFormSet):
+class CustomFamilyMemberFormset(forms.ModelForm):
     dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
                           input_formats=('%d/%m/%Y',))
-    
-FamilyMemberFormset = modelformset_factory(FamilyMember, fields=(
+
+FamilyMemberFormset = modelformset_factory(FamilyMember,
+    form=CustomFamilyMemberFormset,
+    fields=(
     'name', 'dob', 'gender', 'relationship', 'image',
 ))
 InlineFamilyMemberFormset = inlineformset_factory(Refugee, FamilyMember, fields=(
