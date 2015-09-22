@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from refugee.views import RefugeeSignupWizard
 from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceList,
-        CitizenRefugeSpaceDetail)
+                                  CitizenRefugeSpaceDetail)
 
 urlpatterns = [
     url(r'^$', 'common.views.home'),
@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^refuge-provider/', CitizenRefugeSignupWizard.as_view(), name='refuge_provider'),
     url(r'^admin/', include(admin.site.urls)),
     
-    url(r'^refugee-spaces/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceDetail.as_view(),
-        name='refugee_space_detail'),
-    url(r'^refugee-spaces/', CitizenRefugeSpaceList.as_view(), name='refugee_space_list'),
+    url(r'^refuge-spaces/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceDetail.as_view(),
+        name='refuge_space_detail'),
+    url(r'^refuge-spaces/', CitizenRefugeSpaceList.as_view(), name='refuge_space_list'),
 ]

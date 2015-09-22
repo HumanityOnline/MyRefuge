@@ -47,7 +47,7 @@
                         <li><a href="{% url 'userena_profile_detail' user.username %}">{% trans "Account" %}</a></li>
                         {% block profile_navigation_items %}
                         <li><a href="{% url 'userena_password_change' user.username %}">{% trans "Change password" %}</a></li>
-                        <li><a href="{% url 'refugee_space_list' %}">{% trans "Offered spaces" %}</a></li>
+                        <li><a href="{% url 'refuge_space_list' %}">{% trans "Offered spaces" %}</a></li>
                         {% endblock %}
                         <li><a href="{% url 'userena_signout' %}">{% trans "Log Out" %}</a></li>
                         
