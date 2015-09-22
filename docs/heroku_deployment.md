@@ -13,17 +13,11 @@ $ heroku login
 # and then:
 
 ```
-$ heroku apps:create myrefuge
+$ heroku apps:create myrefuge_test
 $ heroku addons:create newrelic
 ```
 
-#To use with heroku postgresql
-
-```
-$ heroku addons:create heroku-postgresql:hobby-dev
-```
-
-#To use with external postgresql
+#To use with postgresql
 
 ```
 $ heroku config:set DATABASE_URL="postgres://<username>:<password>@host:5432/databasename"
