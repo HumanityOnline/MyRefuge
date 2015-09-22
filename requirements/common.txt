@@ -2,11 +2,11 @@ django
 django-formtools
 django-sekizai
 django-userena
-django-countries
 django-select-multiple-field
 dj-database-url
 django-bower
 whitenoise<2
 django-rednoise
 psycopg2
+geopy
 git+https://github.com/furious-luke/django-address.git
