@@ -53,7 +53,7 @@
                     <div class="media-left">
                         <a class="media-inner" href="#">
                           {% for photo in space.spacephoto_set.all %}
-                            <img class="media-object" src="{{photo.image}}" alt="{{ profile.user.username }}">
+                            <img class="media-object" src="{{photo.image.url|media}}" alt="{{ space.headline }}">
                           {% endfor %}
                         </a>
                     </div>

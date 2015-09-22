@@ -29,7 +29,7 @@
                     {{wizard.form.additional}}
                 </div>
 
-                <label class="vr-1 form-title">Avalibility</label>
+                <label class="vr-1 form-title">Availability</label>
                 {% include "form/input.html" with field=wizard.form.start_date label="From" type="hidden" sr=False name="space-start_date_" required=wizard.form.fields.start_date.required class="date-block right" %}
                 {% include "form/input.html" with field=wizard.form.end_date label="To" type="hidden" sr=False name="space-end_date_" required=wizard.form.fields.end_date.required class="date-block right" %}
 
