@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/$',
         'common.views.profile_detail',
         name='userena_profile_detail'),
+
     
     url(r'^accounts/', include('userena.urls')),
     url(r'^refugee/', RefugeeSignupWizard.as_view(), name='refugee'),
