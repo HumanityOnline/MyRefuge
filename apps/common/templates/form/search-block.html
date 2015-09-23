@@ -7,15 +7,15 @@
 </div>
 <div class="form-group from {% if form.start_date.errors %}has-error{% endif %}">
     <label class="sr-only" for="{{form.start_date.id_for_label}}">Start Date</label>
-    <input name="{{ form.start_date.html_name }}" type="text" class="form-control" id="{{form.start_date.id_for_label}}" placeholder="Start date">
+    <input name="{{ form.start_date.html_name }}" type="text" class="form-control" id="{{form.start_date.id_for_label}}" placeholder="Check in" value="{{ form.start_date.value }}">
 </div>
 <div class="form-group to {% if form.end_date.errors %}has-error{% endif %}">
     <label class="sr-only" for="{{form.end_date.id_for_label}}">End Date</label>
-    <input name="{{ form.end_date.html_name }}" type="text" class="form-control" id="{{form.end_date.id_for_label}}" placeholder="End date">
+    <input name="{{ form.end_date.html_name }}" type="text" class="form-control" id="{{form.end_date.id_for_label}}" placeholder="Check out" value="{{ form.end_date.value }}">
 </div>
 <label class="sr-only" for="{{form.guests.id_for_label}}">Number of guests</label>
 <select name="{{ form.guests.html_name }}" id="{{form.guests.id_for_label}}" class="form-group form-control {% if form.guests.errors %}has-error{% endif %}">
     {% for i in 30|mkrange %}
-    <option value="{{i}}">{{i}} Guest</option>
+    <option value="{{i}}" {% if form.guests.value == i %}selected{% endif %}>{{i}} Guest</option>
     {% endfor %}
 </select>
