@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'easy_thumbnails',
     'select_multiple_field',
     'userena',
+    'userena.contrib.umessages',
     'refugee',
     'citizen_refuge',
     'leaflet',

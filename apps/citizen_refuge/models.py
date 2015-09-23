@@ -5,13 +5,14 @@ from django.contrib.gis import geos
 
 from select_multiple_field.models import SelectMultipleField
 from address.models import AddressField
+from userena.contrib.umessages.models import Message as BaseMessage
 
 from common.helpers import APPLICATION_STATUS, CITIZEN_SPACE_ADDITIONAL, GENDER, UniqueMediaPath
 from common.geo import (address_to_location, location_to_latlon, location_to_city,
                         location_to_country)
 from refugee.models import Refugee
 
-from .managers import CitizenSpaceManager, normalize_name
+from .managers import CitizenSpaceManager, MessageManager, normalize_name
 
 
 class CitizenRefuge(models.Model):
@@ -88,3 +89,9 @@ class Application(models.Model):
         max_length=1,
         choices=APPLICATION_STATUS,
     )
+
+
+class Message(BaseMessage):
+    application = models.ForeignKey(Application)
+
+    objects = MessageManager()

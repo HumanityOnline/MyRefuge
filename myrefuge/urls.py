@@ -38,4 +38,6 @@ urlpatterns = [
     url(r'^refuge-spaces/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceDetail.as_view(),
         name='refuge_space_detail'),
     url(r'^refuge-spaces/', CitizenRefugeSpaceList.as_view(), name='refuge_space_list'),
+
+    url(r'^messages/', include('userena.contrib.umessages.urls')),
 ]
