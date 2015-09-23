@@ -32,7 +32,7 @@
               </footer>
             </div>
           </div>
-          {% if forloop.counter0|divisibleby:3 %}
+          {% if forloop.counter|divisibleby:3 and forloop.counter != 0 %}
         </div>
         <div class="row">
           {% endif %}

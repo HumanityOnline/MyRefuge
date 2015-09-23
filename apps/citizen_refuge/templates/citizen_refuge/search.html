@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load i18n sekizai_tags staticfiles %}
+{% load url from future %}
+{% load common_filters %}
+
+{% block title %}{% trans "Search for places" %}{% endblock %}
+{% block body_class %}search hide-brand{% endblock %}
+
+
+{% block css_ %}
+<link rel="stylesheet" href="{% static "bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" %}" />
+{% endblock %}
+
+
+{% block content %}
+{% if objects %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" class="form-inline search-form">
+                    {% csrf_token %}
+                    {% include "form/search-block.html" with form=form %}
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+                <div class="space-list">
+                    <div class="row">
+                    {% for space in objects %}
+                        <div class="col-sm-6">
+                        <div class="thumbnail flat">
+                          <a href="{% url 'refuge_space_detail' space.id %}">
+                            <img class="img-full" src="{{space.spacephoto_set.all.0.image.url|media}}" alt="{{ space.headline }}" style="background-image: url({{space.spacephoto_set.all.0.image.url|media}});">
+                          </a>
+                          <div class="caption">
+                            <h3><a href="{% url 'refuge_space_detail' space.id %}">{{space.headline}}</a></h3>
+                            <p>{{space.full_description}}</p>
+                          </div>
+                          <footer class="footer">
+                            <strong>Availabilities</strong>
+                            <p>
+                              {% for daterange in space.daterange_set.all %}
+                                From <strong>{{ daterange.start_date }}</strong> to <strong>{{ daterange.end_date }}</strong>
+                                {% if not forloop.last %}<br>{% endif %}
+                              {% endfor %}
+                            </p>
+                          </footer>
+                        </div>
+                        </div>
+                    {% if forloop.counter|divisibleby:2 and forloop.counter != 0 %}
+                    </div>
+                        {% if not forloop.last %}
+                    <div class="row">
+                        {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{%  else %}
+{% addtoblock body_class_ %}search-bg{% endaddtoblock %}
+<div class="container-fluid">
+    <div class="row search-wrapper">
+        <form method="post" class="container-inner narrow form-inline search-form">
+            {% csrf_token %}
+            {% include "form/search-block.html" with form=form %}
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    <div class="greeting">
+        <h1 class="title">{% trans "Welcome home" %}</h1>
+        <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block js_ %}
+    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false" type="text/javascript"></script>
+    <script src="{% static "js/jquery.geocomplete.min.js" %}" type="text/javascript"></script>
+    <script src="{% static "address/js/address.js" %}" type="text/javascript"></script>
+    <script src="{% static "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" %}" type="text/javascript"></script>
+    <script type="text/javascript">
+        (function () {
+            whenAvailable('google', function() {
+                $("#{{form.address.id_for_label}}").geocomplete();
+            });
+            $(function() {
+                var $from = $('.form-group.from input'),
+                    $to = $('.form-group.to input');
+                 
+                $from.datepicker({
+                        format: 'dd/mm/yyyy',
+                        startDate: '0d'
+                    })
+                    .on('changeDate', function(ev) {
+                        if (ev.date.valueOf() > checkout.viewDate.valueOf()) {
+                            checkout.setStartDate(ev.date);
+                        }
+                        checkin.hide();
+                        $to.focus();
+                    });
+
+                $to.datepicker({
+                        format: 'dd/mm/yyyy',
+                        startDate: '1d'
+                    })
+                    .on('changeDate', function(ev) {
+                        checkout.hide();
+                    });
+
+                var checkin = $from.data('datepicker'),
+                    checkout = $to.data('datepicker');
+            })
+        })();
+        
+    </script>
+{% endblock %}

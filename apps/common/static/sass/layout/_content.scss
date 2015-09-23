@@ -7,6 +7,10 @@
     &.space {
         max-width: 740px;
     }
+
+    .search & {
+        max-width: 800px;
+    }
 }
 
 .fa {
@@ -146,6 +150,19 @@ body {
 .media-heading {
     @extend .font-body;
     font-weight: 700;
+}
+
+.greeting {
+    color: $white;
+    text-align: center;
+    .title {
+        font-weight: 700;
+        margin: 40px 0 30px;
+    }
+
+    .subtitle {
+        font-weight: 400;
+    }
 }
 
 

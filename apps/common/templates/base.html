@@ -16,7 +16,7 @@
   {% render_block "css" %}
   {% block css_ %}{% endblock %}
 </head>
-<body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+<body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %} {% render_block body_class_ %}">
   <div id="body">
     {% block body %}
       {% block header %}
@@ -38,8 +38,9 @@
               <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Messages <i class="fa fa-file-o"></i></a></li>
                 <li><a href="#">Help <i class="fa fa-life-saver"></i></a></li>
+                {% if user.is_authenticated  %}
                 <li class="dropdown">
-                  {% if user.username  %}
+                  
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% block profile_name %}{{ user.first_name }}{% endblock %} <span class="caret"></span></a>
                     {% block profile_navigation %}
                       <ul class="dropdown-menu">
@@ -54,10 +55,15 @@
                         
                       </ul>
                     {% endblock %}
-                  {% else %}
-                  <a href="{% url 'userena_signin' %}">Log in</a>
-                  {% endif %}
                 </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'home' %}">Register</a>
+                </li>
+                <li>
+                    <a href="{% url 'userena_signin' %}">Log in</a>
+                </li>
+                {% endif %}
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->

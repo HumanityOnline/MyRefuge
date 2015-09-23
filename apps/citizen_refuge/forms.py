@@ -49,6 +49,9 @@ class DateCorrectForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
                           input_formats=('%d/%m/%Y',))
 
+class CitizenRefugeImageForm(forms.Form):
+    image = forms.ImageField()
+
 
 CitizenRefugeSpaceFormset = inlineformset_factory(CitizenRefuge, CitizenSpace,
     fields=('headline', 'address', 'guests', 'full_description', 'additional'),
@@ -61,17 +64,30 @@ CitizenRefugeDatesFormset = inlineformset_factory(
     fields=('start_date', 'end_date'),
     extra=0, min_num=1, validate_min=True)
 
-SpacePhotoFormset = inlineformset_factory(CitizenSpace, SpacePhoto, fields=(
-    'image',
-))
+SpacePhotoFormset = inlineformset_factory(
+    CitizenSpace,
+    SpacePhoto,
+    fields=('image',),
+    extra=0, min_num=1, validate_min=True, max_num=20)
+
 
 class CitizenRefugeSpaceForm(forms.ModelForm):
     additional = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                          choices=CITIZEN_SPACE_ADDITIONAL_SHORT)
 
-    mugshot = forms.ImageField()
-
     class Meta:
         model = CitizenSpace
         fields = ('headline', 'address', 'guests', 'full_description', 'additional')
 
+
+class CitizenRefugeeSearchForm(forms.ModelForm):
+    start_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',), required=False)
+
+    end_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',), required=False)
+
+    class Meta:
+        model = CitizenSpace
+
+        fields = ('address', 'guests')

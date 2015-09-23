@@ -40,11 +40,11 @@
         <p>{{ citizenspace.full_description }}</p>
         <hr>
         <h3 class="entry-subtitle">Photos</h3>
+        <p class="space-photos">
         {% for photo in citizenspace.spacephoto_set.all %}
-                  
-            <img class="img-full" src="{{photo.image.url|media}}" alt="{{ profile.user.username }}" style="background-image: url({{photo.image.url|media}});">
-          
+            <img src="{{photo.image.url|media}}" alt="{{ profile.user.username }}">
         {% endfor %}
+        </p>
     </div>
 </div>
 {% endblock %}

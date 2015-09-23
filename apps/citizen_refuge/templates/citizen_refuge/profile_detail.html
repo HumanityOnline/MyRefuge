@@ -51,10 +51,8 @@
             {% for space in spaces %}
                 <div class="media">
                     <div class="media-left">
-                        <a class="media-inner" href="#">
-                          {% for photo in space.spacephoto_set.all %}
-                            <img class="media-object" src="{{photo.image.url|media}}" alt="{{ space.headline }}">
-                          {% endfor %}
+                        <a class="media-inner" href="{% url 'refuge_space_detail' space.id %}">
+                            <img class="media-object" src="{{space.spacephoto_set.all.0.image.url|media}}" alt="{{ space.headline }}">
                         </a>
                     </div>
                     <div class="media-body">

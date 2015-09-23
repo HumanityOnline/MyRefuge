@@ -17,3 +17,7 @@ def media(path):
     start = path.find(to_find)
     return '{media_url}{location}'.format(media_url=settings.MEDIA_URL,
                                           location=path[(start + len(to_find) + 1):])
+
+@register.filter
+def mkrange(number):
+    return range(1, number)

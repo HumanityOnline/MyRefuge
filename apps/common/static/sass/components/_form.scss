@@ -12,3 +12,44 @@ label {
         margin: 15px 0;
     }
 }
+
+
+.search-form {
+    &.form-inline {
+        .form-control, .btn {
+            border-radius: 0 0 0;
+            @include box-shadow(0 0 0);
+            @include placeholer-color($black-light);
+        }
+
+        select {
+            background-image: url(images/select-arrow.png);
+            background-repeat: no-repeat;
+            background-position: right center;
+            padding-right: 30px;
+        }
+
+        .form-control {
+            border-color: $blur;
+            background-color: $gray;
+        }
+        .has-error .form-control {
+            @include placeholer-color($red);
+        }
+    }
+}
+
+@media(min-width: 768px) {
+
+    .search-form {
+        &.form-inline {
+            .form-group, .form-control {
+                float: left;
+            }
+            .form-control {
+                margin-right: -1px;
+            }
+        }
+    }
+
+}

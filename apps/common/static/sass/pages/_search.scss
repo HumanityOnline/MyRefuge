@@ -1,0 +1,19 @@
+.search {
+    &.search-bg {
+        background-image: url(images/search-bg.png);
+
+        @include tera-background-format();
+
+        #body {
+            background-color: rgba(0,0,0,0.5);
+        }
+    }
+    
+
+    .search-wrapper {
+        background-color: rgba(0,0,0,0.5);
+        margin-top: 10%;
+    }
+
+    
+}

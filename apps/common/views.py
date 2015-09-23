@@ -8,6 +8,8 @@ from refugee.views import edit_profile as r
 from citizen_refuge.views import profile_detail as crd
 from refugee.views import profile_detail as rd
 
+from django.views.generic import TemplateView
+
 # Create your views here.
 def home(request):
     return render(request, 'home.html')

@@ -57,14 +57,24 @@
                 <label class="vr-1 form-title">Avalibility</label>
                 {{ date_form.management_form }}
                 {% for dateform in date_form %}
-                <div class="form-inner">
+                <div class="dateform form-inner">
                     {% include "form/input.html" with field=dateform.start_date label="From" type="hidden" sr=False required=dateform.fields.start_date.required class="date-block right from" %}
                     {% include "form/input.html" with field=dateform.end_date label="To" type="hidden" sr=False required=dateform.fields.end_date.required class="date-block right to" %}
                 </div>
                 {% endfor %}
 
                 {% include "form/textarea.html" with field=wizard.form.full_description label=wizard.form.full_description.label required=wizard.form.fields.full_description.required %}
-                {% include "form/input.html" with field=wizard.form.mugshot label="Photo" sr=False %}
+
+                
+                
+                {{ image_form.management_form }}
+                <label class="vr-1 form-title">{% trans "Photos" %}</label>
+                {% for imageform in image_form %}
+                <div class="imageform form-inner">
+                    {% include "form/input.html" with field=imageform.image label="Photo" %}
+                </div>
+                {% endfor %}
+                
             {% endif %}
 
             <input class="btn btn-block btn-primary" type="submit" value="{% trans "Share this space with a refugee!" %}"/>
@@ -120,18 +130,25 @@
             }
 
             $(function() {
-                $('form .form-inner').formset({
+                $('.dateform.form-inner').formset({
                     prefix: '{{ date_form.prefix }}',
                     addText: 'Add period of availability',
+                    deleteText: 'Remove',
+                    addCssClass: 'btn-add-form daterange primary',
+                    deleteCssClass: 'btn-remove-form primary'
+                });
+                $('.imageform.form-inner').formset({
+                    prefix: '{{ image_form.prefix }}',
+                    addText: 'More image',
                     deleteText: 'Remove',
                     addCssClass: 'btn-add-form primary',
                     deleteCssClass: 'btn-remove-form primary'
                 });
 
-                $('.btn-add-form').click(function () {
-                    createDatepicker($('.form-inner').last());
+                $('.btn-add-form.daterange').click(function () {
+                    createDatepicker($('.dateform.form-inner').last());
                 });
-                $('.form-inner').each(function() {
+                $('.dateform.form-inner').each(function() {
                     createDatepicker($(this));
                 });
                 

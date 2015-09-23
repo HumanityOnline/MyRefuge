@@ -2,7 +2,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from formtools.wizard.views import SessionWizardView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
@@ -21,10 +21,12 @@ class CitizenRefugeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
     file_storage = FileSystemStorage(location='/tmp/')
     date_form = None
+    image_form = None
 
     def __init__(self, **kwargs):
         super(CitizenRefugeSignupWizard, self).__init__(**kwargs)
         self.date_form = CitizenRefugeDatesFormset()
+        self.image_form = SpacePhotoFormset()
 
 
     def done(self, form_list, form_dict, **kwargs):
@@ -52,8 +54,10 @@ class CitizenRefugeSignupWizard(SessionWizardView):
         space.citizen = citizen
         space.save()
 
-        sp = SpacePhoto(image=space_form.cleaned_data.get('mugshot'), space=space)
-        sp.save()
+        for dataset in self.image_form.cleaned_data:
+            if len(dataset):
+                sp = SpacePhoto(image=dataset.get('image'), space=space)
+                sp.save()
 
         for dataset in self.date_form.cleaned_data:
             if len(dataset):
@@ -66,7 +70,9 @@ class CitizenRefugeSignupWizard(SessionWizardView):
     def post(self, *args, **kwargs):
         if self.request.POST.get('citizen_refuge_signup_wizard-current_step', None) == 'space':
             self.date_form = CitizenRefugeDatesFormset(self.request.POST, self.request.FILES)
-            if not self.date_form.is_valid():
+            self.image_form = SpacePhotoFormset(self.request.POST, self.request.FILES)
+            print('self.image_form.is_valid()', self.image_form.is_valid())
+            if not self.date_form.is_valid() or not self.image_form.is_valid():
                 return self.render(self.get_form(data=self.request.POST, files=self.request.FILES))
 
         return super(CitizenRefugeSignupWizard, self).post(*args, **kwargs)
@@ -76,6 +82,7 @@ class CitizenRefugeSignupWizard(SessionWizardView):
         context = super(CitizenRefugeSignupWizard, self).get_context_data(form=form, **kwargs)
         if (self.steps.current == 'space'):
             context['date_form'] = self.date_form
+            context['image_form'] = self.image_form
 
         return context
 
@@ -175,3 +182,31 @@ def profile_detail(request):
                       'space_list': CITIZEN_SPACE_ADDITIONAL_SHORT,
                       'spaces': spaces
                   })
+
+
+
+class CitizenRefugeSearchView(FormView):
+
+    template_name = 'citizen_refuge/search.html'
+    form_class = CitizenRefugeeSearchForm
+
+    def form_valid(self, form):
+        filter_dict = {
+            'address': form.cleaned_data.get('address'),
+            'guests': form.cleaned_data.get('guests'),
+        }
+
+        if form.cleaned_data.get('start_date'):
+            filter_dict.update(daterange__start_date=form.cleaned_data.get('start_date'))
+
+        if form.cleaned_data.get('end_date'):
+            filter_dict.update(daterange__end_date=form.cleaned_data.get('start_date'))
+
+        objects = CitizenSpace.objects.filter(**filter_dict).all()
+
+        print('objects', objects);
+
+        return self.render_to_response(self.get_context_data(
+                        form=form,
+                        objects=objects
+                    ))

@@ -17,10 +17,11 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from refugee.views import RefugeeSignupWizard
 from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceList,
-                                  CitizenRefugeSpaceDetail)
+                                  CitizenRefugeSpaceDetail, CitizenRefugeSearchView)
 
 urlpatterns = [
-    url(r'^$', 'common.views.home'),
+    url(r'^home/$', 'common.views.home', name='home'),
+    url(r'^$', CitizenRefugeSearchView.as_view(), name='search'),
     url(r'^accounts/(?P<username>[\.\w-]+)/edit/$',
         'common.views.edit_profile',
         name='userena_profile_edit'),

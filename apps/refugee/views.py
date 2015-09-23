@@ -13,6 +13,7 @@ from userena import signals as userena_signals
 from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import Refugee, FamilyMember
+from django.views.generic import FormView
 
 
 KEYS = ['userena', 'basic', 'family', 'address', 'country']
@@ -132,4 +133,5 @@ def profile_detail(request):
     request.family_members = request.user.refugee.familymember_set.all()
     return render(request, 'refugee/profile_detail.html', {'profile': request.user.my_profile,
                                                            'countries_list': countries})
+
 
