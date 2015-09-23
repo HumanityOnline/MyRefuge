@@ -5,6 +5,7 @@ django-userena
 django-select-multiple-field
 dj-database-url
 django-bower
+django-leaflet
 whitenoise<2
 django-rednoise
 psycopg2

@@ -3,7 +3,7 @@
 
 <div class="form-group {% if form.address.errors %}has-error{% endif %}">
     <label class="sr-only" for="{{form.address.id_for_label}}">Address</label>
-    <input name="{{ form.address.html_name }}" type="text" class="form-control" id="{{form.address.id_for_label}}" placeholder="Country, City">
+    <input name="{{ form.address.html_name }}" type="text" class="form-control" id="{{form.address.id_for_label}}" placeholder="Country, City" value="{{form.address.value.raw}}">
 </div>
 <div class="form-group from {% if form.start_date.errors %}has-error{% endif %}">
     <label class="sr-only" for="{{form.start_date.id_for_label}}">Start Date</label>
@@ -16,6 +16,15 @@
 <label class="sr-only" for="{{form.guests.id_for_label}}">Number of guests</label>
 <select name="{{ form.guests.html_name }}" id="{{form.guests.id_for_label}}" class="form-group form-control {% if form.guests.errors %}has-error{% endif %}">
     {% for i in 30|mkrange %}
-    <option value="{{i}}" {% if form.guests.value == i %}selected{% endif %}>{{i}} Guest</option>
+    <option value="{{i}}">{{i}} Guest</option>
     {% endfor %}
 </select>
+<script type="text/javascript">
+    setTimeout(function() {
+        $(function() {
+            if ({{form.guests.value}}) {
+                $('#{{form.guests.id_for_label}}').val({{form.guests.value}});
+            }
+        })
+    })
+</script>

@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'userena',
     'refugee',
     'citizen_refuge',
+    'leaflet',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -124,5 +125,6 @@ BOWER_INSTALLED_APPS = (
     'jquery-date-dropdowns',
     'selectize',
     'fontawesome',
-    'bootstrap-datepicker#1.4.1'
+    'bootstrap-datepicker#1.4.1',
+    'leaflet'
 )
