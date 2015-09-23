@@ -141,7 +141,10 @@
                 var detail = e.originalEvent ?
                              e.originalEvent.detail : e.detail,
                     map = detail.map,
-                    loc;
+                    loc = null,
+                    loc_first = LOCATIONS.shift();
+
+                map.setView(loc_first.split('/'), 13);
 
                 $.each(LOCATIONS, function(i, loc) {
                     L.marker(loc.split('/')).addTo(map);
