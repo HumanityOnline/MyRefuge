@@ -192,15 +192,14 @@ class CitizenRefugeSearchView(FormView):
 
     def form_valid(self, form):
         
-        objects = CitizenSpace.objects.search(
+        spaces = CitizenSpace.objects.search(
                     address=form.cleaned_data.get('address'),
                     date_range=(form.cleaned_data.get('start_date'),
                                     form.cleaned_data.get('end_date')),
                     guests=form.cleaned_data.get('guests'))
 
-        print('objects', objects);
-
         return self.render_to_response(self.get_context_data(
                         form=form,
-                        objects=objects
+                        spaces=spaces,
+                        searched=True,
                     ))
