@@ -33,11 +33,15 @@ class CitizenSpaceManager(gis_models.GeoManager):
         # TODO(hoatle): this takes lot of time, need to improve this
         location = address_to_location(address)
         address_lat, address_lon = location_to_latlon(location)
-        city = normalize_name(location_to_city(location))
-        query = query.filter(city=city)
-        if city is None:
-            country = normalize_name(location_to_country(location))
-            query = query.filter(country=country)
+        city = location_to_city(location)
+        if city is not None:
+            city = normalize_name(city)
+            query = query.filter(city=city)
+        else:
+            country = location_to_country(location)
+            if country is not None:
+                country = normalize_name(country)
+                query = query.filter(country=country)
         current_point = geos.fromstr('POINT(%s %s)' % (address_lon, address_lat))
         distance_from_point = {'m': distance}
         query = query.filter(location__distance_lte=(current_point,
