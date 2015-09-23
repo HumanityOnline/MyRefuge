@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from common.forms import UserenaEditProfileForm
 from .forms import *
-from .models import CitizenRefuge, SpacePhoto, DateRange, CitizenSpace
+from .models import CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
 
 KEYS = ['userena', 'about', 'space']
@@ -191,18 +191,12 @@ class CitizenRefugeSearchView(FormView):
     form_class = CitizenRefugeeSearchForm
 
     def form_valid(self, form):
-        filter_dict = {
-            'address': form.cleaned_data.get('address'),
-            'guests': form.cleaned_data.get('guests'),
-        }
-
-        if form.cleaned_data.get('start_date'):
-            filter_dict.update(daterange__start_date=form.cleaned_data.get('start_date'))
-
-        if form.cleaned_data.get('end_date'):
-            filter_dict.update(daterange__end_date=form.cleaned_data.get('start_date'))
-
-        objects = CitizenSpace.objects.filter(**filter_dict).all()
+        
+        objects = CitizenSpace.objects.search(
+                    address=form.cleaned_data.get('address'),
+                    date_range=(form.cleaned_data.get('start_date'),
+                                    form.cleaned_data.get('end_date')),
+                    guests=form.cleaned_data.get('guests'))
 
         print('objects', objects);
 

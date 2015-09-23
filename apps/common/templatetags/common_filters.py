@@ -21,3 +21,7 @@ def media(path):
 @register.filter
 def mkrange(number):
     return range(1, number)
+
+@register.filter
+def if_none(current, expect):
+    return expect if current is None else current

@@ -26,7 +26,6 @@ class CitizenRefuge(models.Model):
     def __unicode__(self):
         return self.__repr__()
 
-
 class CitizenSpace(models.Model):
     headline = models.CharField(max_length=255)
     full_description = models.TextField()

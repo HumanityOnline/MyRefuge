@@ -28,10 +28,19 @@ class CitizenSpaceManager(gis_models.GeoManager):
         """
         start_date, end_date = date_range
         query = self.filter(guests__gte=guests)
-        query = query.filter(daterange__start_date__lte=start_date) \
-            .filter(daterange__end_date__gte=end_date)
+
+        if start_date:
+            query = query.filter(daterange__start_date__lte=start_date)
+
+        if end_date:
+            query = query.filter(daterange__end_date__gte=end_date)
+
         # TODO(hoatle): this takes lot of time, need to improve this
-        location = address_to_location(address)
+        if address.raw:
+            location = address_to_location(address.raw)
+        else:
+            location = address_to_location(address)
+
         address_lat, address_lon = location_to_latlon(location)
         city = location_to_city(location)
         if city is not None:
