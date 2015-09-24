@@ -1,2 +1,4 @@
 gunicorn
 newrelic
+pylibmc
+django-pylibmc

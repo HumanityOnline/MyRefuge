@@ -4,11 +4,9 @@ from .common import *
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DATABASES = {
-    'default': dj_database_url.config(),
+    'default': dj_database_url.config(engine='django.contrib.gis.db.backends.postgis'),
 }
 
-# http://stackoverflow.com/questions/12538510/getting-databaseoperations-object-has-no-attribute-geo-db-type-error-when-do
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 ALLOWED_HOSTS = ['myrefuge.herokuapp.com']
 

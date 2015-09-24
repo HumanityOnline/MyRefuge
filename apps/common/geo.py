@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.cache import cache
 from geopy.geocoders import get_geocoder_for_service
 
 # use google by default
@@ -12,7 +13,14 @@ geocoder = _geocoder_service(**_geocoder_settings)
 def address_to_location(address):
     """convert a raw address to location"""
     address = address.encode('utf-8')
-    return geocoder.geocode(address)
+
+    location = cache.get(address)
+
+    if location is None:
+        location = geocoder.geocode(address)
+        cache.set(address, location)
+
+    return location
 
 
 def location_to_latlon(location):

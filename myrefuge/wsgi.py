@@ -12,5 +12,10 @@ import os
 from django.core.wsgi import get_wsgi_application
 from rednoise import DjangoRedNoise
 
+# Fix django closing connection to MemCachier after every request (#11331)
+# https://devcenter.heroku.com/articles/django-memcache#optimize-performance
+from django.core.cache.backends.memcached import BaseMemcachedCache
+BaseMemcachedCache.close = lambda self, **kwargs: None
+
 application = get_wsgi_application()
 application = DjangoRedNoise(application)
