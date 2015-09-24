@@ -85,9 +85,14 @@ class SpacePhoto(models.Model):
 class Application(models.Model):
     refugee = models.ForeignKey(Refugee)
     space = models.ForeignKey(CitizenSpace)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    guests = models.IntegerField(default=0)
+    story = models.TextField(blank=True)
     status = models.CharField(
         max_length=1,
         choices=APPLICATION_STATUS,
+        default='P',
     )
 
 

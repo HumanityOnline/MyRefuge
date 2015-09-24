@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load url from future %}
+{% load common_filters %}
+{% load i18n sekizai_tags staticfiles %}
+
+
+{% block title %}{{ application.refugee.user.first_name }}' {% trans "Application" %}{% endblock %}
+
+{% block body_class %}application hide-brand{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="container-inner">
+      <div class="row">
+        <div class="col-md-8">
+          {% if can_update %}
+            <h1 class="entry-title">Introduce Yourself to 
+              [{{ application.space.citizen.user.first_name }} {{ application.space.citizen.user.last_name }}]
+            </h1>
+
+            {% if not application.story and form %}
+              <p>Giving your host more information will make them more likely to confirm your booking request:</p>
+              <ul>
+                <li>Tell [refuge provider name] a little about yourself</li>
+                <li>Your refugee story; who’s joining you?</li>
+                <li>What do you love about this listing? Mention it!</li>
+              </ul>
+
+              <form method="post" class="story-form">
+                {% csrf_token %}
+                {% include "form/textarea.html" with field=form.story %}
+                <div class="clearfix dv"></div>
+                <button type="submit" class="btn btn-primary btn-lg">Submit request!</button>
+              </form>
+
+            {% endif %}
+
+          {% else%}
+            <h1 class="entry-title">Introdution</h1>
+          {% endif %}
+          <div class="story-display">
+            <p>
+              {{ application.story|linebreaks }}
+            </p>
+          </div>
+
+          <div class="messages">
+            <h4>Messages</h4>
+          </div>
+        </div>
+        <div class="col-md-4 sidebar">
+          {% include "citizen_refuge/space-block.html" with space=application.space %}
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block js_ %}
+    <script type="text/javascript">
+        
+        
+    </script>
+{% endblock %}

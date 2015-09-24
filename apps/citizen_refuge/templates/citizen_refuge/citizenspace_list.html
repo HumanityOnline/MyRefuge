@@ -9,28 +9,18 @@
 {% block content %}
 <div class="container">
     <div class="container-inner">
-        <h1 class="entry-title">{% trans "My refuge spaces" %}</h1>
+        <h1 class="entry-title">
+          {% if user.my_profile.type == "C"  %}
+            {% trans "My refuge spaces" %}
+          {% else %}
+            {% trans "Refuge spaces" %}
+          {% endif %}
+          
+        </h1>
         <div class="row">
           {% for space in citizenspace_list %}
           <div class="col-sm-4">
-            <div class="thumbnail flat">
-              <a href="{% url 'refuge_space_detail' space.id %}">
-                <img class="img-full" src="{{space.spacephoto_set.all.0.image.url|media}}" alt="{{ space.headline }}" style="background-image: url({{space.spacephoto_set.all.0.image.url|media}});">
-              </a>
-              <div class="caption">
-                <h3><a href="{% url 'refuge_space_detail' space.id %}">{{space.headline}}</a></h3>
-                <p>{{space.full_description}}</p>
-              </div>
-              <footer class="footer">
-                <strong>Availabilities</strong>
-                <p>
-                  {% for daterange in space.daterange_set.all %}
-                    From <strong>{{ daterange.start_date }}</strong> to <strong>{{ daterange.end_date }}</strong>
-                    {% if not forloop.last %}<br>{% endif %}
-                  {% endfor %}
-                </p>
-              </footer>
-            </div>
+            {% include "citizen_refuge/space-block.html" with space=space %}
           </div>
           {% if forloop.counter|divisibleby:3 and forloop.counter != 0 %}
         </div>
@@ -38,6 +28,22 @@
           {% endif %}
           {% endfor %}
         </div>
+
+        {% if is_paginated %}
+          <div class="pagination">
+              <span class="page-links">
+                  {% if page_obj.has_previous %}
+                      <a href="{% url 'refuge_space_list' %}?page={{ page_obj.previous_page_number }}">previous</a>
+                  {% endif %}
+                  <span class="page-current">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                  </span>
+                  {% if page_obj.has_next %}
+                      <a href="{% url 'refuge_space_list' %}?page={{ page_obj.next_page_number }}">next</a>
+                  {% endif %}
+              </span>
+          </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

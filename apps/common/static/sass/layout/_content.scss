@@ -165,6 +165,15 @@ body {
     }
 }
 
+.messages {
+    background-color: $white-darken;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.story-display {
+    padding: 15px;
+}
 
 @media(min-width: 768px) {
 

@@ -3,7 +3,7 @@ from userena.forms import EditProfileForm, SignupForm
 from django.forms.models import inlineformset_factory, formset_factory
 from address.forms import AddressField
 
-from .models import CitizenRefuge, CitizenSpace, DateRange, SpacePhoto
+from .models import CitizenRefuge, CitizenSpace, DateRange, SpacePhoto, Application
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
 
 
@@ -91,3 +91,26 @@ class CitizenRefugeeSearchForm(forms.ModelForm):
         model = CitizenSpace
 
         fields = ('address', 'guests')
+
+class ApplicationForm(forms.ModelForm):
+
+    start_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',))
+
+    end_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                          input_formats=('%d/%m/%Y',))
+
+    guests = forms.IntegerField()
+
+    class Meta:
+        model = Application
+
+        fields = ('start_date', 'end_date', 'guests', )
+class ApplicationUpdateForm(forms.ModelForm):
+
+    story = forms.CharField()
+
+    class Meta:
+        model = Application
+
+        fields = ('story', )

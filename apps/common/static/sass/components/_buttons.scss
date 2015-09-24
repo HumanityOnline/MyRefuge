@@ -6,6 +6,12 @@
     &.btn-add-form {
         margin-bottom: 10px;
     }
+
+    &.btn-secondary {
+        background-color: $orange;
+        color: $white;
+        font-weight: 600;
+    }
 }
 
 .btn-add-form {

@@ -2,14 +2,15 @@ from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, UpdateView
 from formtools.wizard.views import SessionWizardView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
 
 from common.forms import UserenaEditProfileForm
 from .forms import *
-from .models import CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager
+from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
+                        Application)
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
 
 KEYS = ['userena', 'about', 'space']
@@ -91,21 +92,71 @@ class CitizenRefugeSignupWizard(SessionWizardView):
 
 class CitizenRefugeSpaceList(ListView):
     model = CitizenSpace
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(CitizenRefugeSpaceList, self).dispatch(request, *args, **kwargs)
+    paginate_by = 10
 
     def get_queryset(self):
-        return self.model._default_manager.filter(citizen=self.request.user.citizenrefuge)
+        return self.model._default_manager.all()
 
-    def get_context_data(self, **kwargs):
-        context = super(CitizenRefugeSpaceList, self).get_context_data(**kwargs)
-        return context
-
-
-class CitizenRefugeSpaceDetail(DetailView):
+class CitizenRefugeMySpaceList(ListView):
     model = CitizenSpace
+    paginate_by = 10
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'citizenrefuge'):
+            return self.model._default_manager.filter(citizen=self.request.user.citizenrefuge)
+
+        return self.model._default_manager.none()
+
+
+class CitizenRefugeSpaceDetail(UpdateView):
+    model = CitizenSpace
+
+    form_class = ApplicationForm
+
+    def is_space_booked(self):
+        booker = Application.objects.filter(
+                    refugee__user=self.request.user,
+                    space=self.object).first()
+
+        return True if booker else False
+
+    @property
+    def can_update(self):
+        return not self.request.user.is_anonymous() and\
+                    self.request.user.my_profile.type == 'R' and\
+                    not self.is_space_booked()
+
+    def form_valid(self, form):
+
+        if self.can_update:
+            bookee = Application(**form.cleaned_data)
+            bookee.refugee = self.request.user.refugee
+            bookee.space = self.object
+            bookee.status = 'P'
+            bookee.save()
+
+            return HttpResponseRedirect(
+                    reverse('refuge_space_application', kwargs={'pk': bookee.pk}))
+
+        return self.render_to_response(self.get_context_data(
+                        form=form,
+                    ))
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = None
+        if self.can_update:
+            form = self.get_form(self.get_form_class())
+
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form(self.get_form_class())
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeSpaceDetail, self).get_context_data(**kwargs)
@@ -115,7 +166,6 @@ class CitizenRefugeSpaceDetail(DetailView):
             '2': 'spoon',
             '3': 'life-saver',
             '4': 'group',
-
         }
         return context
 
@@ -203,3 +253,33 @@ class CitizenRefugeSearchView(FormView):
                         spaces=spaces,
                         searched=True,
                     ))
+
+
+class CitizenRefugeSpaceApplication(UpdateView):
+    model = Application
+
+    form_class = ApplicationUpdateForm
+
+    @property
+    def can_update(self):
+        return self.object.refugee.user == self.request.user
+
+    def form_valid(self, form):
+
+        if self.can_update:
+
+            bookee = form.save(commit=False)
+            bookee.story = form.cleaned_data.get('story')
+            bookee.save()
+
+            return HttpResponseRedirect(
+                    reverse('refuge_space_application', kwargs={'pk': bookee.pk}))
+
+        return self.render_to_response(self.get_context_data(
+                        form=form,
+                    ))
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSpaceApplication, self).get_context_data(**kwargs)
+        context['can_update'] = self.can_update
+        return context
