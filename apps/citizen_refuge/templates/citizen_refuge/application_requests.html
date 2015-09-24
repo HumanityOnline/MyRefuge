@@ -21,41 +21,38 @@
       <!-- Tab panes -->
       <div class="tab-content booking-list">
         <div role="tabpanel" class="tab-pane active" id="{{status}}">
-            <ul class="media-list">
-              {% for application in application_list %}
-                <li class="media">
-                  <div class="media-left media-middle">
-                      <a class="media-inner" href="{% url 'userena_profile_detail' application.refugee.user %}">
-                          <img class="media-object img-circle" src="{{application.refugee.user.my_profile.get_mugshot_url}}" alt="{{ application.refugee.user.first_name }}">
-                      </a>
-                      <form>
-                        <div class="dropdown">
-                          <button class="btn dropdown-toggle btn-status {{application.status}}" type="button" id="dropdown-{{application.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <span class="text">{{status_list|get_item:application.status}}</span>
-                            <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdown-{{application.id}}" data-url="{% url 'refuge_space_application_update' application.id %}">
-                            {% for status in status_list %}
-                            <li><a href="#" data-value="{{status.0}}">{{status.1}}</a></li>
-                            {% endfor %}
-                          </ul>
-                        </div>
-                      </form>
-                  </div>
-                  <div class="media-body">
-                    <p><a href="{% url 'refuge_space_application' application.id %}"><strong>View message</strong></a></p>
-                      {{application.story|slice:":40"|safe|linebreaks}}
-                      <p class="media-subtitle"><strong>Space: </strong><a href="{% url 'refuge_space_detail' application.space.id %}">{{application.space.headline}}</a></h4>
-                      <p class="media-subtitle"><strong>At: </strong>{{application.space.city}}, {{application.space.country}}</h4>
-                  </div>
-              </li>
-              {% endfor %}
+          <ul class="media-list">
+            {% for application in application_list %}
+              <li class="media">
+                <div class="media-left media-middle">
+                    <a class="media-inner" href="{% url 'userena_profile_detail' application.refugee.user %}">
+                        <img class="media-object img-circle" src="{{application.refugee.user.my_profile.get_mugshot_url}}" alt="{{ application.refugee.user.first_name }}">
+                    </a>
+                    <form>
+                      <div class="dropdown">
+                        <button class="btn dropdown-toggle btn-status {{application.status}}" type="button" id="dropdown-{{application.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <span class="text">{{status_list|get_item:application.status}}</span>
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown-{{application.id}}" data-url="{% url 'refuge_space_application_update' application.id %}">
+                          {% for status in status_list %}
+                          <li><a href="#" data-value="{{status.0}}">{{status.1}}</a></li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </form>
+                </div>
+                <div class="media-body">
+                  <p><a href="{% url 'refuge_space_application' application.id %}"><strong>View message</strong></a></p>
+                    {{application.story|slice:":40"|safe|linebreaks}}
+                    <p class="media-subtitle"><strong>Space: </strong><a href="{% url 'refuge_space_detail' application.space.id %}">{{application.space.headline}}</a></h4>
+                    <p class="media-subtitle"><strong>At: </strong>{{application.space.city}}, {{application.space.country}}</h4>
+                </div>
+            </li>
+            {% endfor %}
           </ul>
-        </div>
-      </div>
 
-
-        {% if is_paginated %}
+          {% if is_paginated %}
           <div class="pagination">
               <span class="page-links">
                   {% if page_obj.has_previous %}
@@ -70,6 +67,9 @@
               </span>
           </div>
         {% endif %}
+        </div>
+      </div>
+
     </div>
 </div>
 {% endblock %}

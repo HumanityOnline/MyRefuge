@@ -46,7 +46,7 @@
             </p>
           </div>
           {% if message_form %}
-          <form method="post" class="message-form" action="{% url 'refuge_space_application_compose' application.id %}">
+          <form method="post" class="form-inline message-form" action="{% url 'refuge_space_application_compose' application.id %}">
             {% csrf_token %}
             <div class="form-group">
               {% for error in message_form.message.errors %}

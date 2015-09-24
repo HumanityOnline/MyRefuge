@@ -65,10 +65,11 @@ form {
 .message-form {
     border: 1px solid $blur;
     padding: 15px;
-    margin: 15px 0;
+    margin: 15px 0 45px;
     textarea {
         border: 1px solid $dark;
         border-radius: 0 0 0;
+        height: 43px;
     }
 }
 
@@ -99,5 +100,25 @@ form {
             }
         }
     }
+
+    .message-form {
+        &.form-inline {
+            position: relative;
+            .form-group {
+                width: 100%;
+                padding-right: 80px;
+
+                textarea {
+                    width: 100%;
+                }
+            }
+            .btn[type="submit"] {
+                position: absolute;
+                right: 15px;
+                top: 15px;
+            }
+        }
+    }
+
 
 }
