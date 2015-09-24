@@ -1,4 +1,3 @@
-import os
 import dj_database_url
 from .common import *
 
@@ -8,7 +7,7 @@ DATABASES = {
 }
 
 
-ALLOWED_HOSTS = ['myrefuge.herokuapp.com']
+ALLOWED_HOSTS = ['demo.myrefuge.terapp.com']
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -47,11 +46,12 @@ ADMINS = (
     (os.environ.get('ADMIN_NAME'), os.environ.get('ADMIN_EMAIL'))
 )
 
-INSTALLED_APPS += ('storages',)
-
 # amazon S3 for storing and serving media files
+AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-MEDIA_URL = "https://%s.s3.amazonaws.com/" % os.environ['S3_BUCKET_NAME']
-MEDIA_ROOT = ''
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+MEDIA_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+# this breaks DjangoRedNoise
+#MEDIA_ROOT = ''
