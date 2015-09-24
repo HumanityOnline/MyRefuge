@@ -1,5 +1,5 @@
-Heroku Deployment
-=================
+Heroku Staging Deployment
+=========================
 
 #install heroku toolbelt
 
@@ -39,6 +39,19 @@ and:
 - EMAIL_HOST_PASSWORD (gmail password)
 
 Note: temporary use gmail for email, will support others later.
+
+# Amazon S3 Setup
+
+We use Amazon S3 to keep and save media files, need to set these environment variables:
+
+- S3_BUCKET_NAME
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+
+Refer to:
+
+- https://www.caktusgroup.com/blog/2014/11/10/Using-Amazon-S3-to-store-your-Django-sites-static-and-media-files/
+ 
 
 # Finally:
 
