@@ -2,7 +2,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, FormView, UpdateView
+from django.views.generic import ListView, DetailView, FormView, UpdateView, TemplateView
 from formtools.wizard.views import SessionWizardView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
@@ -234,10 +234,31 @@ def profile_detail(request):
 
 
 
-class CitizenRefugeSearchView(FormView):
-
+class CitizenRefugeSearchView(TemplateView):
     template_name = 'citizen_refuge/search.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSearchView, self).get_context_data(**kwargs)
+        context['form'] = CitizenRefugeeSearchForm()
+        return context
+
+
+class CitizenRefugeSearchResultView(FormView):
+    template_name = 'citizen_refuge/search-result.html'
     form_class = CitizenRefugeeSearchForm
+
+    def get(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        kwargs.update({
+            'data': self.request.GET,
+            'files': self.request.FILES,
+        })
+        form = form_class(**kwargs)
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def form_valid(self, form):
         
@@ -250,7 +271,6 @@ class CitizenRefugeSearchView(FormView):
         return self.render_to_response(self.get_context_data(
                         form=form,
                         spaces=spaces,
-                        searched=True,
                     ))
 
 

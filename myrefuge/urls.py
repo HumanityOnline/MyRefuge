@@ -20,11 +20,12 @@ from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceL
                                   CitizenRefugeSpaceDetail, CitizenRefugeSearchView,
                                   CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList,
                                   CitizenRefugeSpaceMessage, CitizenRefugeSpaceApplicationList,
-                                  CitizenRefugeSpaceStatus)
+                                  CitizenRefugeSpaceStatus, CitizenRefugeSearchResultView)
 
 urlpatterns = [
     url(r'^home/$', 'common.views.home', name='home'),
-    url(r'^$', CitizenRefugeSearchView.as_view(), name='search'),
+    url(r'^$', CitizenRefugeSearchView.as_view(), name='search_home'),
+    url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),
     url(r'^accounts/(?P<username>[\.\w-]+)/edit/$',
         'common.views.edit_profile',
         name='userena_profile_edit'),
