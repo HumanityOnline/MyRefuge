@@ -67,6 +67,10 @@
                           <img class="media-object img-circle" src="{{message.sender.my_profile.get_mugshot_url}}" alt="{{ message.sender.first_name }}">
                       </a>
                   </div>
+                  {% else %}
+                  <div class="media-left">
+                      <span class="obj-replace"></span>
+                  </div>
                   {% endif %}
                   <div class="media-body {% if message.sender.my_profile.type == 'C' %}text-right{% else %}text-left{% endif %}">
                       <span class="arrow"></span>
@@ -77,6 +81,10 @@
                       <a class="media-inner" href="{% url 'userena_profile_detail' message.sender %}">
                           <img class="media-object img-circle" src="{{message.sender.my_profile.get_mugshot_url}}" alt="{{ message.sender.first_name }}">
                       </a>
+                  </div>
+                  {% else %}
+                  <div class="media-left">
+                      <span class="obj-replace"></span>
                   </div>
                   {% endif %}
               </li>
