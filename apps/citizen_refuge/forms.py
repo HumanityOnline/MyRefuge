@@ -106,6 +106,8 @@ class ApplicationForm(forms.ModelForm):
         model = Application
 
         fields = ('start_date', 'end_date', 'guests', )
+
+
 class ApplicationUpdateForm(forms.ModelForm):
 
     story = forms.CharField()
@@ -114,3 +116,12 @@ class ApplicationUpdateForm(forms.ModelForm):
         model = Application
 
         fields = ('story', )
+
+class ApplicationMessageForm(forms.ModelForm):
+
+    message = forms.CharField()
+
+    class Meta:
+        model = Application
+
+        fields = ('message', )

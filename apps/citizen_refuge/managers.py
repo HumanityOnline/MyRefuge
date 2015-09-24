@@ -5,6 +5,7 @@ from django.contrib.gis.db import models as gis_models
 from django.contrib.gis import geos, measure
 
 from userena.contrib.umessages.managers import MessageManager as BaseMessageManager
+from userena.contrib.umessages import signals
 
 from common.geo import (address_to_location, location_to_latlon, location_to_city,
                         location_to_country)
@@ -67,10 +68,26 @@ class MessageManager(BaseMessageManager):
         """refugee or refuge provider sends each other messages
         within an application
         """
-        um_to_user_list = [application.space.citizen]
-        msg = super(MessageManager, self).send_message(sender, um_to_user_list, body)
+        
+        if sender == application.space.citizen.user:
+            um_to_user_list = [application.refugee.user]
+        else:
+            um_to_user_list = [application.space.citizen.user]
+
+        msg = self.model(sender=sender,
+                         body=body)
+
+        
+        # msg = super(MessageManager, self).send_message(sender, um_to_user_list, body)
+
         msg.application = application
         msg.save()
+
+        # Save the recipients
+        msg.save_recipients(um_to_user_list)
+        msg.update_contacts(um_to_user_list)
+        signals.email_sent.send(sender=None,msg=msg)
+
         return msg
 
     def get_application_conversation(self, application):
@@ -82,5 +99,5 @@ class MessageManager(BaseMessageManager):
                                  application=application) |
                                Q(sender=um_to_user, recipients=um_from_user,
                                  messagerecipient__deleted_at__isnull=True,
-                                 application=application))
+                                 application=application)).order_by('sent_at')
         return messages

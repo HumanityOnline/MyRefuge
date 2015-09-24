@@ -166,9 +166,33 @@ body {
 }
 
 .messages {
-    background-color: $white-darken;
-    padding: 15px;
     margin: 15px 0;
+
+    .media-body {
+        border: 1px solid $blur;
+        padding: 15px
+    }
+
+    .media-object {
+        width: 50px;
+    }
+
+    .media-body {
+        position: relative;
+        overflow: visible;
+
+        &.text-right {
+            .arrow {
+                @include tera-arrow(right);
+            }
+        }
+
+        &.text-left {
+            .arrow {
+                @include tera-arrow(left);
+            }
+        }
+    }
 }
 
 .story-display {

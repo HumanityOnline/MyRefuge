@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-md-8">
           {% if can_update %}
-            <h1 class="entry-title">Introduce Yourself to 
+            <h1 class="entry-title">{% trans "Introduce Yourself to" %} 
               [{{ application.space.citizen.user.first_name }} {{ application.space.citizen.user.last_name }}]
             </h1>
 
@@ -38,17 +38,51 @@
             {% endif %}
 
           {% else%}
-            <h1 class="entry-title">Introdution</h1>
+            <h1 class="entry-title">[{{application.refugee.user.first_name}} {{application.refugee.user.last_name}}] {% trans "introduction" %}</h1>
           {% endif %}
           <div class="story-display">
             <p>
-              {{ application.story|linebreaks }}
+              {{ application.story|safe|linebreaks }}
             </p>
           </div>
+          {% if message_form %}
+          <form method="post" class="message-form" action="{% url 'refuge_space_application_compose' application.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+              {% for error in message_form.message.errors %}
+                <label class="invalid">{{ error | escape }}</label>
+              {% endfor %}
+              <label class="sr-only" for="{{ message_form.message.id_for_label }}">{% trans "Message" %}</label>
+              <textarea class="form-control" id="{{ message_form.message.id_for_label }}" name="{{ message_form.message.html_name }}" rows="{{ rows }}" placeholder="{% trans "New message" %}">{{ message_form.message.value | default_if_none:"" }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Send</button>
+          </form>
 
-          <div class="messages">
-            <h4>Messages</h4>
-          </div>
+          <ul class="messages media-list">
+              {% for message in messages %}
+                <li class="media">
+                  {% if message.sender.my_profile.type == 'R' %}
+                  <div class="media-left">
+                      <a class="media-inner" href="{% url 'userena_profile_detail' message.sender %}">
+                          <img class="media-object img-circle" src="{{message.sender.my_profile.get_mugshot_url}}" alt="{{ message.sender.first_name }}">
+                      </a>
+                  </div>
+                  {% endif %}
+                  <div class="media-body {% if message.sender.my_profile.type == 'C' %}text-right{% else %}text-left{% endif %}">
+                      <span class="arrow"></span>
+                      {{message.body|safe|linebreaks}}
+                  </div>
+                  {% if message.sender.my_profile.type == 'C' %}
+                  <div class="media-right">
+                      <a class="media-inner" href="{% url 'userena_profile_detail' message.sender %}">
+                          <img class="media-object img-circle" src="{{message.sender.my_profile.get_mugshot_url}}" alt="{{ message.sender.first_name }}">
+                      </a>
+                  </div>
+                  {% endif %}
+              </li>
+              {% endfor %}
+          </ul>
+          {% endif %}
         </div>
         <div class="col-md-4 sidebar">
           {% include "citizen_refuge/space-block.html" with space=application.space %}

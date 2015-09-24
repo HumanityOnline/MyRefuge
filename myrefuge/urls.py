@@ -18,7 +18,8 @@ from django.contrib import admin
 from refugee.views import RefugeeSignupWizard, RefugeSpaceWishList
 from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceList,
                                   CitizenRefugeSpaceDetail, CitizenRefugeSearchView,
-                                  CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList)
+                                  CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList,
+                                  CitizenRefugeSpaceMessage)
 
 urlpatterns = [
     url(r'^home/$', 'common.views.home', name='home'),
@@ -43,6 +44,8 @@ urlpatterns = [
 
     url(r'^messages/', include('userena.contrib.umessages.urls')),
 
+    url(r'^bookings/(?P<pk>[\.\w-]+)/compose/', CitizenRefugeSpaceMessage.as_view(),
+        name='refuge_space_application_compose'),
     url(r'^bookings/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceApplication.as_view(),
         name='refuge_space_application'),
 

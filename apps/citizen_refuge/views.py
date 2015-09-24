@@ -264,6 +264,12 @@ class CitizenRefugeSpaceApplication(UpdateView):
     def can_update(self):
         return self.object.refugee.user == self.request.user
 
+    @property
+    def can_message(self):
+        return self.object.refugee.user == self.request.user or\
+                self.object.space.citizen.user == self.request.user
+
+
     def form_valid(self, form):
 
         if self.can_update:
@@ -281,6 +287,34 @@ class CitizenRefugeSpaceApplication(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeSpaceApplication, self).get_context_data(**kwargs)
+        if self.can_message:
+            context['message_form'] = ApplicationMessageForm()
+            context['messages'] = Message.objects.get_application_conversation(self.object)
+
         context['can_update'] = self.can_update
-        context['messages'] = Message.objects.get_application_conversation(self.object)
+
+        return context
+
+class CitizenRefugeSpaceMessage(UpdateView):
+    model = Application
+
+    form_class = ApplicationMessageForm
+
+    @property
+    def can_update(self):
+        return self.object.refugee.user == self.request.user or\
+                self.object.space.citizen.user == self.request.user
+
+    def form_valid(self, form):
+        if self.can_update:
+            Message.objects.send_message(self.request.user, self.object, form.cleaned_data.get('message'))
+
+        return HttpResponseRedirect(
+                    reverse('refuge_space_application', kwargs={'pk': self.object.pk}))
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSpaceMessage, self).get_context_data(**kwargs)
+        if self.can_update:
+            context['message_form'] = kwargs.get('form')
+            context['messages'] = Message.objects.get_application_conversation(self.object)
         return context

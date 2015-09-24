@@ -40,3 +40,36 @@
     @include tera-rectangle();
     @include tera-background-format();
 }
+
+@mixin tera-arrow($align: left) {
+    border: $tera-arrow-size solid transparent;
+    top: 10px;
+    &, &:after {
+        width: 0;
+        height: 0;
+        position: absolute;
+    }
+    &:after {
+        content: '';
+        border: ($tera-arrow-size - 2px) solid transparent;
+        top: -($tera-arrow-size - 2px);
+    }
+    @if $align == left {
+        left: 0;
+        margin-left: -($tera-arrow-size * 2);
+        border-right-color: $tera-border-color;
+        &:after {
+            margin-left: -($tera-arrow-size - 4px);
+            border-right-color: $tera-item-bg;
+        }
+    } @else {
+        right: 0;
+        left: auto;
+        margin-right: -($tera-arrow-size * 2);
+        border-left-color: $tera-border-color;
+        &:after {
+            margin-left: -($tera-arrow-size);
+            border-left-color: $tera-item-bg;
+        }
+    }
+}
