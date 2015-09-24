@@ -140,7 +140,6 @@ def profile_detail(request):
 class RefugeSpaceWishList(ListView):
     model = Application
     paginate_by = 10
-    template_name = 'refugee/application_list.html'
 
     def get_queryset(self):
         if hasattr(self.request.user, 'refugee'):

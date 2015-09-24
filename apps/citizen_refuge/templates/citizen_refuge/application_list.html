@@ -15,7 +15,7 @@
         <div class="row">
           {% for application in application_list %}
           <div class="col-sm-4">
-            {% include "refugee/application-block.html" with application=application %}
+            {% include "citizen_refuge/space-block.html" with space=application.space href="refuge_space_application" id=application.id %}
           </div>
           {% if forloop.counter|divisibleby:3 and forloop.counter != 0 %}
         </div>

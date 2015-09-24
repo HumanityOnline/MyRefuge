@@ -75,8 +75,8 @@ class MessageManager(BaseMessageManager):
 
     def get_application_conversation(self, application):
         """get messages between refugee and refuge provider within an application"""
-        um_from_user = application.refugee
-        um_to_user = application.space.citizen
+        um_from_user = application.refugee.user
+        um_to_user = application.space.citizen.user
         messages = self.filter(Q(sender=um_from_user, recipients=um_to_user,
                                  sender_deleted_at__isnull=True,
                                  application=application) |

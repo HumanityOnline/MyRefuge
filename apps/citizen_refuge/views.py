@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
-                        Application)
+                        Application, Message)
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
 
 KEYS = ['userena', 'about', 'space']
@@ -282,4 +282,5 @@ class CitizenRefugeSpaceApplication(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeSpaceApplication, self).get_context_data(**kwargs)
         context['can_update'] = self.can_update
+        context['messages'] = Message.objects.get_application_conversation(self.object)
         return context
