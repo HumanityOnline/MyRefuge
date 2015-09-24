@@ -114,11 +114,11 @@ class CitizenRefugeSpaceDetail(UpdateView):
     form_class = ApplicationForm
 
     def is_space_booked(self):
-        booker = Application.objects.filter(
+        application = Application.objects.filter(
                     refugee__user=self.request.user,
                     space=self.object).first()
 
-        return True if booker else False
+        return True if application else False
 
     @property
     def can_update(self):
@@ -129,14 +129,14 @@ class CitizenRefugeSpaceDetail(UpdateView):
     def form_valid(self, form):
 
         if self.can_update:
-            bookee = Application(**form.cleaned_data)
-            bookee.refugee = self.request.user.refugee
-            bookee.space = self.object
-            bookee.status = 'P'
-            bookee.save()
+            application = Application(**form.cleaned_data)
+            application.refugee = self.request.user.refugee
+            application.space = self.object
+            application.status = 'P'
+            application.save()
 
             return HttpResponseRedirect(
-                    reverse('refuge_space_application', kwargs={'pk': bookee.pk}))
+                    reverse('refuge_space_application', kwargs={'pk': application.pk}))
 
         return self.render_to_response(self.get_context_data(
                         form=form,
@@ -268,12 +268,12 @@ class CitizenRefugeSpaceApplication(UpdateView):
 
         if self.can_update:
 
-            bookee = form.save(commit=False)
-            bookee.story = form.cleaned_data.get('story')
-            bookee.save()
+            application = form.save(commit=False)
+            application.story = form.cleaned_data.get('story')
+            application.save()
 
             return HttpResponseRedirect(
-                    reverse('refuge_space_application', kwargs={'pk': bookee.pk}))
+                    reverse('refuge_space_application', kwargs={'pk': application.pk}))
 
         return self.render_to_response(self.get_context_data(
                         form=form,

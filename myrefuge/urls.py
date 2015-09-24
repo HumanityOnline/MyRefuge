@@ -43,6 +43,6 @@ urlpatterns = [
 
     url(r'^messages/', include('userena.contrib.umessages.urls')),
 
-    url(r'^books/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceApplication.as_view(),
+    url(r'^bookings/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceApplication.as_view(),
         name='refuge_space_application'),
 ]

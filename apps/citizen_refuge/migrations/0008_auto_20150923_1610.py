@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='application',
             name='start_date',
-            field=models.DateField(default=datetime.datetime(2015, 9, 23, 16, 10, 45, 383690, tzinfo=utc)),
+            field=models.DateField(default=django.utils.timezone.now),
             preserve_default=False,
         ),
         migrations.AlterField(
