@@ -2,3 +2,5 @@ gunicorn
 newrelic
 pylibmc
 django-pylibmc
+django-storages
+boto
