@@ -9,13 +9,7 @@ from userena.contrib.umessages import signals
 
 from common.geo import (address_to_location, location_to_latlon, location_to_city,
                         location_to_country)
-
-
-def normalize_name(name):
-    """
-    convert to ascii lower case no white space only
-    """
-    return unidecode(name).lower().replace(' ', '')
+from common.helpers import normalize_name
 
 
 class CitizenSpaceManager(gis_models.GeoManager):

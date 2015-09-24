@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core.cache import cache
 from geopy.geocoders import get_geocoder_for_service
 
+from common.helpers import normalize_name
+
 # use google by default
 _geocoder_service = get_geocoder_for_service(getattr(settings, 'GEO_SERVICE', 'google'))
 # a dictionary of key, value for kwargs
@@ -12,13 +14,14 @@ geocoder = _geocoder_service(**_geocoder_settings)
 
 def address_to_location(address):
     """convert a raw address to location"""
+    key = normalize_name(address)
     address = address.encode('utf-8')
 
-    location = cache.get(address)
+    location = cache.get(key)
 
     if location is None:
         location = geocoder.geocode(address)
-        cache.set(address, location)
+        cache.set(key, location)
 
     return location
 

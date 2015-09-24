@@ -1,6 +1,10 @@
-import os, uuid, pdb
+import os
+import uuid
+
 from django.conf import settings
 from django.utils.deconstruct import deconstructible
+
+from unidecode import unidecode
 
 GENDER = (
     ('', 'Gender'),
@@ -46,3 +50,10 @@ class UniqueMediaPath(object):
         filename = '{}.{}'.format(uuid.uuid4().hex, ext)
         # return the whole path to the file
         return os.path.join(settings.MEDIA_ROOT, self.path, filename)
+
+
+def normalize_name(name):
+    """
+    convert to ascii lower case no white space only
+    """
+    return unidecode(name).lower().replace(' ', '')
