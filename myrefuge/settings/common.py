@@ -113,7 +113,6 @@ STATICFILES_FINDERS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 AUTH_PROFILE_MODULE = 'common.UserProfile'
-USERENA_MUGSHOT_PATH = '/media/mugshots/'
 ANONYMOUS_USER_ID = -1
 
 LOGIN_URL = '/accounts/signin/'

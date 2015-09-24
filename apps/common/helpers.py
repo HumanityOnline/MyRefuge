@@ -49,7 +49,7 @@ class UniqueMediaPath(object):
         # set filename as random string
         filename = '{}.{}'.format(uuid.uuid4().hex, ext)
         # return the whole path to the file
-        return os.path.join(settings.MEDIA_ROOT, self.path, filename)
+        return os.path.join(self.path, filename)
 
 
 def normalize_name(name):

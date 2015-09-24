@@ -52,7 +52,7 @@
           <h3 class="entry-subtitle">Photos</h3>
           <p class="space-photos">
           {% for photo in citizenspace.spacephoto_set.all %}
-              <img src="{{photo.image.url|media}}" alt="{{ profile.user.username }}">
+              <img src="{{photo.image.url}}" alt="{{ profile.user.username }}">
           {% endfor %}
           </p>
         </div>

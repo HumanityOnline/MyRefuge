@@ -55,3 +55,4 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 MEDIA_URL = 'https://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
 # this breaks DjangoRedNoise
 MEDIA_ROOT = 'media'
+USERENA_MUGSHOT_PATH = '/media/mugshots/'
