@@ -3,24 +3,19 @@
 {% load url from future %}
 {% load common_filters %}
 
-{% block title %}{% trans "Provided spaces" %}{% endblock %}
+{% block title %}{% trans "Booked spaces" %}{% endblock %}
 
 
 {% block content %}
 <div class="container">
     <div class="container-inner">
         <h1 class="entry-title">
-          {% if user.my_profile.type == "C"  %}
-            {% trans "My refuge spaces" %}
-          {% else %}
-            {% trans "Refuge spaces" %}
-          {% endif %}
-          
+          {% trans "Booked spaces" %}
         </h1>
         <div class="row">
-          {% for space in citizenspace_list %}
+          {% for application in application_list %}
           <div class="col-sm-4">
-            {% include "citizen_refuge/space-block.html" with space=space %}
+            {% include "refugee/application-block.html" with application=application %}
           </div>
           {% if forloop.counter|divisibleby:3 and forloop.counter != 0 %}
         </div>
@@ -33,13 +28,13 @@
           <div class="pagination">
               <span class="page-links">
                   {% if page_obj.has_previous %}
-                      <a href="{% url 'refuge_space_list' %}?page={{ page_obj.previous_page_number }}">previous</a>
+                      <a href="{% url 'refuge_wish_list' %}?page={{ page_obj.previous_page_number }}">previous</a>
                   {% endif %}
                   <span class="page-current">
                       Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                   </span>
                   {% if page_obj.has_next %}
-                      <a href="{% url 'refuge_space_list' %}?page={{ page_obj.next_page_number }}">next</a>
+                      <a href="{% url 'refuge_wish_list' %}?page={{ page_obj.next_page_number }}">next</a>
                   {% endif %}
               </span>
           </div>

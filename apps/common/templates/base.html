@@ -51,6 +51,8 @@
                           <li><a href="{% url 'refuge_space_list' %}">{% trans "Offered spaces" %}</a></li>
                           {% if user.my_profile.type == "C"  %}
                             <li><a href="{% url 'refuge_myspace_list' %}">{% trans "My offered spaces" %}</a></li>
+                          {% else %}
+                            <li><a href="{% url 'refuge_wish_list' %}">{% trans "Wish list" %}</a></li>
                           {% endif %}
                         
                         {% endblock %}

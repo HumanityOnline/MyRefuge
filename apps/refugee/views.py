@@ -13,7 +13,8 @@ from userena import signals as userena_signals
 from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import Refugee, FamilyMember
-from django.views.generic import FormView
+from citizen_refuge.models import Application
+from django.views.generic import ListView
 
 
 KEYS = ['userena', 'basic', 'family', 'address', 'country']
@@ -135,3 +136,14 @@ def profile_detail(request):
                                                            'countries_list': countries})
 
 
+
+class RefugeSpaceWishList(ListView):
+    model = Application
+    paginate_by = 10
+    template_name = 'refugee/application_list.html'
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'refugee'):
+            return self.model._default_manager.filter(refugee=self.request.user.refugee)
+
+        return self.model._default_manager.none()

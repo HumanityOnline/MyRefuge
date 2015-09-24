@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from refugee.views import RefugeeSignupWizard
+from refugee.views import RefugeeSignupWizard, RefugeSpaceWishList
 from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceList,
                                   CitizenRefugeSpaceDetail, CitizenRefugeSearchView,
                                   CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList)
@@ -45,4 +45,7 @@ urlpatterns = [
 
     url(r'^bookings/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceApplication.as_view(),
         name='refuge_space_application'),
+
+    url(r'^wish-list/', RefugeSpaceWishList.as_view(),
+        name='refuge_wish_list'),
 ]
