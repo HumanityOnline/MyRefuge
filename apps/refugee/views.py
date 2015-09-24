@@ -142,7 +142,7 @@ class RefugeSpaceWishList(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        if hasattr(self.request.user, 'refugee'):
+        if self.request.user.my_profile.type == 'R':
             return self.model._default_manager.filter(refugee=self.request.user.refugee)
 
         return self.model._default_manager.none()

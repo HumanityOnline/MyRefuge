@@ -47,7 +47,7 @@
           </div>
           <hr>
           <h3 class="entry-subtitle">Description</h3>
-          <p>{{ citizenspace.full_description|linebreaks }}</p>
+          <p>{{ citizenspace.full_description|safe|linebreaks }}</p>
           <hr>
           <h3 class="entry-subtitle">Photos</h3>
           <p class="space-photos">

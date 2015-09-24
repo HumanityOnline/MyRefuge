@@ -48,9 +48,10 @@
                         <li><a href="{% url 'userena_profile_detail' user.username %}">{% trans "Account" %}</a></li>
                         {% block profile_navigation_items %}
                           <li><a href="{% url 'userena_password_change' user.username %}">{% trans "Change password" %}</a></li>
-                          <li><a href="{% url 'refuge_space_list' %}">{% trans "Offered spaces" %}</a></li>
+                          <li><a href="{% url 'refuge_space_list' %}">{% trans "All spaces" %}</a></li>
                           {% if user.my_profile.type == "C"  %}
                             <li><a href="{% url 'refuge_myspace_list' %}">{% trans "My offered spaces" %}</a></li>
+                            <li><a href="{% url 'refuge_space_application_list' %}">{% trans "Booking requests" %}</a></li>
                           {% else %}
                             <li><a href="{% url 'refuge_wish_list' %}">{% trans "Wish list" %}</a></li>
                           {% endif %}

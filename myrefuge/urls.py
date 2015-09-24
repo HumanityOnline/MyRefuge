@@ -19,7 +19,8 @@ from refugee.views import RefugeeSignupWizard, RefugeSpaceWishList
 from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceList,
                                   CitizenRefugeSpaceDetail, CitizenRefugeSearchView,
                                   CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList,
-                                  CitizenRefugeSpaceMessage)
+                                  CitizenRefugeSpaceMessage, CitizenRefugeSpaceApplicationList,
+                                  CitizenRefugeSpaceStatus)
 
 urlpatterns = [
     url(r'^home/$', 'common.views.home', name='home'),
@@ -42,13 +43,16 @@ urlpatterns = [
         name='refuge_space_detail'),
     url(r'^refuge-spaces/', CitizenRefugeSpaceList.as_view(), name='refuge_space_list'),
 
-    url(r'^messages/', include('userena.contrib.umessages.urls')),
-
     url(r'^bookings/(?P<pk>[\.\w-]+)/compose/', CitizenRefugeSpaceMessage.as_view(),
         name='refuge_space_application_compose'),
-    url(r'^bookings/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceApplication.as_view(),
-        name='refuge_space_application'),
+    url(r'^bookings/(?P<pk>[\.\w-]+)/update/', CitizenRefugeSpaceStatus.as_view(),
+        name='refuge_space_application_update'),
+    url(r'^bookings/(?P<pk>(?!all|pending|declined)[\.\w-]+)/',
+        CitizenRefugeSpaceApplication.as_view(), name='refuge_space_application'),
+    url(r'^bookings/(?P<status>(all|pending|declined))?',
+        CitizenRefugeSpaceApplicationList.as_view(), name='refuge_space_application_list'),
 
-    url(r'^wish-list/', RefugeSpaceWishList.as_view(),
-        name='refuge_wish_list'),
+    url(r'^wish-list/', RefugeSpaceWishList.as_view(), name='refuge_wish_list'),
+
+
 ]

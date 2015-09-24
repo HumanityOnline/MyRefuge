@@ -11,7 +11,9 @@ from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
                         Application, Message)
-from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
+from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS
+
+from django.http import JsonResponse
 
 KEYS = ['userena', 'about', 'space']
 FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
@@ -102,7 +104,7 @@ class CitizenRefugeMySpaceList(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        if hasattr(self.request.user, 'citizenrefuge'):
+        if self.request.user.my_profile.type == 'C':
             return self.model._default_manager.filter(citizen=self.request.user.citizenrefuge)
 
         return self.model._default_manager.none()
@@ -225,12 +227,9 @@ def edit_profile(request):
 
 def profile_detail(request):
     citizen = request.user.citizenrefuge
-    spaces = citizen.citizenspace_set.all()
     return render(request, 'citizen_refuge/profile_detail.html', {
                       'profile': request.user.my_profile,
                       'citizen': citizen,
-                      'space_list': CITIZEN_SPACE_ADDITIONAL_SHORT,
-                      'spaces': spaces
                   })
 
 
@@ -317,4 +316,57 @@ class CitizenRefugeSpaceMessage(UpdateView):
         if self.can_update:
             context['message_form'] = kwargs.get('form')
             context['messages'] = Message.objects.get_application_conversation(self.object)
+        return context
+
+class CitizenRefugeSpaceStatus(UpdateView):
+    model = Application
+
+    form_class = ApplicationStatusForm
+
+    @property
+    def can_update(self):
+        return self.object.space.citizen.user == self.request.user
+
+    def form_invalid(self, form):
+        return JsonResponse({'success': False})
+
+    def form_valid(self, form):
+        if self.can_update:
+            application = form.save(commit=False)
+            application.status = form.cleaned_data.get('status')
+            application.save()
+            return JsonResponse({'success': True})
+
+        return JsonResponse({'success': False})
+
+
+class CitizenRefugeSpaceApplicationList(ListView):
+    model = Application
+    paginate_by = 10
+    template_name = 'citizen_refuge/application_requests.html'
+
+    def get_queryset(self):
+        print('self.kwargs', self.kwargs['status'])
+        if self.request.user.my_profile.type == 'C':
+            if self.kwargs.get('status') == 'pending':
+                objects = self.model._default_manager.filter(
+                            status='P',
+                            space__citizen__user=self.request.user).all()
+            elif self.kwargs.get('status') == 'declined':
+                objects = self.model._default_manager.filter(
+                            status='D',
+                            space__citizen__user=self.request.user).all()
+            else:
+                objects = self.model._default_manager.filter(
+                            space__citizen__user=self.request.user).all()
+
+            return objects
+
+        return self.model._default_manager.none()
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSpaceApplicationList, self).get_context_data(**kwargs)
+        context['status'] = self.kwargs.get('status')
+        context['status_list'] = APPLICATION_STATUS
+
         return context

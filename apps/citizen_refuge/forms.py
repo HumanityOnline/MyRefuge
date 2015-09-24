@@ -4,7 +4,7 @@ from django.forms.models import inlineformset_factory, formset_factory
 from address.forms import AddressField
 
 from .models import CitizenRefuge, CitizenSpace, DateRange, SpacePhoto, Application
-from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT
+from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS
 
 
 class CitizenSignupBasicForm(SignupForm):
@@ -125,3 +125,12 @@ class ApplicationMessageForm(forms.ModelForm):
         model = Application
 
         fields = ('message', )
+
+class ApplicationStatusForm(forms.ModelForm):
+
+    status = forms.ChoiceField(choices=APPLICATION_STATUS)
+
+    class Meta:
+        model = Application
+
+        fields = ('status', )

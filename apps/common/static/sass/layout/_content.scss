@@ -165,16 +165,19 @@ body {
     }
 }
 
+.booking-list,
+.messages {
+    .media-object {
+        width: 50px;
+    }
+}
+
 .messages {
     margin: 15px 0;
 
     .media-body {
         border: 1px solid $blur;
         padding: 15px
-    }
-
-    .media-object {
-        width: 50px;
     }
 
     .media-body {
@@ -197,6 +200,20 @@ body {
 
 .story-display {
     padding: 15px;
+}
+
+.booking-list {
+    .media {
+        border-bottom: 1px solid $blur;
+        overflow: visible;
+
+        &:last-child {
+            border-bottom: 0 none;
+        }
+    }
+    .media-object {
+        margin: 15px auto;
+    }
 }
 
 @media(min-width: 768px) {

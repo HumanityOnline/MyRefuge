@@ -12,6 +12,19 @@
         color: $white;
         font-weight: 600;
     }
+
+    &.btn-status {
+        color: $white;
+        &.P {
+            background-color: $pink;
+        }
+        &.D {
+            background-color: $blood;
+        }
+        &.A {
+            background-color: $green;
+        }
+    }
 }
 
 .btn-add-form {
