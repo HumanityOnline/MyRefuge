@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^$', CitizenRefugeSearchView.as_view(), name='search_home'),
     url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),
 
-    url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/(edit|update)/'+
+    url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/update/'+
                         '(?P<type>(personal|family))?',
         'common.views.profile_update',
         name='profile_update'),

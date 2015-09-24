@@ -27,6 +27,15 @@ class RefugeeSignUpBasic(forms.ModelForm):
         model = Refugee
         fields = ('dob', 'gender',)
 
+class RefugePersonalDetailForm(RefugeeSignUpBasic):
+    mugshot = forms.ImageField(required=False)
+
+class RefugeFamilyDetailForm(forms.ModelForm):
+    image = forms.ImageField(required=False)
+
+    class Meta:
+        model = FamilyMember
+        fields = ('name', 'dob', 'gender', 'relationship',)
 
 class CustomFamilyMemberFormset(forms.ModelForm):
     dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),

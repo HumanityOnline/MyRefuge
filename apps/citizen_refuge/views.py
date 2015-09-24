@@ -1,6 +1,6 @@
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, FormView, UpdateView, TemplateView
 from django.views.generic.edit import ProcessFormView
@@ -14,7 +14,6 @@ from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, Citizen
                         Application, Message)
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
 
-from django.http import JsonResponse
 
 KEYS = ['userena', 'about', 'space']
 FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
@@ -330,7 +329,7 @@ class CitizenRefugeSpaceApplicationList(ListView):
         return context
 
 class CitizenRefugeDetail(TemplateView):
-    template_name = 'citizen_refuge/profile_detail.html'
+    template_name = 'common/profile_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeDetail, self).get_context_data(**kwargs)
@@ -340,22 +339,21 @@ class CitizenRefugeDetail(TemplateView):
         return context
 
 class CitizenRefugeDetailUpdate(ProcessFormView):
-    template_name = 'citizen_refuge/profile_detail.html'
+    template_name = 'common/profile_detail.html'
 
     def post(self, request, *args, **kwargs):
-
-        profile_form = CitizenRefugePersonalDetailForm(self.request.POST, instance=self.request.user.citizenrefuge)
-        if profile_form.is_valid():
-            return self.form_valid(profile_form)
+        form = CitizenRefugePersonalDetailForm(self.request.POST, instance=self.request.user.citizenrefuge)
+        if form.is_valid():
+            return self.form_valid(form)
         else:
-            return self.form_invalid(profile_form)
+            return self.form_invalid(form)
 
-    def form_valid(self, profile_form):
-        profile_form.save()
+    def form_valid(self, form):
+        form.save()
         return JsonResponse({'success': True})
 
-    def form_invalid(self, profile_form):
-        return JsonResponse({'success': False,'errors': profile_form.errors})
+    def form_invalid(self, form):
+        return JsonResponse({'success': False,'errors': form.errors})
 
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeDetailUpdate, self).get_context_data(**kwargs)

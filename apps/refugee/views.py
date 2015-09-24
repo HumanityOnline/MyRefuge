@@ -3,7 +3,7 @@ from formtools.wizard.views import SessionWizardView
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django_countries import countries
 
@@ -95,33 +95,38 @@ class RefugeSpaceWishList(ListView):
         return self.model._default_manager.none()
 
 class RefugeDetail(TemplateView):
-    template_name = 'citizen_refuge/profile_detail.html'
+    template_name = 'common/profile_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(RefugeDetail, self).get_context_data(**kwargs)
         context['profile'] = self.request.user.my_profile
+        context['citizen'] = self.request.user.refugee
         context['family_members'] = self.request.user.refugee.familymember_set.all()
         context['gender_list'] = GENDER[1:]
         context['countries_list'] = countries
         return context
 
 class RefugeDetailUpdate(ProcessFormView):
-    template_name = 'citizen_refuge/profile_detail.html'
+    template_name = 'common/profile_detail.html'
 
     def post(self, request, *args, **kwargs):
-
-        profile_form = CitizenRefugePersonalDetailForm(self.request.POST, instance=self.request.user.citizenrefuge)
-        if profile_form.is_valid():
-            return self.form_valid(profile_form)
+        if self.kwargs.get('type') == 'family':
+            #form = RefugeFamilyDetailForm(self.request.POST, instance=self.request.user.refugee)
+            form = None
         else:
-            return self.form_invalid(profile_form)
+            form = RefugePersonalDetailForm(self.request.POST, instance=self.request.user.refugee)
 
-    def form_valid(self, profile_form):
-        profile_form.save()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.save()
         return JsonResponse({'success': True})
 
-    def form_invalid(self, profile_form):
-        return JsonResponse({'success': False,'errors': profile_form.errors})
+    def form_invalid(self, form):
+        return JsonResponse({'success': False,'errors': form.errors})
 
     def get_context_data(self, **kwargs):
         context = super(RefugeDetailUpdate, self).get_context_data(**kwargs)
