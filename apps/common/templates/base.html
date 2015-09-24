@@ -43,8 +43,6 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% block profile_name %}{{ user.first_name }}{% endblock %} <span class="caret"></span></a>
                     {% block profile_navigation %}
                       <ul class="dropdown-menu">
-                        
-                        <li><a href="{% url 'userena_profile_edit' user.username %}">{% trans "Edit details" %}</a></li>
                         <li><a href="{% url 'userena_profile_detail' user.username %}">{% trans "Account" %}</a></li>
                         {% block profile_navigation_items %}
                           <li><a href="{% url 'userena_password_change' user.username %}">{% trans "Change password" %}</a></li>

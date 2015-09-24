@@ -1,32 +1,113 @@
-{% extends "base.html" %}
-{% load sekizai_tags staticfiles %}
+
+{% extends 'base.html' %}
+{% load i18n %}
+{% load common_filters %}
+{% load url from future %}
+
+{% block title %}{% blocktrans with profile.user.username as username %}{{ username }}'s profile.{% endblocktrans %}{% endblock %}
+
+
 {% block content %}
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
-{{ profile_form }}
-<input type="submit" value="Update" name="profile-button" />
-</form>
+<div class="container">
+    <div class="profile container-inner narrow">
+        {% block profile_details %}
+            <div class="media">
+                <div class="media-left">
+                    <a class="media-inner" href="#">
+                        <img class="media-object" src="{{profile.get_mugshot_url}}" alt="{{ profile.user.username }}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h4>
+                    <dl class="profile-definition">
+                        {% block profile_definition_list %}
+                            {% if profile.user.gender %}
+                                <dt class="sr-only">{% trans "Gender" %}</dt>
+                                <dd>{{ profile.user.gender }}</dd>
+                            {% endif %}
+                            {% if profile.user.email and not hide_email %}
+                                <dt class="sr-only">{% trans "Email" %}</dt>
+                                <dd>{{ profile.user.email }}</dd>
+                            {% endif %}
+                            {% if profile.age %}
+                                <dt class="sr-only">{% trans "Age" %}</dt>
+                                <dd>{{ profile.age }}</dd>
+                            {% endif %}
+                            {% if profile.website %}
+                                <dt class="sr-only">{% trans "Website" %}</dt>
+                                <dd>{{ profile.website|urlize }}</dd>
+                            {% endif %}
+                            {% if profile.location %}
+                                <dt class="sr-only">{% trans "Location" %}</dt>
+                                <dd>{{ profile.location }}</dd>
+                            {% endif %}
+                            {% if profile.about_me %}
+                                <dt class="sr-only">{% trans "About me" %}</dt>
+                                <dd>{{ profile.about_me }}</dd>
+                            {% endif %}
+                        {% endblock %}
+                    </dl>
+                </div>
+            </div>
 
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
-{{ about_form }}
-<input type="submit" value="Update" name="about-button" />
-</form>
+            {% for family_member in profile.family_members %}
+                <div class="media">
+                    <div class="media-left">
+                        <a class="media-inner" href="#">
+                            <img class="media-object" src="{{family_member.image}}" alt="{{ family_member.name }}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ family_member.relationship }}</h4>
+                        <dl class="profile-definition">
+                            {% if family_member.name %}
+                                <dt class="sr-only">{% trans "Name" %}</dt>
+                                <dd>{{ family_member.name }}</dd>
+                            {% endif %}
+                            {% if family_member.gender %}
+                                <dt class="sr-only">{% trans "Gender" %}</dt>
+                                <dd>{{ family_member.gender }}</dd>
+                            {% endif %}
+                            {% if family_member.age %}
+                                <dt class="sr-only">{% trans "Age" %}</dt>
+                                <dd>{{ family_member.age }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                </div>
+            {% endfor %}
 
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
-{{ family_form }}
-<input type="submit" value="Update" name="family-button" />
-</form>
-
-{% addtoblock "js" %}
-<script src="{% static "js/jQuery.MultiFile.min.js" %}"></script>
-{% endaddtoblock %}
-
-{% addtoblock "js" %}
-<script src="{% static "js/jquery.formset.js" %}"></script>
-{% endaddtoblock %}
-
-{% addtoblock "js" %}
-<script>
-//$('form #citizen-refuge-dates').formset();
-</script>
-{% endaddtoblock %}
+            <div class="media">
+                <div class="media-left">
+                    <a class="media-inner"></a>
+                </div>
+                <div class="media-body">
+                    <dl class="profile-definition">
+                        {% if profile.user.refugee.hometown %}
+                            <dt>{% trans "Hometown" %}</dt>
+                            <dd>{{ profile.user.refugee.hometown }}</dd>
+                        {% endif %}
+                        {% if profile.user.refugee.current_address %}
+                            <dt>{% trans "Current location" %}</dt>
+                            <dd>{{ profile.user.refugee.current_address }}</dd>
+                        {% endif %}
+                        {% if profile.user.refugee.story %}
+                            <dt>{% trans "My story" %}</dt>
+                            <dd>{{ profile.user.refugee.story }}</dd>
+                        {% endif %}
+                        {% if profile.user.refugee.countries %}
+                            <dt>{% trans "Countries/citis I want to go to" %}</dt>
+                            <dd>
+                                {% for country in profile.user.refugee.countries %}
+                                    {{ countries_list.countries|get_item:country }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </dd>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+          
+        {% endblock %}
+    </div>
+</div>
 {% endblock %}

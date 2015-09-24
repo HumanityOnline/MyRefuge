@@ -26,10 +26,11 @@ urlpatterns = [
     url(r'^home/$', 'common.views.home', name='home'),
     url(r'^$', CitizenRefugeSearchView.as_view(), name='search_home'),
     url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),
-    url(r'^accounts/(?P<username>[\.\w-]+)/edit/$',
-        'common.views.edit_profile',
-        name='userena_profile_edit'),
 
+    url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/(edit|update)/'+
+                        '(?P<type>(personal|family))?',
+        'common.views.profile_update',
+        name='profile_update'),
     url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/$',
         'common.views.profile_detail',
         name='userena_profile_detail'),

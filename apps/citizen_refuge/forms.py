@@ -42,6 +42,12 @@ class CitizenRefugeAboutForm(forms.ModelForm):
         model = CitizenRefuge
         fields = ('dob', 'gender', 'address')
 
+class CitizenRefugePersonalDetailForm(CitizenRefugeAboutForm):
+    mugshot = forms.ImageField(required=False)
+    agree = forms.BooleanField(required=False)
+    address = AddressField(required=False)
+
+
 class DateCorrectForm(forms.ModelForm):
     start_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
                           input_formats=('%d/%m/%Y',))

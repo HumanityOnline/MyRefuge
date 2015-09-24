@@ -40,4 +40,14 @@
     .obj-replace {
         display: block;
     }
+
+    &.media-center {
+        .media-object {
+            margin: 15px auto;
+        }
+
+        .media-left {
+            text-align: center;
+        }
+    }
 }

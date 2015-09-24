@@ -127,7 +127,8 @@ BOWER_INSTALLED_APPS = (
     'selectize',
     'fontawesome',
     'bootstrap-datepicker#1.4.1',
-    'leaflet'
+    'leaflet',
+    'x-editable#1.5.1'
 )
 
 

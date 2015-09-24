@@ -14,7 +14,9 @@ from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import Refugee, FamilyMember
 from citizen_refuge.models import Application
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
+from django.views.generic.edit import ProcessFormView
+from common.helpers import GENDER
 
 
 KEYS = ['userena', 'basic', 'family', 'address', 'country']
@@ -82,61 +84,6 @@ class RefugeeSignupWizard(SessionWizardView):
     def get_template_names(self):
         return [TEMPLATES[self.steps.current]]
 
-
-def edit_profile(request):
-    forms = {
-        'about': RefugeeAboutForm,
-        'profile': UserenaEditProfileForm,
-        'family': InlineFamilyMemberFormset,
-        # 'dates': CitizenRefugeDatesFormset,
-    }
-
-    instances = {
-        'about': request.user.refugee,
-        'profile': request.user.my_profile,
-        'family': request.user.refugee,
-    #     'dates': request.user.citizenrefuge,
-    }
-
-    ret = {}
-    if request.method == 'POST':
-        form = None
-        for key in forms.keys():
-            if key + '-button' in request.POST:
-                form = forms[key]
-                break
-
-        if form is None:
-            raise Exception
-
-        form = form(request.POST, request.FILES, instance=instances[key])
-
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(
-                reverse('userena_profile_edit', kwargs={'username': request.user.username}))
-
-        for k in forms.keys():
-            name = k + '_form'
-            if key == k:
-                ret[name] = form
-            else:
-                ret[name] = forms[k](instance=instances[k])
-
-    else:
-        for k in forms.keys():
-            ret[k + '_form'] = forms[k](instance=instances[k])
-
-    return render(request, 'refugee/edit_profile.html', ret)
-
-
-def profile_detail(request):
-    request.family_members = request.user.refugee.familymember_set.all()
-    return render(request, 'refugee/profile_detail.html', {'profile': request.user.my_profile,
-                                                           'countries_list': countries})
-
-
-
 class RefugeSpaceWishList(ListView):
     model = Application
     paginate_by = 10
@@ -146,3 +93,37 @@ class RefugeSpaceWishList(ListView):
             return self.model._default_manager.filter(refugee=self.request.user.refugee)
 
         return self.model._default_manager.none()
+
+class RefugeDetail(TemplateView):
+    template_name = 'citizen_refuge/profile_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(RefugeDetail, self).get_context_data(**kwargs)
+        context['profile'] = self.request.user.my_profile
+        context['family_members'] = self.request.user.refugee.familymember_set.all()
+        context['gender_list'] = GENDER[1:]
+        context['countries_list'] = countries
+        return context
+
+class RefugeDetailUpdate(ProcessFormView):
+    template_name = 'citizen_refuge/profile_detail.html'
+
+    def post(self, request, *args, **kwargs):
+
+        profile_form = CitizenRefugePersonalDetailForm(self.request.POST, instance=self.request.user.citizenrefuge)
+        if profile_form.is_valid():
+            return self.form_valid(profile_form)
+        else:
+            return self.form_invalid(profile_form)
+
+    def form_valid(self, profile_form):
+        profile_form.save()
+        return JsonResponse({'success': True})
+
+    def form_invalid(self, profile_form):
+        return JsonResponse({'success': False,'errors': profile_form.errors})
+
+    def get_context_data(self, **kwargs):
+        context = super(RefugeDetailUpdate, self).get_context_data(**kwargs)
+        return context
+

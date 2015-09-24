@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, FormView, UpdateView, TemplateView
+from django.views.generic.edit import ProcessFormView
 from formtools.wizard.views import SessionWizardView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
@@ -11,7 +12,7 @@ from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
                         Application, Message)
-from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS
+from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
 
 from django.http import JsonResponse
 
@@ -172,68 +173,6 @@ class CitizenRefugeSpaceDetail(UpdateView):
         return context
 
 
-def edit_profile(request):
-    forms = {
-        'about': CitizenRefugeAboutForm,
-        'profile': UserenaEditProfileForm,
-        'space': CitizenRefugeSpaceForm,
-        #'dates': CitizenRefugeDatesFormset,
-    }
-
-    instances = {
-        'about': request.user.citizenrefuge,
-        'profile': request.user.my_profile,
-        'space': request.user.citizenrefuge,
-        #'dates': request.user.citizenrefuge,
-    }
-
-    ret = {}
-    if request.method == 'POST':
-        form = None
-        for key in forms.keys():
-            if key + '-button' in request.POST:
-                form = forms[key]
-                break
-
-        if form is None:
-            raise Exception
-
-        form = form(request.POST, request.FILES, instance=instances[key])
-        formset = None
-        if key == 'space':
-            formset = CitizenRefugeDatesFormset(request.POST, request.FILES, instance=instances[key])
-
-        if form.is_valid() and (not formset or formset.is_valid()):
-            form.save()
-            if formset: formset.save()
-
-            return HttpResponseRedirect(
-                reverse('userena_profile_edit', kwargs={'username': request.user.username}))
-
-        for k in forms.keys():
-            name = k + '_form'
-            if key == k:
-                ret[name] = form
-            elif key == 'dates' and formset:
-                ret[name] = formset
-            else:
-                ret[name] = forms[k](instance=instances[k])
-
-    else:
-        for k in forms.keys():
-            ret[k + '_form'] = forms[k](instance=instances[k])
-
-    return render(request, 'citizen_refuge/edit_profile.html', ret)
-
-def profile_detail(request):
-    citizen = request.user.citizenrefuge
-    return render(request, 'citizen_refuge/profile_detail.html', {
-                      'profile': request.user.my_profile,
-                      'citizen': citizen,
-                  })
-
-
-
 class CitizenRefugeSearchView(TemplateView):
     template_name = 'citizen_refuge/search.html'
 
@@ -272,7 +211,6 @@ class CitizenRefugeSearchResultView(FormView):
                         form=form,
                         spaces=spaces,
                     ))
-
 
 class CitizenRefugeSpaceApplication(UpdateView):
     model = Application
@@ -390,3 +328,36 @@ class CitizenRefugeSpaceApplicationList(ListView):
         context['status_list'] = APPLICATION_STATUS
 
         return context
+
+class CitizenRefugeDetail(TemplateView):
+    template_name = 'citizen_refuge/profile_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeDetail, self).get_context_data(**kwargs)
+        context['profile'] = self.request.user.my_profile
+        context['citizen'] = self.request.user.citizenrefuge
+        context['gender_list'] = GENDER[1:]
+        return context
+
+class CitizenRefugeDetailUpdate(ProcessFormView):
+    template_name = 'citizen_refuge/profile_detail.html'
+
+    def post(self, request, *args, **kwargs):
+
+        profile_form = CitizenRefugePersonalDetailForm(self.request.POST, instance=self.request.user.citizenrefuge)
+        if profile_form.is_valid():
+            return self.form_valid(profile_form)
+        else:
+            return self.form_invalid(profile_form)
+
+    def form_valid(self, profile_form):
+        profile_form.save()
+        return JsonResponse({'success': True})
+
+    def form_invalid(self, profile_form):
+        return JsonResponse({'success': False,'errors': profile_form.errors})
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeDetailUpdate, self).get_context_data(**kwargs)
+        return context
+
