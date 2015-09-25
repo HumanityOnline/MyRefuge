@@ -56,10 +56,15 @@ class CitizenSpace(models.Model):
         point = 'POINT(%s %s)' % (lon, lat)
         self.location = geos.fromstr(point)
 
-        # save ascii lower case no white space only
-        self.city = normalize_name(location_to_city(location))
-        # save ascii lower case no white space only
-        self.country = normalize_name(location_to_country(location))
+        city = location_to_city(location)
+        if city is not None:
+            # save ascii lower case no white space only
+            self.city = normalize_name(city)
+
+        country = location_to_country(location)
+        if country is not None:
+            # save ascii lower case no white space only
+            self.country = normalize_name(country)
 
         super(CitizenSpace, self).save()
 
