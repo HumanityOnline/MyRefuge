@@ -12,8 +12,8 @@
         <h1 class="entry-title">
           {% trans "Booked spaces" %}
         </h1>
-        {{object_list}}
         <div class="row">
+          {% if application_list %}
           {% for application in application_list %}
           <div class="col-sm-4">
             {% include "citizen_refuge/space-block.html" with space=application.space href="refuge_space_application" id=application.id %}
@@ -24,6 +24,9 @@
           {% endif %}
           {% endfor %}
         </div>
+        {% else %}
+        <p>{% trans "No booked space!" %}</p>
+        {% endif %}
 
         {% if is_paginated %}
           <div class="pagination">

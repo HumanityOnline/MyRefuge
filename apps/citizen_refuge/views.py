@@ -116,18 +116,24 @@ class CitizenRefugeSpaceDetail(UpdateView):
 
     form_class = ApplicationForm
 
-    def is_space_booked(self):
-        application = Application.objects.filter(
-                    refugee__user=self.request.user,
-                    space=self.object).first()
+    application = None
 
-        return True if application else False
+    def is_space_booked(self):
+        self.application = Application.objects.filter(
+                    refugee__user=self.request.user,
+                    space=self.get_object()).first()
+        return True if self.application else False
 
     @property
     def can_update(self):
         return not self.request.user.is_anonymous() and\
                     self.request.user.my_profile.type == 'R' and\
                     not self.is_space_booked()
+    @property
+    def can_edit(self):
+        return not self.request.user.is_anonymous() and\
+                    self.request.user.my_profile.type == 'C' and\
+                    self.object.citizen.user == self.request.user
 
     def form_valid(self, form):
 
@@ -170,6 +176,8 @@ class CitizenRefugeSpaceDetail(UpdateView):
             '3': 'life-saver',
             '4': 'group',
         }
+        context['can_edit'] = self.can_edit
+        context['application'] = self.application
         return context
 
 class CitizenRefugeSpaceEdit(DetailView):

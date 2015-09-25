@@ -57,6 +57,10 @@
           </p>
         </div>
         <div class="col-md-4">
+          {% if can_edit %}
+            <p><a class="btn btn-primary" href="{% url 'refuge_space_edit' citizenspace.id %}"><strong>Edit</strong></a></p>
+          {% endif %}
+
           {% if form %}
           <form method="post" class="application-form">
             {% csrf_token %}
@@ -65,8 +69,8 @@
             <button type="submit" class="btn btn-secondary btn-block btn-lg">Request to Book</button>
           </form>
           {% else%}
-            {% if booked %}
-              <p><b>Your request has been sent!</b></p>
+            {% if user.my_profile.type == 'R' %}
+              <p><b>Your request has been sent!</b> <a href="{% url 'refuge_space_application' application.id %}">View messages.</a></p>
             {% endif %}
           {% endif %}
         </div>
