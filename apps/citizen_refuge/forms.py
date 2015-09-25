@@ -55,6 +55,7 @@ class DateCorrectForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
                           input_formats=('%d/%m/%Y',))
 
+
 class CitizenRefugeImageForm(forms.Form):
     image = forms.ImageField()
 
@@ -75,6 +76,7 @@ SpacePhotoFormset = inlineformset_factory(
     SpacePhoto,
     fields=('image',),
     extra=0, min_num=1, validate_min=True, max_num=20)
+
 
 
 class CitizenRefugeSpaceForm(forms.ModelForm):

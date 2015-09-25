@@ -52,6 +52,13 @@ form {
     .dv {
         margin: 10px 0;
     }
+
+    .demo-img {
+        width: 22px;
+        max-width: 100%;
+        float: left;
+        margin-right: 10px;
+    }
 }
 
 .story-form {
@@ -61,6 +68,7 @@ form {
         min-height: 150px;
     }
 }
+
 
 .message-form {
     border: 1px solid $blur;

@@ -9,7 +9,6 @@ def get_item(dictionary, key):
         dictionary = dict(dictionary)
     return dictionary.get(key)
 
-
 @register.filter
 def mkrange(number):
     return range(1, number)
@@ -17,3 +16,12 @@ def mkrange(number):
 @register.filter
 def if_none(current, expect):
     return expect if current is None else current
+
+@register.filter
+def get_list_item(list, key):
+    return list[key]
+
+@register.filter
+def display(val):
+    print(dir(val))
+    return val

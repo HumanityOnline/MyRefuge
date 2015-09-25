@@ -13,6 +13,7 @@ from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
                         Application, Message)
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
+from django.core.exceptions import PermissionDenied
 
 
 KEYS = ['userena', 'about', 'space']
@@ -74,7 +75,7 @@ class CitizenRefugeSignupWizard(SessionWizardView):
         if self.request.POST.get('citizen_refuge_signup_wizard-current_step', None) == 'space':
             self.date_form = CitizenRefugeDatesFormset(self.request.POST, self.request.FILES)
             self.image_form = SpacePhotoFormset(self.request.POST, self.request.FILES)
-            print('self.image_form.is_valid()', self.image_form.is_valid())
+
             if not self.date_form.is_valid() or not self.image_form.is_valid():
                 return self.render(self.get_form(data=self.request.POST, files=self.request.FILES))
 
@@ -170,6 +171,62 @@ class CitizenRefugeSpaceDetail(UpdateView):
             '4': 'group',
         }
         return context
+
+class CitizenRefugeSpaceEdit(DetailView):
+    model = CitizenSpace
+    template_name = 'citizen_refuge/citizenspace_edit.html'
+
+    @property
+    def can_update(self):
+        return not self.request.user.is_anonymous() and\
+                    self.request.user.my_profile.type == 'C' and\
+                    self.object.citizen.user == self.request.user
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.can_update:
+            raise PermissionDenied
+
+        return self.render_to_response(self.get_context_data(
+                space_form=CitizenRefugeSpaceForm(instance=self.object),
+                date_form=CitizenRefugeDatesFormset(instance=self.object),
+                image_form=SpacePhotoFormset(instance=self.object),
+            ))
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        date_form = CitizenRefugeDatesFormset(request.POST, request.FILES, instance=self.object)
+        image_form = SpacePhotoFormset(request.POST, request.FILES, instance=self.object)
+        space_form = CitizenRefugeSpaceForm(request.POST, request.FILES, instance=self.object)
+        all_valid = False
+        if space_form.is_valid() and image_form.is_valid() and date_form.is_valid():
+            all_valid = True
+
+        if all_valid:
+            space_form.save()
+            image_form.save()
+            date_form.save()
+
+        return self.render_to_response(self.get_context_data(
+                space_form=CitizenRefugeSpaceForm(instance=self.object),
+                date_form=CitizenRefugeDatesFormset(instance=self.object),
+                image_form=SpacePhotoFormset(instance=self.object),
+                all_valid=all_valid
+            ))
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSpaceEdit, self).get_context_data(**kwargs)
+        if not context.get('space_form'):
+            context['space_form'] = CitizenRefugeSpaceForm()
+
+        if not context.get('date_form'):
+            context['date_form'] = CitizenRefugeDatesFormset()
+
+        if not context.get('image_form'):
+            context['image_form'] = SpacePhotoFormset()
+
+        return context
+
 
 
 class CitizenRefugeSearchView(TemplateView):

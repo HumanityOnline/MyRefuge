@@ -17,7 +17,7 @@ from citizen_refuge.models import Application
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import ProcessFormView
 from common.helpers import GENDER
-
+from django.core.exceptions import PermissionDenied
 
 KEYS = ['userena', 'basic', 'family', 'address', 'country']
 FORMS = [SignupForm, RefugeeSignUpBasic, FamilyMemberFormset, RefugeeSignUpAddress, RefugeeSignUpPreferences]
@@ -97,11 +97,28 @@ class RefugeSpaceWishList(ListView):
 class RefugeDetail(TemplateView):
     template_name = 'common/profile_detail.html'
 
-    def get_context_data(self, **kwargs):
+    def post(self, request, *args, **kwargs):
+        form = RefugeFamilyCreateForm(self.request.POST, self.request.FILES)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        member = form.save(commit=False)
+        member.refugee = self.request.user.refugee
+        member.save()
+        return self.render_to_response(self.get_context_data())
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, form=None, **kwargs):
         context = super(RefugeDetail, self).get_context_data(**kwargs)
         context['profile'] = self.request.user.my_profile
         context['citizen'] = self.request.user.refugee
         context['family_members'] = self.request.user.refugee.familymember_set.all()
+        context['family_form'] = form or RefugeFamilyCreateForm()
         context['gender_list'] = GENDER[1:]
         context['countries_list'] = countries
         return context
@@ -109,10 +126,23 @@ class RefugeDetail(TemplateView):
 class RefugeDetailUpdate(ProcessFormView):
     template_name = 'common/profile_detail.html'
 
+    def get(self, request, *args, **kwargs):
+        raise PermissionDenied
+
     def post(self, request, *args, **kwargs):
+        print(">>>>>>>>>>>>>>>>>>>>self.kwargs.get('type')", self.kwargs.get('type'));
         if self.kwargs.get('type') == 'family':
-            #form = RefugeFamilyDetailForm(self.request.POST, instance=self.request.user.refugee)
-            form = None
+            family = FamilyMember.objects.filter(pk=self.request.POST.get('id'),
+                        refugee=self.request.user.refugee).first()
+            form = RefugeFamilyDetailForm(self.request.POST, instance=family)
+
+        elif self.kwargs.get('type') == 'family-delete':
+            family = FamilyMember.objects.filter(pk=self.request.POST.get('id'),
+                        refugee=self.request.user.refugee).first()
+            if family:
+                family.delete()
+                return JsonResponse({'success': True})
+            return JsonResponse({'success': False})
         else:
             form = RefugePersonalDetailForm(self.request.POST, instance=self.request.user.refugee)
 
@@ -122,13 +152,14 @@ class RefugeDetailUpdate(ProcessFormView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        form.save()
+        if self.kwargs.get('type') == 'family-create':
+            member = form.save(commit=False)
+            member.refugee = self.request.user.refugee
+            member.save()
+        else:
+            form.save()
         return JsonResponse({'success': True})
 
     def form_invalid(self, form):
         return JsonResponse({'success': False,'errors': form.errors})
-
-    def get_context_data(self, **kwargs):
-        context = super(RefugeDetailUpdate, self).get_context_data(**kwargs)
-        return context
 

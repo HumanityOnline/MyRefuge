@@ -40,6 +40,7 @@ class CitizenSpaceManager(gis_models.GeoManager):
             location = address_to_location(address)
 
         address_lat, address_lon = location_to_latlon(location)
+
         city = location_to_city(location)
         if city is not None:
             city = normalize_name(city)

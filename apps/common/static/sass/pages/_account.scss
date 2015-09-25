@@ -1,3 +1,22 @@
+.account-form {
+	input[type="text"], select, textarea,
+	input[type="password"], input[type="number"],
+	.selectize-input,
+	.selectize-control.single .selectize-input.input-active {
+		background-color: $gray;
+		border: 0 none;
+
+		@include placeholer-color($black);
+	}
+
+	.selectize-control.multi .selectize-input > div {
+		background-color: $white;
+	}
+
+	.selectize-input {
+		border-radius: 0 0 0;
+	}
+}
 #account {
 	box-sizing: border-box;
 	width: 100%;
@@ -23,23 +42,7 @@
 		text-align: center;
 	}
 
-	input[type="text"], select, textarea,
-	input[type="password"], input[type="number"],
-	.selectize-input,
-	.selectize-control.single .selectize-input.input-active {
-		background-color: $gray;
-		border: 0 none;
-
-		@include placeholer-color($black);
-	}
-
-	.selectize-control.multi .selectize-input > div {
-		background-color: $white;
-	}
-
-	.selectize-input {
-		border-radius: 0 0 0;
-	}
+	@extend .account-form;
 
 	.title {
 		margin: 10px 0 20px;

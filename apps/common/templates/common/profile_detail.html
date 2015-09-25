@@ -17,22 +17,22 @@
         {% block profile_details %}
             <form class="editableform profile-form media media-center">
               <div class="media-left">
-                <a class="media-inner" href="#">
+                <div class="media-inner" href="#">
                   <img class="media-object" src="{{profile.get_mugshot_url}}" alt="{{ profile.user.username }}">
-                </a>
+                </div>
                 <a href="#" class="save btn btn-status A">Save Changes</a>
               </div>
               <div class="media-body">
                 <h4 class="media-heading">{{ profile.user.username }} (<span class="field-text-editable" data-name="first_name">{{ profile.user.first_name }}</span> <span class="field-text-editable" data-name="last_name">{{ profile.user.last_name }}</span>)</h4>
                 <dl class="profile-definition">
                   {% block profile_definition_list %}
-                    {% if citizen.gender %}
-                      <dt class="sr-only">{% trans "Gender" %}</dt>
-                      <dd><span class="field-gender-editable" data-type="select" data-pk="1" data-name="gender">{{ gender_list|get_item:citizen.gender }}</span></dd>
-                    {% endif %}
                     {% if profile.user.email and not hide_email %}
                       <dt class="sr-only">{% trans "Email" %}</dt>
                       <dd>{{ profile.user.email }}</dd>
+                    {% endif %}
+                    {% if citizen.gender %}
+                      <dt class="sr-only">{% trans "Gender" %}</dt>
+                      <dd><span class="field-gender-editable" data-type="select" data-pk="1" data-name="gender">{{ gender_list|get_item:citizen.gender }}</span></dd>
                     {% endif %}
                     {% if citizen.dob %}
                       <dt class="sr-only">{% trans "Date of birth" %}</dt>
@@ -51,17 +51,17 @@
             </form>
             {% if profile.type == "R" %}
 
-            {% for family_member in profile.family_members %}
-              <form class="editableform family-form media media-center">
+            {% for family_member in family_members %}
+              <form class="editableform family-form media media-center" data-pk="{{family_member.id}}">
                 <div class="media-left">
-                  <a class="media-inner" href="#">
+                  <div class="media-inner" href="#">
                     <img class="media-object" src="{{family_member.image}}" alt="{{ profile.user.username }}">
-                  </a>
-                  <a href="#" class="save btn btn-status A">Save Changes</a>
+                    <a href="#" class="delete btn btn-status D btn-xs">Deleted</a>
+                  </div>
                 </div>
                 <div class="media-body">
                   <form class="editableform">
-                    <h4 class="media-heading">{{ family_member.relationship }}</h4>
+                    <h4 class="media-heading"><span class="field-text-editable" data-name="relationship">{{ family_member.relationship }}</span></h4>
                     <dl class="profile-definition">
                       {% if family_member.name %}
                         <dt class="sr-only">{% trans "Name" %}</dt>
@@ -80,6 +80,25 @@
                 </div>
               </form>
             {% endfor %}
+
+            {% if family_form %}
+              <form method="POST" class="account-form media media-center" action="{% url 'userena_profile_detail' user.username %}" enctype="multipart/form-data">
+                <div class="media-left">
+                  <div class="media-inner" href="#">
+                    <button href="#" class="add btn btn-primary btn-sm" type="submit">Add new</button>
+                  </div>
+                </div>
+                <div class="media-body">
+                  {% csrf_token %}
+                  {% include "form/input.html" with field=family_form.name label=family_form.name.label required=form.fields.name.required %}
+                  {% include "form/input.html" with field=family_form.dob label="Date of Birth" type="hidden" sr=False name="family-dob_" required=family_form.fields.dob.required class="date-block right date-input" %}
+                  {% include "form/select.html" with field=family_form.gender required=family_form.fields.gender.required %}
+                  {% include "form/input.html" with field=family_form.relationship label=family_form.relationship.label required=form.fields.relationship.required %}
+                  {% include "form/input.html" with field=family_form.image label=family_form.image.label sr=False label="Photo" %}
+                </div>
+              </form>
+
+            {% endif %}
             
             <form class="editableform profile-form media media-center">
                 <div class="media-left">
@@ -97,7 +116,7 @@
                         {% endif %}
                         {% if profile.user.refugee.story %}
                             <dt>{% trans "My story" %}</dt>
-                            <dd><span class="field-text-editable" data-name="story">{{ profile.user.refugee.story }}</span></dd>
+                            <dd><div class="field-text-editable" data-name="story" data-type="textarea">{{ citizen.story }}</div></dd>
                         {% endif %}
                         {% if profile.user.refugee.countries %}
                             <dt>{% trans "Countries/citis I want to go to" %}</dt>
@@ -143,9 +162,18 @@
     }
   });
   $(function() {
+    function createDatepicker($input) {
+      $input.dateDropdowns({
+        submitFormat: "dd/mm/yyyy",
+        submitFieldName: "dob",
+        defaultDateFormat: "dd/mm/yyyy",
+        wrapperClass: "date-dropdowns inline",
+        minYear: 1915,
+        defaultDate: $input.val()
+      });
+    }
     $('.field-text-editable').editable({
     });
-            
     $('.field-date-editable').editable({
       format: 'dd/mm/yyyy',
       viewformat: 'dd/mm/yyyy',
@@ -186,29 +214,49 @@
         },
       });
 
-      $('.family-form .editable').editable('submit', { 
-        url: '{% url "profile_update" user.username "family" %}', 
-        ajaxOptions: {
-          dataType: 'json'
-        },
-        success: function(data, config) {
-          if(data && data.success) {
-            $(this).removeClass('editable-unsaved');
-            $(this).removeClass('editable-error')
-          } else if(data && data.errors){
-            var $el = $(this);
-            $.each(data.errors, function(i, v) {
-              $el.each(function() {
-                if ($(this).data('name') == i) {
-                  $(this).addClass('editable-error');
-                  return false;
-                }
+      $('.family-form').each(function() {
+        var $fm = $(this);
+        $fm.find('.editable').editable('submit', { 
+          url: '{% url "profile_update" user.username "family" %}',
+          data: {
+            id: $fm.data('pk')
+          },
+          ajaxOptions: {
+            dataType: 'json'
+          },
+          success: function(data, config) {
+            if(data && data.success) {
+              $(this).removeClass('editable-unsaved');
+              $(this).removeClass('editable-error')
+            } else if(data && data.errors){
+              var $el = $(this);
+              $.each(data.errors, function(i, v) {
+                $el.each(function() {
+                  if ($(this).data('name') == i) {
+                    $(this).addClass('editable-error');
+                    return false;
+                  }
+                });
               });
-            });
-          }
-        },
-      });
+            }
+          },
+        });
+      })
     });
-  })
+    $('.btn.delete').click(function() {
+      $fm = $(this).parents('form');
+      $.post('{% url "profile_update" user.username "family-delete" %}', {
+        id: $fm.data('pk')
+      }, function(res) {
+        if (res && res.success) {
+          $fm.remove();
+        } else if(res && res.errors) {
+        }
+      });
+      return false;
+    });
+    createDatepicker($('#id_dob'))
+  });
 </script>
+
 {% endblock %}

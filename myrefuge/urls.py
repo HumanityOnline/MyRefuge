@@ -20,7 +20,8 @@ from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceL
                                   CitizenRefugeSpaceDetail, CitizenRefugeSearchView,
                                   CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList,
                                   CitizenRefugeSpaceMessage, CitizenRefugeSpaceApplicationList,
-                                  CitizenRefugeSpaceStatus, CitizenRefugeSearchResultView)
+                                  CitizenRefugeSpaceStatus, CitizenRefugeSearchResultView,
+                                  CitizenRefugeSpaceEdit)
 
 urlpatterns = [
     url(r'^home/$', 'common.views.home', name='home'),
@@ -28,7 +29,7 @@ urlpatterns = [
     url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),
 
     url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/update/'+
-                        '(?P<type>(personal|family))?',
+                        '(?P<type>(personal|family-delete|family))?',
         'common.views.profile_update',
         name='profile_update'),
     url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/$',
@@ -41,6 +42,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^refuge-spaces/me/', CitizenRefugeMySpaceList.as_view(), name='refuge_myspace_list'),
+    url(r'^refuge-spaces/(?P<pk>[\.\w-]+)/edit/', CitizenRefugeSpaceEdit.as_view(),
+        name='refuge_space_edit'),
     url(r'^refuge-spaces/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceDetail.as_view(),
         name='refuge_space_detail'),
     url(r'^refuge-spaces/', CitizenRefugeSpaceList.as_view(), name='refuge_space_list'),
