@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),
 
     url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/update/'+
-                        '(?P<type>(personal|family-delete|family))?',
+                        '(?P<type>(personal|family-delete|family))?/',
         'common.views.profile_update',
         name='profile_update'),
     url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/$',

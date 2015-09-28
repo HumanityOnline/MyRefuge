@@ -29,6 +29,13 @@ class RefugeeSignUpBasic(forms.ModelForm):
 
 class RefugePersonalDetailForm(RefugeeSignUpBasic):
     mugshot = forms.ImageField(required=False)
+    hometown = forms.CharField(max_length=255)
+    current_address = AddressField()
+    story = forms.CharField()
+
+    class Meta:
+        model = Refugee
+        fields = ('dob', 'gender', 'hometown', 'current_address', 'story')
 
 class RefugeFamilyDetailForm(forms.ModelForm):
     image = forms.ImageField(required=False)

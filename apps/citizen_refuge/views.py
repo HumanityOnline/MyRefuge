@@ -138,14 +138,22 @@ class CitizenRefugeSpaceDetail(UpdateView):
     def form_valid(self, form):
 
         if self.can_update:
-            application = Application(**form.cleaned_data)
-            application.refugee = self.request.user.refugee
-            application.space = self.object
-            application.status = 'P'
-            application.save()
+            daterages = DateRange.objects.filter(
+                    start_date__gte=form.cleaned_data.get('start_date'),
+                    end_date__lte=form.cleaned_data.get('end_date')
+                ).all()
 
-            return HttpResponseRedirect(
-                    reverse('refuge_space_application', kwargs={'pk': application.pk}))
+            if len(daterages) > 0:
+                application = Application(**form.cleaned_data)
+                application.refugee = self.request.user.refugee
+                application.space = self.object
+                application.status = 'P'
+                application.save()
+
+                return HttpResponseRedirect(
+                        reverse('refuge_space_application', kwargs={'pk': application.pk}))
+            else:
+                form.return_message = 'Out of available date ranges!'
 
         return self.render_to_response(self.get_context_data(
                         form=form,
@@ -155,13 +163,13 @@ class CitizenRefugeSpaceDetail(UpdateView):
         self.object = self.get_object()
         form = None
         if self.can_update:
-            form = self.get_form(self.get_form_class())
+            form = (self.form_class)()
 
         return self.render_to_response(self.get_context_data(form=form))
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
         form = self.get_form(self.get_form_class())
+        self.object = self.get_object()
         if form.is_valid():
             return self.form_valid(form)
         else:

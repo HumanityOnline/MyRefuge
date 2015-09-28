@@ -1,5 +1,8 @@
 {% load i18n %}
 {% load common_filters %}
+{% if form.return_message %}
+<label class="invalid">{{form.return_message}}</label>
+{% endif %}
 <div class="row">
     <div class="col-sm-4 form-group from {% if form.start_date.errors %}has-error{% endif %}">
         <div class="form-group-inner first">
@@ -17,7 +20,7 @@
         <div class="form-group-inner last narrow">
             <label for="{{form.guests.id_for_label}}">Guests</label>
             <select name="{{ form.guests.html_name }}" id="{{form.guests.id_for_label}}" class="form-control {% if form.guests.errors %}has-error{% endif %}">
-                {% for i in 30|mkrange %}
+                {% for i in guests|mkrange %}
                 <option value="{{i}}">{{i}} Guest{% if i > 1 %}s{% endif %}</option>
                 {% endfor %}
             </select>

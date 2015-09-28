@@ -46,7 +46,7 @@
             {% else %}
                 {% include "form/input.html" with field=wizard.form.headline label="Headline description" required=wizard.form.fields.headline.required %}
                 {% include "form/input.html" with field=wizard.form.address label="Address of the available space" required=wizard.form.fields.address.required %}
-                {% include "form/input.html" with field=wizard.form.guests label="Number of guests to accommodate" revealType=True required=wizard.form.fields.guests.required %}
+                {% include "form/input.html" with field=wizard.form.guests label="Number of guests to accommodate" revealType=True required=wizard.form.fields.guests.required min=0 %}
                 <div class="vr-1 checkboxs inline">
                     {% for additional_error in wizard.form.additional.errors %}
                         <label class="invalid">{{ additional_error | escape }}</label>
@@ -72,6 +72,9 @@
                 {% for imageform in image_form %}
                 <div class="imageform form-inner">
                     {% include "form/input.html" with field=imageform.image label="Photo" %}
+                    {% for hidden in imageform.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %} 
                 </div>
                 {% endfor %}
                 

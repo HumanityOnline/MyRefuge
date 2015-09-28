@@ -12,6 +12,7 @@
 
 
 {% block content %}
+{% csrf_token %}
 <div class="container">
     <div class="profile container-inner narrow">
         {% block profile_details %}
@@ -106,22 +107,22 @@
                 </div>
                 <div class="media-body">
                     <dl class="profile-definition">
-                        {% if profile.user.refugee.hometown %}
+                        {% if citizen.hometown %}
                             <dt>{% trans "Hometown" %}</dt>
-                            <dd><span class="field-text-editable" data-name="hometown">{{ profile.user.refugee.hometown }}</span></dd>
+                            <dd><span class="field-text-editable" data-name="hometown">{{ citizen.hometown }}</span></dd>
                         {% endif %}
-                        {% if profile.user.refugee.current_address %}
+                        {% if citizen.current_address %}
                             <dt>{% trans "Current location" %}</dt>
-                            <dd><span class="field-text-editable" data-name="current_address">{{ profile.user.refugee.current_address }}</span></dd>
+                            <dd><span class="field-text-editable" data-name="current_address">{{ citizen.current_address }}</span></dd>
                         {% endif %}
-                        {% if profile.user.refugee.story %}
+                        {% if citizen.story %}
                             <dt>{% trans "My story" %}</dt>
                             <dd><div class="field-text-editable" data-name="story" data-type="textarea">{{ citizen.story }}</div></dd>
                         {% endif %}
-                        {% if profile.user.refugee.countries %}
+                        {% if citizen.countries %}
                             <dt>{% trans "Countries/citis I want to go to" %}</dt>
                             <dd>
-                                {% for country in profile.user.refugee.countries %}
+                                {% for country in citizen.countries %}
                                     {{ countries_list.countries|get_item:country }}{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </dd>
@@ -141,39 +142,28 @@
         {% endblock %}
     </div>
 </div>
+
 {% endblock %}
 
 
 {% block js_ %}
-<script src="{% static "x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js" %}" type="text/javascript"></script>
+<script src="{% static "x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js" %}" type="text/javascript"></script>
 
 <script type="text/javascript">
-  var csrf_token = "{{csrf_token}}";
-  $.fn.editableform.buttons = '<button class="btn btn-primary btn-sm editable-submit" type="submit"><i class="fa fa-check"></i></button><button class="btn btn-default btn-sm editable-cancel" type="button"><i class="fa fa-remove"></i></button>';
-  $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-      console.log(settings.date)
-      if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-        // Send the token to same-origin, relative URLs only.
-        // Send the token only if the method warrants CSRF protection
-        // Using the CSRFToken value acquired earlier
-        xhr.setRequestHeader("X-CSRFToken", csrf_token);
-      }
-    }
-  });
-  $(function() {
-    function createDatepicker($input) {
-      $input.dateDropdowns({
-        submitFormat: "dd/mm/yyyy",
-        submitFieldName: "dob",
-        defaultDateFormat: "dd/mm/yyyy",
-        wrapperClass: "date-dropdowns inline",
-        minYear: 1915,
-        defaultDate: $input.val()
-      });
-    }
-    $('.field-text-editable').editable({
+  function createDatepicker($input) {
+    $input.dateDropdowns({
+      submitFormat: "dd/mm/yyyy",
+      submitFieldName: "dob",
+      defaultDateFormat: "dd/mm/yyyy",
+      wrapperClass: "date-dropdowns inline",
+      minYear: 1915,
+      defaultDate: $input.val()
     });
+  }
+  $.fn.editableform.buttons = '<button class="btn btn-primary btn-sm editable-submit" type="submit"><i class="fa fa-check"></i></button><button class="btn btn-default btn-sm editable-cancel" type="button"><i class="fa fa-remove"></i></button>';
+
+  $(function() {
+    $('.field-text-editable').editable();
     $('.field-date-editable').editable({
       format: 'dd/mm/yyyy',
       viewformat: 'dd/mm/yyyy',
@@ -190,11 +180,11 @@
         {% endfor %}
       ]
     });
-    $('.btn.save').click(function() {
-      $('.profile-form .editable').editable('submit', { 
-        url: '{% url "profile_update" user.username "personal" %}', 
+    $('.btn.save').click(function(event) {
+      $('.profile-form .editable').editable('submit', {
+        url: '{% url "profile_update" user.username "personal" %}',
         ajaxOptions: {
-          dataType: 'json'
+          dataType: 'json',
         },
         success: function(data, config) {
           if(data && data.success) {
@@ -212,6 +202,8 @@
             });
           }
         },
+        error: function (error) {
+        }
       });
 
       $('.family-form').each(function() {

@@ -56,6 +56,11 @@ class DateCorrectForm(forms.ModelForm):
                           input_formats=('%d/%m/%Y',))
 
 
+from django.forms.widgets import ClearableFileInput
+
+class CustomImageFieldWidget(ClearableFileInput):
+    template_with_clear = '%(clear)s <label class="sr-only" for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+
 class CitizenRefugeImageForm(forms.Form):
     image = forms.ImageField()
 
@@ -78,10 +83,11 @@ SpacePhotoFormset = inlineformset_factory(
     extra=0, min_num=1, validate_min=True, max_num=20)
 
 
-
 class CitizenRefugeSpaceForm(forms.ModelForm):
     additional = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                          choices=CITIZEN_SPACE_ADDITIONAL_SHORT)
+    guests = forms.IntegerField(min_value=0)
+
 
     class Meta:
         model = CitizenSpace
@@ -108,7 +114,7 @@ class ApplicationForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
                           input_formats=('%d/%m/%Y',))
 
-    guests = forms.IntegerField()
+    guests = forms.IntegerField(initial=1)
 
     class Meta:
         model = Application
@@ -120,6 +126,12 @@ class ApplicationUpdateForm(forms.ModelForm):
 
     story = forms.CharField()
 
+    def clean_story(self):
+        val = self.cleaned_data.get('story', '').strip()
+        if val == "":
+            raise forms.ValidationError('Story must not empty')
+        return val
+
     class Meta:
         model = Application
 
@@ -128,6 +140,12 @@ class ApplicationUpdateForm(forms.ModelForm):
 class ApplicationMessageForm(forms.ModelForm):
 
     message = forms.CharField()
+
+    def clean_message(self):
+        val = self.cleaned_data.get('message', '').strip()
+        if val == "":
+            raise forms.ValidationError('Message must not empty')
+        return val
 
     class Meta:
         model = Application

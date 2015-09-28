@@ -11,7 +11,7 @@ def get_item(dictionary, key):
 
 @register.filter
 def mkrange(number):
-    return range(1, number)
+    return range(1, number+1)
 
 @register.filter
 def if_none(current, expect):

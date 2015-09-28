@@ -6,7 +6,7 @@ from citizen_refuge.views import (CitizenRefugeDetail as crd, CitizenRefugeDetai
 from refugee.views import (RefugeDetail as rd, RefugeDetailUpdate as rdu)
 
 from django.views.generic import TemplateView
-
+from django.conf import settings
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -14,6 +14,9 @@ def home(request):
 def profile_detail(request, username, **kwargs):
     if request.user.username != username:
         raise PermissionDenied
+
+    #print ('settings.CSRF_COOKIE_NAME', settings.CSRF_COOKIE_NAME)
+    #print ('settings.CSRF_HEADER_NAME', settings.CSRF_HEADER_NAME)
 
     # Get the view by profile type
     user_type = request.user.my_profile.type

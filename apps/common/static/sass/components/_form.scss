@@ -81,6 +81,13 @@ form {
     }
 }
 
+.editable-input {
+    select {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
 @media(min-width: 768px) {
 
     .search-form {

@@ -78,7 +78,7 @@ refuge_space_application_update
 
 {% block js_ %}
 <script type="text/javascript">
-  var csrf_token = "{{csrf_token}}";
+  /*var csrf_token = "{{csrf_token}}";
   $.ajaxSetup({
     beforeSend: function(xhr, settings) {
       console.log(settings.date)
@@ -89,7 +89,7 @@ refuge_space_application_update
         xhr.setRequestHeader("X-CSRFToken", csrf_token);
       }
     }
-  });
+  });*/
   $(function() {
     $('.dropdown-menu li a').on('click', function () {
       var $el = $(this);

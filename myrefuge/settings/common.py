@@ -100,6 +100,7 @@ USE_L10N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -122,6 +123,7 @@ BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 BOWER_INSTALLED_APPS = (
     'moment',
     'pikaday',
+    'jquery#2.1.4',
     'bootstrap#3.3.5',
     'jquery-date-dropdowns',
     'selectize',

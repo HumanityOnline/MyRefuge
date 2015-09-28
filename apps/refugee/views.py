@@ -130,7 +130,6 @@ class RefugeDetailUpdate(ProcessFormView):
         raise PermissionDenied
 
     def post(self, request, *args, **kwargs):
-        print(">>>>>>>>>>>>>>>>>>>>self.kwargs.get('type')", self.kwargs.get('type'));
         if self.kwargs.get('type') == 'family':
             family = FamilyMember.objects.filter(pk=self.request.POST.get('id'),
                         refugee=self.request.user.refugee).first()
@@ -157,7 +156,8 @@ class RefugeDetailUpdate(ProcessFormView):
             member.refugee = self.request.user.refugee
             member.save()
         else:
-            form.save()
+            (form.save(commit=False)).save()
+
         return JsonResponse({'success': True})
 
     def form_invalid(self, form):

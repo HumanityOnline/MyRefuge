@@ -46,6 +46,14 @@
             </div>
           </div>
           <hr>
+          <p>
+            <strong>Availabilities: </strong>
+            {% for daterange in citizenspace.daterange_set.all %}
+              {{ daterange.start_date }} - {{ daterange.end_date }}
+              {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </p>
+          <hr>
           <h3 class="entry-subtitle">Description</h3>
           <p>{{ citizenspace.full_description|safe|linebreaks }}</p>
           <hr>
@@ -64,7 +72,7 @@
           {% if form %}
           <form method="post" class="application-form">
             {% csrf_token %}
-            {% include "form/checkin-block.html" with form=form %}
+            {% include "form/checkin-block.html" with form=form guests=citizenspace.guests %}
             <div class="clearfix dv"></div>
             <button type="submit" class="btn btn-secondary btn-block btn-lg">Request to Book</button>
           </form>

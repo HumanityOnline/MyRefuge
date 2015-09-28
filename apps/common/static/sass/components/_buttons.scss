@@ -28,6 +28,10 @@
 }
 
 .btn-add-form {
+    &:hover {
+        text-decoration: none;
+    }
+    
     &.primary {
         color: $black;
         display: block;
