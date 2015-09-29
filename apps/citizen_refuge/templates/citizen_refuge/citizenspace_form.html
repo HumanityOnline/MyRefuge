@@ -47,10 +47,10 @@
           </div>
           <hr>
           <p>
-            <strong>Availabilities: </strong>
+            <strong>Availabilities:</strong><br>
             {% for daterange in citizenspace.daterange_set.all %}
-              {{ daterange.start_date }} - {{ daterange.end_date }}
-              {% if not forloop.last %}, {% endif %}
+            From <strong>{{ daterange.start_date }}</strong> to <strong>{{ daterange.end_date }}</strong>
+            {% if not forloop.last %}<br>{% endif %}
             {% endfor %}
           </p>
           <hr>
