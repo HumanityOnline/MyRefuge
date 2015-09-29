@@ -34,7 +34,7 @@
 
     .navbar-brand {
         padding-left: 65px;
-        background: url(./images/logo.png) no-repeat 15px center;
+        background: url($imgDir + '/logo.png') no-repeat 15px center;
         background-size: 35px;
 //        color: $navbar-color;
         font-size: 18px;

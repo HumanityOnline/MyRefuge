@@ -1,11 +1,11 @@
 .search {
     &.search-bg {
-        background-image: url(images/search-bg.png);
+        background-image: url($imgDir + '/main-bg.jpg');
 
         @include tera-background-format();
 
         #body {
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.1);
         }
     }
     
