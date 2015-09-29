@@ -4,7 +4,7 @@
   "description": "MyRefuge web app",
   "private": true,
   "scripts": {
-    "sass": "./node_modules/node-sass/bin/node-sass --output-style compressed apps/common/static/sass -o common/static",
+    "sass": "./node_modules/node-sass/bin/node-sass --output-style compressed apps/common/static/sass -o apps/common/static",
     "sass:dev": "./node_modules/node-sass/bin/node-sass --source-map true --output-style compressed -w -r apps/common/static/sass -o apps/common/static",
     "sass:build": "./node_modules/node-sass/bin/node-sass --output-style compressed apps/common/static/sass -o apps/common/static",
     "postcss:build": "postcss --use autoprefixer apps/common/static/*.css -d apps/common/static/",

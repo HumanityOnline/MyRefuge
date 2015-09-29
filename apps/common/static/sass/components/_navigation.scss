@@ -34,15 +34,15 @@
 
     .navbar-brand {
         padding-left: 65px;
-        background: url(../images/logo.png) no-repeat 15px center;
+        background: url(./images/logo.png) no-repeat 15px center;
         background-size: 35px;
-        color: $navbar-color;
+//        color: $navbar-color;
         font-size: 18px;
         font-weight: 600;
 
-        &:hover, &:focus {
-            color: #FFB4B4;
-        }
+//        &:hover, &:focus {
+//            color: #FFB4B4;
+//        }
     }
 
     .navbar-toggle {
