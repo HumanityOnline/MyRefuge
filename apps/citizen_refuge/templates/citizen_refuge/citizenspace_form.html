@@ -37,6 +37,7 @@
                 <div class="col-sm-2 space-item">
                   <i class="fa fa-bed"></i><br>
                   {{ citizenspace.guests }} guest(s)
+                  {{citizenspace.location|display}}
                 </div>
                 {% for ad in citizenspace.additional%}
                   <div class="col-sm-2 space-item">
@@ -135,7 +136,7 @@
                              e.originalEvent.detail : e.detail,
                     map = detail.map,
                     loc = null,
-                    coords = [{{citizenspace.location.x}}, {{citizenspace.location.y}}];
+                    coords = [{{citizenspace.location.y}}, {{citizenspace.location.x}}];
 
                 map.setView(coords, 13);
                 L.marker(coords).addTo(map);

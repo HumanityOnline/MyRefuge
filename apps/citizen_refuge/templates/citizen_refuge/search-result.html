@@ -36,7 +36,7 @@
                         <div class="col-sm-6">
                             {% include "citizen_refuge/space-block.html" with space=space %}
                             <script type="text/javascript">
-                            LOCATIONS.push("{{space.location.x}}/{{space.location.y}}");
+                            LOCATIONS.push([{{space.location.y}}, {{space.location.x}}]);
                             </script>
                         </div>
                     {% if forloop.counter|divisibleby:2 and forloop.counter != 0 %}
@@ -106,11 +106,11 @@
                     loc = null,
                     loc_first = LOCATIONS.shift();
 
-                map.setView(loc_first.split('/'), 13);
-                L.marker(loc_first.split('/')).addTo(map);
+                map.setView(loc_first, 13);
+                L.marker(loc_first).addTo(map);
 
                 $.each(LOCATIONS, function(i, loc) {
-                    L.marker(loc.split('/')).addTo(map);
+                    L.marker(loc).addTo(map);
                 });
             });
 
