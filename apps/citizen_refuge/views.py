@@ -13,6 +13,7 @@ from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
                         Application, Message)
+from refugee.models import Refugee, FamilyMember
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
 from django.core.exceptions import PermissionDenied
 
@@ -322,6 +323,8 @@ class CitizenRefugeSearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeSearchView, self).get_context_data(**kwargs)
+        context['spaces_number'] = CitizenSpace.objects.count()
+        context['refugees_number'] = Refugee.objects.count() + FamilyMember.objects.count()
         context['form'] = CitizenRefugeeSearchForm()
         return context
 
