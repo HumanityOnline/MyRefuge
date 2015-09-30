@@ -9,8 +9,7 @@
   <div class="caption">
     <h3><a href="{% if href %}{% url href id %}{% else %}{% url 'refuge_space_detail' space.id %}{% endif %}">{{space.headline}}</a></h3>
     <p>
-      {% if space.city %}{{space.city}}, {% endif %}{% if space.country %}{{space.country}}{% endif %}
-      {% if not space.country and not space.city %}{{space.address}}{% endif %}
+      {{space.address}}
     </p>
 
   </div>
