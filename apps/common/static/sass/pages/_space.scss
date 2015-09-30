@@ -52,6 +52,8 @@
 .space-list {
     background-color: $white-darken;
     padding: 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 @media(min-width: 768px) {

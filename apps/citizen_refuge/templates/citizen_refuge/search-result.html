@@ -29,7 +29,7 @@
                 {% include "form/search-block.html" with form=form %}
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
-            <div class="row space-list">
+            <div class="row space-list fill-height fixed">
                 {% if spaces %}
                     <div class="row">
                     {% for space in spaces %}
@@ -104,14 +104,14 @@
                              e.originalEvent.detail : e.detail,
                     map = detail.map,
                     loc = null,
-                    loc_first = LOCATIONS.shift();
-
-                map.setView(loc_first, 13);
-                L.marker(loc_first).addTo(map);
+                    markers = [];
 
                 $.each(LOCATIONS, function(i, loc) {
-                    L.marker(loc).addTo(map);
+                    markers.push(L.marker(loc).addTo(map))
                 });
+                var group = new L.featureGroup(markers);
+
+                map.fitBounds(group.getBounds());
             });
 
         })();

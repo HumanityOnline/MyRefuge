@@ -16,6 +16,8 @@ label {
 
 .search-form {
     &.form-inline {
+        margin-top: 15px;
+
         .form-control, .btn {
             border-radius: 0 0 0;
             @include box-shadow(0 0 0);
@@ -85,6 +87,14 @@ form {
     select {
         padding-top: 0;
         padding-bottom: 0;
+    }
+}
+
+@media(min-width: 901px) {
+    .search-form {
+        &.form-inline {
+            margin-top: 0;
+        }
     }
 }
 

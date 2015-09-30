@@ -54,4 +54,38 @@ $(function() {
         }
       },
     });
+
+    var objs = $('.fill-height'),
+        isMobile = 0;
+    function fill() {
+        var wH = window.innerHeight,
+            wW = window.innerWidth;
+
+        if (window.innerWidth < 768) {
+            isMobile = 1;
+        }
+
+        if (objs.length) {
+            objs.each(function(i, obj) {
+                var $obj = $(obj),
+                    objH = $obj.offset().top;
+
+                if (objH < wH && !isMobile) {
+                    if ($obj.hasClass('fixed')) {
+                        $obj.css('height', wH-objH);
+                    } else {
+                        $obj.css('min-height', wH-objH);
+                    }
+                }
+            });
+        }
+    }
+
+    fill();
+
+    var rTo = 0;
+    $(window).on('resize', function() {
+        clearTimeout(rTo);
+        rTo = setTimeout(fill, 300);
+    })
 })
