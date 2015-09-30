@@ -228,5 +228,20 @@ body {
             
         }
     }
+}
+
+@media(min-width: 901px) {
+    .map-wrapper {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        .leaflet-container-default {
+            min-height: 100%;
+            height: 100%;
+            width: 100%;
+        }
+    }
 
 }
