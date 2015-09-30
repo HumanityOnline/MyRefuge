@@ -49,3 +49,28 @@ def location_to_country(location):
         if u'country' in component['types']:
             return component['long_name']
     return None
+
+
+def location_to_public_address(location):
+    """convert the location to public address which should not display street number but only
+    from sublocality, administrative_area_level_2, administrative_area_level_1, country
+
+    For example:
+    51 Khuong Trung, Thanh Xuan, Hanoi, Vietnam => Khuong Trung, Thanh Xuan, Hanoi, Vietnam
+    """
+    address_components = location.raw['address_components']
+    sub_locality = area_level_2 = area_level_1 = country = None
+    for component in address_components:
+        if u'sublocality' in component['types']:
+            sub_locality = component['long_name']
+        elif u'administrative_area_level_2' in component['types']:
+            area_level_2 = component['long_name']
+        elif u'administrative_area_level_1' in component['types']:
+            area_level_1 = component['long_name']
+        elif u'country' in component['types']:
+            country = component['long_name']
+
+    addresses = [addr for addr in [sub_locality, area_level_2, area_level_1, country]
+                 if addr is not None]
+
+    return ', '.join(addresses)

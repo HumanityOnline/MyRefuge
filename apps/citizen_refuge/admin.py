@@ -19,4 +19,6 @@ class CitizenSpaceAdmin(admin.ModelAdmin):
         SpacePhotoInline
     ]
 
+    readonly_fields = ('public_address', 'city', 'country',)
+
 admin.site.register(CitizenSpace, CitizenSpaceAdmin)

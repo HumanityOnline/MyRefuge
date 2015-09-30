@@ -9,7 +9,7 @@
   <div class="caption">
     <h3><a href="{% if href %}{% url href id %}{% else %}{% url 'refuge_space_detail' space.id %}{% endif %}">{{space.headline}}</a></h3>
     <p>
-      {{space.address}}
+      {{space.public_address}}
     </p>
 
   </div>

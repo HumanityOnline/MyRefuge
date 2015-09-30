@@ -9,7 +9,7 @@ from userena.contrib.umessages.models import Message as BaseMessage
 
 from common.helpers import APPLICATION_STATUS, CITIZEN_SPACE_ADDITIONAL, GENDER, UniqueMediaPath
 from common.geo import (address_to_location, location_to_latlon, location_to_city,
-                        location_to_country)
+                        location_to_country, location_to_public_address)
 from refugee.models import Refugee
 
 from .managers import CitizenSpaceManager, MessageManager, normalize_name
@@ -31,6 +31,7 @@ class CitizenSpace(models.Model):
     headline = models.CharField(max_length=255)
     full_description = models.TextField()
     address = AddressField()
+    public_address = models.CharField(max_length=255, blank=True)
     # auto set from address field
     city = models.CharField(max_length=255, blank=True, null=True)
     # auto set from address field
@@ -51,6 +52,8 @@ class CitizenSpace(models.Model):
         # TODO(hoatle): update location only if address is changed
         # https://github.com/smn/django-dirtyfields
         location = address_to_location(self.address.raw)
+
+        self.public_address = location_to_public_address(location)
 
         lat, lon = location_to_latlon(location)
         point = 'POINT(%s %s)' % (lon, lat)
