@@ -156,3 +156,7 @@ def get_cache():
 
 
 CACHES = get_cache()
+
+GEO_API_KEY = os.environ.get('GEO_API_KEY', None)
+GEO_CLIENT_ID = os.environ.get('GEO_CLIENT_ID', None)
+GEO_SECRET_KEY = os.environ.get('GEO_SECRET_KEY', None)

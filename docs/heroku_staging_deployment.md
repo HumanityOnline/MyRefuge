@@ -51,7 +51,15 @@ We use Amazon S3 to keep and save media files, need to set these environment var
 Refer to:
 
 - https://www.caktusgroup.com/blog/2014/11/10/Using-Amazon-S3-to-store-your-Django-sites-static-and-media-files/
- 
+
+# Google Maps Geocoding API
+
+- Need to set `GEO_API_KEY` for standard usage
+- For premier usage, need to set `GEO_CLIENT_ID` and `GEO_SECRET_KEY`
+
+Refer to:
+
+- https://developers.google.com/maps/documentation/geocoding/get-api-key#key 
 
 # Finally:
 

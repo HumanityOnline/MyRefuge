@@ -7,7 +7,11 @@ from common.helpers import normalize_name
 # use google by default
 _geocoder_service = get_geocoder_for_service(getattr(settings, 'GEO_SERVICE', 'google'))
 # a dictionary of key, value for kwargs
-_geocoder_settings = getattr(settings, 'GEO_SETTINGS', {})
+_geocoder_settings = {
+    'api_key': getattr(settings, 'GEO_API_KEY', None),
+    'client_id': getattr(settings, 'GEO_CLIENT_ID', None),
+    'secret_key': getattr(settings, 'GEO_SECRET_KEY', None)
+}
 
 geocoder = _geocoder_service(**_geocoder_settings)
 
