@@ -2,7 +2,8 @@ from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, FormView, UpdateView, TemplateView
+from django.views.generic import (ListView, DetailView, FormView, UpdateView, TemplateView,
+                                    CreateView)
 from django.views.generic.edit import ProcessFormView
 from formtools.wizard.views import SessionWizardView
 from django.utils.decorators import method_decorator
@@ -243,7 +244,78 @@ class CitizenRefugeSpaceEdit(DetailView):
 
         return context
 
+class CitizenRefugeSpaceCreate(CreateView):
+    model = CitizenSpace
+    template_name = 'citizen_refuge/citizenspace_create.html'
+    form_class = CitizenRefugeSpaceForm
 
+    @property
+    def can_update(self):
+        return not self.request.user.is_anonymous() and\
+                    self.request.user.my_profile.type == 'C'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        if not self.can_update:
+            raise PermissionDenied
+
+        return self.render_to_response(self.get_context_data(
+                space_form=CitizenRefugeSpaceForm(),
+                date_form=CitizenRefugeDatesFormset(),
+                image_form=SpacePhotoFormset(),
+            ))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+
+        if not self.can_update:
+            raise PermissionDenied
+
+        date_form = CitizenRefugeDatesFormset(request.POST, request.FILES)
+        image_form = SpacePhotoFormset(request.POST, request.FILES)
+        space_form = CitizenRefugeSpaceForm(request.POST, request.FILES)
+        all_valid = False
+        if space_form.is_valid() and image_form.is_valid() and date_form.is_valid():
+            all_valid = True
+
+        if all_valid:
+            space = space_form.save(commit=False)
+            space.citizen = self.request.user.citizenrefuge
+            space.save()
+
+            for dataset in image_form.cleaned_data:
+                if len(dataset):
+                    sp = SpacePhoto(image=dataset.get('image'), space=space)
+                    sp.save()
+
+            for dataset in date_form.cleaned_data:
+                if len(dataset):
+                    daterage = DateRange(start_date=dataset.get('start_date'),
+                        end_date=dataset.get('end_date'), space=space)
+                    daterage.save()
+
+            return HttpResponseRedirect(
+                    reverse('refuge_space_detail', kwargs={'pk': space.pk}))
+
+        return self.render_to_response(self.get_context_data(
+                space_form=space_form,
+                date_form=date_form,
+                image_form=image_form,
+                all_valid=all_valid
+            ))
+
+    def get_context_data(self, **kwargs):
+        context = super(CitizenRefugeSpaceCreate, self).get_context_data(**kwargs)
+        if not context.get('space_form'):
+            context['space_form'] = CitizenRefugeSpaceForm()
+
+        if not context.get('date_form'):
+            context['date_form'] = CitizenRefugeDatesFormset()
+
+        if not context.get('image_form'):
+            context['image_form'] = SpacePhotoFormset()
+
+        return context
 
 class CitizenRefugeSearchView(TemplateView):
     template_name = 'citizen_refuge/search.html'

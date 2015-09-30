@@ -21,7 +21,7 @@ from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceL
                                   CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList,
                                   CitizenRefugeSpaceMessage, CitizenRefugeSpaceApplicationList,
                                   CitizenRefugeSpaceStatus, CitizenRefugeSearchResultView,
-                                  CitizenRefugeSpaceEdit)
+                                  CitizenRefugeSpaceEdit, CitizenRefugeSpaceCreate)
 
 urlpatterns = [
     url(r'^home/$', 'common.views.home', name='home'),
@@ -42,6 +42,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^refuge-spaces/me/', CitizenRefugeMySpaceList.as_view(), name='refuge_myspace_list'),
+    url(r'^refuge-spaces/create/', CitizenRefugeSpaceCreate.as_view(),
+        name='refuge_myspace_create'),
     url(r'^refuge-spaces/(?P<pk>[\.\w-]+)/edit/', CitizenRefugeSpaceEdit.as_view(),
         name='refuge_space_edit'),
     url(r'^refuge-spaces/(?P<pk>[\.\w-]+)/', CitizenRefugeSpaceDetail.as_view(),

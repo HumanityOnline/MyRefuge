@@ -13,7 +13,6 @@
 {% endblock %}
 
 {% block content %}
-<div class="space-banner"></div>
 <div class="container">
     <div class="container-inner narrow">
         {% if all_valid %}
@@ -40,9 +39,7 @@
 
                 {% for hidden in dateform.hidden_fields %}
                     {{ hidden }}
-                {% endfor %}
-
-                {{dateform.DELETE}}
+                {% endfor %} 
             </div>
             {% endfor %}
 
@@ -58,7 +55,7 @@
             </div>
             {% endfor %}
 
-            <input class="btn btn-block btn-primary" type="submit" value="{% trans "Update" %}"/>
+            <input class="btn btn-block btn-primary" type="submit" value="{% trans "Create" %}"/>
         </form>
     </div>
 </div>

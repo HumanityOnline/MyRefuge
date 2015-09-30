@@ -107,6 +107,7 @@
                     loc_first = LOCATIONS.shift();
 
                 map.setView(loc_first.split('/'), 13);
+                L.marker(loc_first.split('/')).addTo(map);
 
                 $.each(LOCATIONS, function(i, loc) {
                     L.marker(loc.split('/')).addTo(map);
