@@ -2,7 +2,7 @@
 {% load url from future %}
 {% load common_filters %}
 
-<div class="thumbnail flat">
+<div class="thumbnail flat" id="space-{{space.id}}">
   <a href="{% if href %}{% url href id %}{% else %}{% url 'refuge_space_detail' space.id %}{% endif %}">
     <img class="img-full" src="{{space.spacephoto_set.all.0.image.url}}" alt="{{ space.headline }}" style="background-image: url({{space.spacephoto_set.all.0.image.url}});">
   </a>

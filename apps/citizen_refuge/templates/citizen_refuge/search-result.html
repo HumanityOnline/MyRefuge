@@ -16,7 +16,7 @@
 
 
 {% block content %}
-<script type="text/javascript">var LOCATIONS =  [];</script>
+<script type="text/javascript">var LOCATIONS =  {};</script>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4 col-md-push-8">
@@ -38,7 +38,10 @@
                         <div class="col-sm-6">
                             {% include "citizen_refuge/space-block.html" with space=space %}
                             <script type="text/javascript">
-                            LOCATIONS.push([{{space.location.y}}, {{space.location.x}}]);
+                            LOCATIONS['space-{{space.id}}'] = {
+                                marker: null,
+                                coords: [{{space.location.y}}, {{space.location.x}}]
+                            }
                             </script>
                         </div>
                     {% if forloop.counter|divisibleby:2 and forloop.counter != 0 %}
@@ -66,6 +69,7 @@
 
     <script type="text/javascript">
         (function () {
+            var placeMarkers = [];
             whenAvailable('google', function() {
                 $("#{{form.address.id_for_label}}").geocomplete();
             });
@@ -99,19 +103,53 @@
 
                 var checkin = $from.data('datepicker'),
                     checkout = $to.data('datepicker');
+
+                function getDefaultIcon (marker) {
+                    var icon = marker.options.icon;
+                    icon.options.iconUrl = '{% static "/static/leaflet/images/marker-icon.png" %}';
+                    icon.options.iconSize = [25, 41];
+                    icon.options.iconAnchor = [12, 41];
+                    return icon
+                }
+
+                function getHighlightIcon (marker) {
+                    var icon = marker.options.icon;
+                    icon.options.iconUrl = '{% static "/static/leaflet/images/marker-icon-2x.png" %}';
+                    icon.options.iconSize = [35, 61];
+                    icon.options.iconAnchor = [17, 61];
+                    return icon
+                }
+                var prev = null,
+                    marker;
+
+                $('.space-list .thumbnail').hover(function() {
+                    marker = LOCATIONS[$(this).attr('id')].marker;
+                    if (marker) {
+                        marker.setIcon(getHighlightIcon(marker));
+                        prev = marker;
+                    }
+                }, function() {
+                    if (prev) {
+                        prev.setIcon(getDefaultIcon(prev));
+                        prev = null;
+                    }
+                });
             });
+
+            
 
             $(window).on('map:init', function (e) {
                 var detail = e.originalEvent ?
                              e.originalEvent.detail : e.detail,
                     map = detail.map,
-                    loc = null,
-                    markers = [];
+                    loc = null, locMaker;
 
                 $.each(LOCATIONS, function(i, loc) {
-                    markers.push(L.marker(loc).addTo(map))
+                    locMaker = L.marker(loc.coords).addTo(map);
+                    placeMarkers.push(locMaker);
+                    LOCATIONS[i].marker = locMaker;
                 });
-                var group = new L.featureGroup(markers);
+                var group = new L.featureGroup(placeMarkers);
 
                 map.fitBounds(group.getBounds());
             });

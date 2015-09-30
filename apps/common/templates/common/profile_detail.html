@@ -57,7 +57,7 @@
                 <div class="media-left">
                   <div class="media-inner" href="#">
                     <img class="media-object" src="{{family_member.image}}" alt="{{ profile.user.username }}">
-                    <a href="#" class="delete btn btn-status D btn-xs">Deleted</a>
+                    <a href="#" class="delete btn btn-status D btn-xs">Delete</a>
                   </div>
                 </div>
                 <div class="media-body">
@@ -83,10 +83,11 @@
             {% endfor %}
 
             {% if family_form %}
+              <hr>
               <form method="POST" class="account-form media media-center" action="{% url 'userena_profile_detail' user.username %}" enctype="multipart/form-data">
                 <div class="media-left">
                   <div class="media-inner" href="#">
-                    <button href="#" class="add btn btn-primary btn-sm" type="submit">Add new</button>
+                    &nbsp;
                   </div>
                 </div>
                 <div class="media-body">
@@ -96,9 +97,11 @@
                   {% include "form/select.html" with field=family_form.gender required=family_form.fields.gender.required %}
                   {% include "form/input.html" with field=family_form.relationship label=family_form.relationship.label required=form.fields.relationship.required %}
                   {% include "form/input.html" with field=family_form.image label=family_form.image.label sr=False label="Photo" %}
+                  <br>
+                  <button href="#" class="add btn btn-primary btn-sm" type="submit">Add new family member</button>
                 </div>
               </form>
-
+              <hr>
             {% endif %}
             
             <form class="editableform profile-form media media-center">
