@@ -225,6 +225,9 @@ class CitizenRefugeSpaceEdit(DetailView):
             image_form.save()
             date_form.save()
 
+            return HttpResponseRedirect(
+                    reverse('refuge_space_edit', kwargs={'pk': self.kwargs.get('pk')}))
+
         return self.render_to_response(self.get_context_data(
                 space_form=CitizenRefugeSpaceForm(instance=self.object),
                 date_form=CitizenRefugeDatesFormset(instance=self.object),

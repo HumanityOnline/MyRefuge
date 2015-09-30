@@ -22,7 +22,10 @@
         <form class="account-form" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% include "form/input.html" with field=space_form.headline label="Headline description" required=space_form.fields.headline.required %}
-            {% include "form/input.html" with field=space_form.address label="Address of the available space" required=space_form.fields.address.required %}
+            <div class="vr-1 required ">
+                <label for="id_address" class="form-label sr-only">Address of the available space</label>
+                    {{space_form.address}}
+            </div>
             {% include "form/input.html" with field=space_form.guests label="Number of guests to accommodate" revealType=True required=space_form.fields.guests.required %}
             <div class="vr-1 checkboxs inline">
                 {% for additional_error in space_form.additional.errors %}
@@ -53,7 +56,7 @@
             {{ image_form.management_form }}
             {% for imageform in image_form %}
             <div class="imageform form-inner">
-                <img class="demo-img" src="/media/{{imageform.image.value}}">
+                <img class="demo-img" src="{{imageform.image.value}}">
                 {{imageform}}
             </div>
             {% endfor %}
