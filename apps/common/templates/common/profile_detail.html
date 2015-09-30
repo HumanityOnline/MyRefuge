@@ -21,7 +21,6 @@
                 <div class="media-inner" href="#">
                   <img class="media-object" src="{{profile.get_mugshot_url}}" alt="{{ profile.user.username }}">
                 </div>
-                <a href="#" class="save btn btn-status A">Save Changes</a>
               </div>
               <div class="media-body">
                 <h4 class="media-heading">{{ profile.user.username }} (<span class="field-text-editable" data-name="first_name">{{ profile.user.first_name }}</span> <span class="field-text-editable" data-name="last_name">{{ profile.user.last_name }}</span>)</h4>
@@ -54,10 +53,10 @@
 
             {% for family_member in family_members %}
               <form class="editableform family-form media media-center" data-pk="{{family_member.id}}">
+                <a href="#" class="delete btn pull-right red"><i class="fa fa-trash"></i></a>
                 <div class="media-left">
                   <div class="media-inner" href="#">
                     <img class="media-object" src="{{family_member.image}}" alt="{{ profile.user.username }}">
-                    <a href="#" class="delete btn btn-status D btn-xs">Delete</a>
                   </div>
                 </div>
                 <div class="media-body">
@@ -81,10 +80,20 @@
                 </div>
               </form>
             {% endfor %}
+            <div class="media">
+              <div class="media-left">
+                <div class="media-inner" href="#">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="media-body">
+                <a href="#" class="btn btn-default more-family btn-sm">Add another person to my profile</a>
+              </div>
+            </div>
 
             {% if family_form %}
-              <hr>
-              <form method="POST" class="account-form media media-center" action="{% url 'userena_profile_detail' user.username %}" enctype="multipart/form-data">
+              <form method="POST" class="hide account-form media media-center" action="{% url 'userena_profile_detail' user.username %}" enctype="multipart/form-data">
+                <hr>
                 <div class="media-left">
                   <div class="media-inner" href="#">
                     &nbsp;
@@ -98,10 +107,10 @@
                   {% include "form/input.html" with field=family_form.relationship label=family_form.relationship.label required=form.fields.relationship.required %}
                   {% include "form/input.html" with field=family_form.image label=family_form.image.label sr=False label="Photo" %}
                   <br>
-                  <button href="#" class="add btn btn-primary btn-sm" type="submit">Add new family member</button>
+                  <button href="#" class="add btn btn-default btn-sm" type="submit">Add another person to my profile</button>
                 </div>
+                <hr>
               </form>
-              <hr>
             {% endif %}
             
             <form class="editableform profile-form media media-center">
@@ -134,6 +143,17 @@
                 </div>
             </form>
             {% endif %}
+            <div class="media">
+              <div class="media-left">
+                <div class="media-inner" href="#">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="media-body">
+                <a href="#" class="save btn btn-primary hide">Save Changes</a>
+              </div>
+            </div>
+            
 
             <div class="control-group">
               <div>
@@ -166,6 +186,7 @@
   $.fn.editableform.buttons = '<button class="btn btn-primary btn-sm editable-submit" type="submit"><i class="fa fa-check"></i></button><button class="btn btn-default btn-sm editable-cancel" type="button"><i class="fa fa-remove"></i></button>';
 
   $(function() {
+
     $('.field-text-editable').editable();
     $('.field-date-editable').editable({
       format: 'dd/mm/yyyy',
@@ -183,6 +204,17 @@
         {% endfor %}
       ]
     });
+
+    $('.editable').on('save', function() {
+      $('.btn.save').removeClass('hide');
+    });
+
+    $('.btn.more-family').click(function() {
+      $('form.account-form').removeClass('hide');
+      $(this).hide();
+      return false;
+    });
+
     $('.btn.save').click(function(event) {
       $('.profile-form .editable').editable('submit', {
         url: '{% url "profile_update" user.username "personal" %}',

@@ -36,7 +36,13 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Messages <i class="fa fa-file-o"></i></a></li>
+                {% if user.is_authenticated  %}
+                {% if user.my_profile.type == "C"  %}
+                  <li><a href="{% url 'refuge_space_application_list' %}">{% trans "Booking requests" %} <i class="fa fa-archive"></i></a></li>
+                {% else %}
+                  <li><a href="{% url 'refuge_wish_list' %}">{% trans "My requests" %} <i class="fa fa-send-o"></i></a></li>
+                {% endif %}
+                {% endif %}
                 <li><a href="#">Help <i class="fa fa-life-saver"></i></a></li>
                 {% if user.is_authenticated  %}
                 {% if user.my_profile.type == "C"  %}
@@ -54,9 +60,6 @@
                           <li><a href="{% url 'refuge_space_list' %}">{% trans "All spaces" %}</a></li>
                           {% if user.my_profile.type == "C"  %}
                             <li><a href="{% url 'refuge_myspace_create' %}">{% trans "Add another space" %}</a></li>
-                            <li><a href="{% url 'refuge_space_application_list' %}">{% trans "Booking requests" %}</a></li>
-                          {% else %}
-                            <li><a href="{% url 'refuge_wish_list' %}">{% trans "Wish list" %}</a></li>
                           {% endif %}
                         
                         {% endblock %}

@@ -33,16 +33,12 @@
     }
 
     .navbar-brand {
-        padding-left: 65px;
-        background: url($imgDir + '/logo.png') no-repeat 15px center;
-        background-size: 35px;
-//        color: $navbar-color;
+        padding-left: 100px;
+        background: url($imgDir + '/myrefuge_logo.png') no-repeat 15px center;
+        background-size: auto 22px;
         font-size: 18px;
         font-weight: 600;
 
-//        &:hover, &:focus {
-//            color: #FFB4B4;
-//        }
     }
 
     .navbar-toggle {

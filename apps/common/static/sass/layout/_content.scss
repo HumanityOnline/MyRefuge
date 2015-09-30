@@ -168,8 +168,9 @@ body {
 
 .booking-list,
 .messages {
-    .media-object, .obj-replace {
+    .media-inner, .media-object, .obj-replace {
         width: 50px;
+        display: block;
     }
 }
 

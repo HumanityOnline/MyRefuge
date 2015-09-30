@@ -25,6 +25,10 @@
             background-color: $green;
         }
     }
+
+    &.red {
+        color: $blood;
+    }
 }
 
 .btn-add-form {
