@@ -17,7 +17,7 @@ class CitizenSpaceManager(gis_models.GeoManager):
     # TODO(hoatle): improve this, speed it up
     # this could help: http://www.rkblog.rk.edu.pl/w/p/shops-near-you-geographic-features-geodjango/
     # sort by distance
-    def search(self, address, date_range, guests, distance=20000, **kwargs):
+    def search(self, address, date_range, guests, distance=200000, **kwargs):
         """Search spaces basing on the address, date_range, guests, etc
         :param address the raw address
         :date_range the sequence of 2 dates: start and end date
@@ -50,6 +50,7 @@ class CitizenSpaceManager(gis_models.GeoManager):
             if country is not None:
                 country = normalize_name(country)
                 query = query.filter(country=country)
+            distance = 2000000
         current_point = geos.fromstr('POINT(%s %s)' % (address_lon, address_lat))
         distance_from_point = {'m': distance}
         query = query.filter(location__distance_lte=(current_point,
