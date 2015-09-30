@@ -39,6 +39,11 @@
                 <li><a href="#">Messages <i class="fa fa-file-o"></i></a></li>
                 <li><a href="#">Help <i class="fa fa-life-saver"></i></a></li>
                 {% if user.is_authenticated  %}
+                {% if user.my_profile.type == "C"  %}
+                  <li><a href="{% url 'refuge_myspace_list' %}">{% trans "My offered spaces" %} <i class="fa fa-map-o"></i></a></li>
+                {% else %}
+                  <li><a href="{% url 'search_home' %}">{% trans "Find a place" %} <i class="fa fa-map-o"></i></a></li>
+                {% endif %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% block profile_name %}{{ user.first_name }}{% endblock %} <span class="caret"></span></a>
                     {% block profile_navigation %}
@@ -48,7 +53,6 @@
                           <li><a href="{% url 'userena_password_change' user.username %}">{% trans "Change password" %}</a></li>
                           <li><a href="{% url 'refuge_space_list' %}">{% trans "All spaces" %}</a></li>
                           {% if user.my_profile.type == "C"  %}
-                            <li><a href="{% url 'refuge_myspace_list' %}">{% trans "My offered spaces" %}</a></li>
                             <li><a href="{% url 'refuge_myspace_create' %}">{% trans "Add another space" %}</a></li>
                             <li><a href="{% url 'refuge_space_application_list' %}">{% trans "Booking requests" %}</a></li>
                           {% else %}
