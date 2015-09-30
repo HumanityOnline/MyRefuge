@@ -100,7 +100,7 @@ class CitizenRefugeSpaceList(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return self.model._default_manager.all()
+        return self.model._default_manager.order_by('-pk').all()
 
 class CitizenRefugeMySpaceList(ListView):
     model = CitizenSpace

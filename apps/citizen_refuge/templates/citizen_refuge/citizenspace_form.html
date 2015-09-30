@@ -33,7 +33,6 @@
             <div class="media-body">
 
               <h1 class="entry-title hidden-xs">{{ citizenspace.headline }}</h1>
-              <p class="address hidden-xs">{{ citizenspace.public_address }}</p>
               <div class="row space-info">
                 <div class="col-sm-2 space-item">
                   <i class="fa fa-bed"></i><br>
@@ -49,13 +48,22 @@
             </div>
           </div>
           <hr>
-          <p>
-            <strong>Availabilities:</strong><br>
-            {% for daterange in citizenspace.daterange_set.all %}
-            From <strong>{{ daterange.start_date }}</strong> to <strong>{{ daterange.end_date }}</strong>
-            {% if not forloop.last %}<br>{% endif %}
-            {% endfor %}
-          </p>
+          <div class="row">
+            <div class="col-sm-6">
+              <p>
+                <strong>Availabilities:</strong><br>
+                {% for daterange in citizenspace.daterange_set.all %}
+                From <strong>{{ daterange.start_date }}</strong> to <strong>{{ daterange.end_date }}</strong>
+                {% if not forloop.last %}<br>{% endif %}
+                {% endfor %}
+              </p>
+            </div>
+            <div class="col-sm-6">
+              <strong>Location:</strong><br>
+              <p>{{ citizenspace.public_address }}</p>
+            </div>
+          </div>
+          
           <hr>
           <h3 class="entry-subtitle">Description</h3>
           <p>{{ citizenspace.full_description|safe|linebreaks }}</p>

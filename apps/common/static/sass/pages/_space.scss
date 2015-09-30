@@ -16,6 +16,10 @@
             margin: 0 0 30px;
         }
     }
+
+    .leaflet-container {
+        z-index: 0;
+    }
 }
 
 .space-info {
