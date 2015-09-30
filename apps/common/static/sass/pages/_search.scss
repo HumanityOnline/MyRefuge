@@ -1,13 +1,16 @@
 .search {
-    &.search-bg {
+    .search-bg {
         background-image: url($imgDir + '/main-bg.jpg');
+        margin-top: -51px;
 
         @include tera-background-format();
 
-        #body {
+        .search-bg-inner {
             background-color: rgba(0,0,0,0.1);
         }
     }
+    
+    
     
 
     .search-wrapper {

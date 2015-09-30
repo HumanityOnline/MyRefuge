@@ -5,7 +5,7 @@
 {% load common_filters %}
 
 {% block title %}{% trans "Search for places" %}{% endblock %}
-{% block body_class %}search search-bg hide-brand{% endblock %}
+{% block body_class %}search hide-brand{% endblock %}
 
 
 {% block css_ %}
@@ -15,20 +15,30 @@
 
 {% block content %}
 
-<div class="container-fluid">
-    <div class="row search-wrapper">
-        <form action="{% url 'search' %}" class="container-inner narrow form-inline search-form">
-            {% include "form/search-block.html" with form=form %}
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-    </div>
-    <div class="greeting">
-        <h1 class="title">{% trans "Welcome home" %}</h1>
-        <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
-    </div>
-    <div class="counters">
-      <h2 class="spaces-counter">{{ spaces_number }} spaces provided</h2>
-      <h2 class="refugees-counter">{{ refugees_number }} refugees registered</h2>
+<div class="search-bg">
+    <div class="container-fluid search-bg-inner fill-height"> 
+        <div class="row search-wrapper">
+            <form action="{% url 'search' %}" class="container-inner narrow form-inline search-form">
+                {% include "form/search-block.html" with form=form %}
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+        <div class="greeting">
+            <h1 class="title">{% trans "Welcome home" %}</h1>
+            <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
+        </div>
+        <div class="container-inner narrow counters">
+            <div class="row">
+                <h2 class="spaces-counter col-sm-6">
+                    <span class="number">{{ spaces_number }}</span>
+                    <span class="text">spaces provided</span>
+                </h2>
+                <h2 class="refugees-counter col-sm-6">
+                    <span class="number">{{ refugees_number }}</span>
+                    <span class="text">refugees registered</span>
+                </h2>
+            </div>
+        </div>
     </div>
 </div>
 

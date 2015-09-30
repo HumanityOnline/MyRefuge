@@ -217,6 +217,30 @@ body {
     }
 }
 
+.counters {
+    color: $white;
+    text-align: center;
+
+    .number, .text {
+        display: block;
+        font-family: "Open Sans";
+
+    }
+
+    .number {
+        font-size: 46px;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .text {
+        font-size: 24px;
+        font-weight: 300;
+        margin-bottom: 25px;
+    }
+}
+
 @media(min-width: 768px) {
 
     .profile {
