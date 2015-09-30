@@ -38,9 +38,11 @@ def location_to_latlon(location):
 def location_to_city(location):
     """find city name from location"""
     # TODO(hoatle): currently support google only, add more support
+    # fix for 123 Buckingham Palace Road, London, United Kingdom
     address_components = location.raw['address_components']
     for component in address_components:
-        if u'administrative_area_level_1' in component['types']:
+        if u'administrative_area_level_1' in component['types']\
+                or u'locality' in component['types']:
             return component['long_name']
     return None
 
@@ -57,16 +59,19 @@ def location_to_country(location):
 
 def location_to_public_address(location):
     """convert the location to public address which should not display street number but only
-    from sublocality, administrative_area_level_2, administrative_area_level_1, country
+    from route, sublocality (locality), administrative_area_level_2, administrative_area_level_1,
+    country
 
     For example:
     51 Khuong Trung, Thanh Xuan, Hanoi, Vietnam => Khuong Trung, Thanh Xuan, Hanoi, Vietnam
     """
     address_components = location.raw['address_components']
-    sub_locality = area_level_2 = area_level_1 = country = None
+    route = locality = area_level_2 = area_level_1 = country = None
     for component in address_components:
-        if u'sublocality' in component['types']:
-            sub_locality = component['long_name']
+        if u'route' in component['types']:
+            route = component['long_name']
+        if u'sublocality' in component['types'] or 'locality' in component['types']:
+            locality = component['long_name']
         elif u'administrative_area_level_2' in component['types']:
             area_level_2 = component['long_name']
         elif u'administrative_area_level_1' in component['types']:
@@ -74,7 +79,7 @@ def location_to_public_address(location):
         elif u'country' in component['types']:
             country = component['long_name']
 
-    addresses = [addr for addr in [sub_locality, area_level_2, area_level_1, country]
+    addresses = [addr for addr in [route, locality, area_level_2, area_level_1, country]
                  if addr is not None]
 
     return ', '.join(addresses)
