@@ -28,20 +28,9 @@
             <h1 class="title">{% trans "Welcome home" %}</h1>
             <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
         </div>
+        
+        
         {% if site_ready %}
-        <div class="container-inner narrow counters">
-            <div class="row">
-                <h2 class="spaces-counter col-sm-6">
-                    <span class="number">{{ spaces_number }}</span>
-                    <span class="text">spaces provided</span>
-                </h2>
-                <h2 class="refugees-counter col-sm-6">
-                    <span class="number">{{ refugees_number }}</span>
-                    <span class="text">refugees registered</span>
-                </h2>
-            </div>
-        </div>
-
         {% elif launch_date %}
 
         <div class="time-box">
@@ -57,6 +46,20 @@
         </div>
 
         {% endif %}
+
+        <div class="container-inner narrow counters">
+            <div class="row">
+                <h2 class="spaces-counter col-sm-6">
+                    <span class="number">{{ spaces_number }}</span>
+                    <span class="text">spaces provided</span>
+                </h2>
+                <h2 class="refugees-counter col-sm-6">
+                    <span class="number">{{ refugees_number }}</span>
+                    <span class="text">refugees registered</span>
+                </h2>
+            </div>
+        </div>
+        
     </div>
 </div>
 
