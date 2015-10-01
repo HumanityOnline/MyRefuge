@@ -88,7 +88,8 @@
             {% csrf_token %}
             {% include "form/checkin-block.html" with form=form guests=citizenspace.guests %}
             <div class="clearfix dv"></div>
-            <button type="submit" class="btn btn-secondary btn-block btn-lg">Request to Book</button>
+            <button type="submit" class="btn btn-secondary btn-block btn-lg" {% if not site_ready %}disabled{% endif %}>Request to Book</button>
+            {% if not site_ready %}<p class="help-text red"><br>{% trans "We aim to enable this button by 10 October 2015" %}</p>{% endif %}
           </form>
           {% else%}
             {% if user.my_profile.type == 'R' %}

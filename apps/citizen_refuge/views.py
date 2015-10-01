@@ -24,6 +24,8 @@ FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
 FORM_LIST = zip(KEYS, FORMS)
 TEMPLATES = dict(zip(KEYS, ['citizen_refuge/' + k + '.html' for k in KEYS]))
 
+READY_DATE = datetime.strptime('10-10-2015 10:10', '%d-%m-%Y %H:%M')
+
 class CitizenRefugeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
     file_storage = FileSystemStorage(location='/tmp/')
@@ -138,25 +140,32 @@ class CitizenRefugeSpaceDetail(UpdateView):
                     self.request.user.my_profile.type == 'C' and\
                     self.object.citizen.user == self.request.user
 
+    @property
+    def can_book(self):
+        return datetime.now() >= READY_DATE
+
     def form_valid(self, form):
 
-        if self.can_update:
-            daterages = DateRange.objects.filter(
-                    start_date__gte=form.cleaned_data.get('start_date'),
-                    end_date__lte=form.cleaned_data.get('end_date')
-                ).all()
+        if not self.can_book:
+            form.return_message = 'The feature is not ready, yet!'
+        else:
+            if self.can_update:
+                daterages = DateRange.objects.filter(
+                        start_date__gte=form.cleaned_data.get('start_date'),
+                        end_date__lte=form.cleaned_data.get('end_date')
+                    ).all()
 
-            if len(daterages) > 0:
-                application = Application(**form.cleaned_data)
-                application.refugee = self.request.user.refugee
-                application.space = self.object
-                application.status = 'P'
-                application.save()
+                if len(daterages) > 0:
+                    application = Application(**form.cleaned_data)
+                    application.refugee = self.request.user.refugee
+                    application.space = self.object
+                    application.status = 'P'
+                    application.save()
 
-                return HttpResponseRedirect(
-                        reverse('refuge_space_application', kwargs={'pk': application.pk}))
-            else:
-                form.return_message = 'Out of available date ranges!'
+                    return HttpResponseRedirect(
+                            reverse('refuge_space_application', kwargs={'pk': application.pk}))
+                else:
+                    form.return_message = 'Out of available date ranges!'
 
         return self.render_to_response(self.get_context_data(
                         form=form,
@@ -189,6 +198,7 @@ class CitizenRefugeSpaceDetail(UpdateView):
         }
         context['can_edit'] = self.can_edit
         context['application'] = self.application
+        context['site_ready'] = self.can_book
         return context
 
 class CitizenRefugeSpaceEdit(DetailView):
@@ -327,11 +337,13 @@ class CitizenRefugeSearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeSearchView, self).get_context_data(**kwargs)
+        current_date = datetime.now()
         context['spaces_number'] = CitizenSpace.objects.count()
         context['refugees_number'] = Refugee.objects.count() + FamilyMember.objects.count()
         context['form'] = CitizenRefugeeSearchForm()
-        context['current_date'] = datetime.now()
+        context['current_date'] = current_date
         context['launch_date'] = Launch.objects.last()
+        context['site_ready'] = current_date >= READY_DATE
         return context
 
 class LaunchView(CitizenRefugeSearchView):

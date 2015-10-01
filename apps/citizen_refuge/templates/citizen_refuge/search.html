@@ -28,7 +28,7 @@
             <h1 class="title">{% trans "Welcome home" %}</h1>
             <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
         </div>
-        {% if not launch_date %}
+        {% if site_ready %}
         <div class="container-inner narrow counters">
             <div class="row">
                 <h2 class="spaces-counter col-sm-6">
@@ -104,40 +104,44 @@
             var checkin = $from.data('datepicker'),
                 checkout = $to.data('datepicker');
 
-            var countup = $('#countup').FlipClock({
-                clockFace: 'DailyCounter',
-                autoStart: false,
-            });
-            var countdown = $('#countdown').FlipClock({
-                clockFace: 'DailyCounter',
-                countdown: true,
-                autoStart: false,
-            });
+            {% if not site_ready %}
 
-            function startTimer() {
-                var currentDate = moment(),
-                    launchDate = currentDate;
+                var countup = $('#countup').FlipClock({
+                    clockFace: 'DailyCounter',
+                    autoStart: false,
+                });
+                var countdown = $('#countdown').FlipClock({
+                    clockFace: 'DailyCounter',
+                    countdown: true,
+                    autoStart: false,
+                });
 
-                {% if launch_date %}
-                    launchDate = moment('{{launch_date.start_date|date:"d-m-Y H:i"}}', 'DD-MM-YYYY HH:mm');
-                    currentDate = moment('{{current_date|date:"d-m-Y H:i"}}', 'DD-MM-YYYY HH:mm');
-                {% endif %}
+                function startTimer() {
+                    var currentDate = moment(),
+                        launchDate = currentDate;
+
+                    {% if launch_date %}
+                        launchDate = moment('{{launch_date.start_date|date:"d-m-Y H:i"}}', 'DD-MM-YYYY HH:mm');
+                        currentDate = moment('{{current_date|date:"d-m-Y H:i"}}', 'DD-MM-YYYY HH:mm');
+                    {% endif %}
 
 
-                var diff = currentDate.diff(launchDate);
+                    var diff = currentDate.diff(launchDate);
 
 
-                countup.setTime(diff/1000);
-                countup.start();
+                    countup.setTime(diff/1000);
+                    countup.start();
 
-                var releaseDate  = moment('10-10-2015 10:10', 'DD-MM-YYYY HH:mm'),
-                    diff = releaseDate.diff(currentDate);
+                    var releaseDate  = moment('10-10-2015 10:10', 'DD-MM-YYYY HH:mm'),
+                        diff = releaseDate.diff(currentDate);
 
-                countdown.setTime(diff/1000);
-                countdown.start();
-            }
+                    countdown.setTime(diff/1000);
+                    countdown.start();
+                }
 
-            startTimer();
+                startTimer();
+
+            {% endif %}
         });
     </script>
 {% endblock %}
