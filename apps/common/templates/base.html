@@ -51,7 +51,15 @@
                   <li><a href="{% url 'search_home' %}">{% trans "Find a place" %} <i class="fa fa-map-o"></i></a></li>
                 {% endif %}
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% block profile_name %}{{ user.first_name }}{% endblock %} <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      {% block profile_name %}
+                        {% if user.first_name %}
+                          {{ user.first_name }}
+                        {% else %}
+                          {{user}}
+                        {% endif %}
+                      {% endblock %} <span class="caret"></span>
+                    </a>
                     {% block profile_navigation %}
                       <ul class="dropdown-menu">
                         <li><a href="{% url 'userena_profile_detail' user.username %}">{% trans "Account" %}</a></li>

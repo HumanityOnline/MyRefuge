@@ -4,13 +4,18 @@
 {% load url from future %}
 {% load common_filters %}
 
-{% block title %}{% trans "Search for places" %}{% endblock %}
+{% block title %}{% trans "Launch MyRefuge" %}{% endblock %}
 {% block body_class %}search hide-brand{% endblock %}
 
 
 {% block css_ %}
 <link rel="stylesheet" href="{% static "bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" %}" />
 <link rel="stylesheet" href="{% static "flipclock/compiled/flipclock.css" %}" />
+<style type="text/css">
+    html {
+        height: auto;
+    }
+</style>
 {% endblock %}
 
 
@@ -28,22 +33,6 @@
             <h1 class="title">{% trans "Welcome home" %}</h1>
             <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
         </div>
-        {% if not launch_date %}
-        <div class="container-inner narrow counters">
-            <div class="row">
-                <h2 class="spaces-counter col-sm-6">
-                    <span class="number">{{ spaces_number }}</span>
-                    <span class="text">spaces provided</span>
-                </h2>
-                <h2 class="refugees-counter col-sm-6">
-                    <span class="number">{{ refugees_number }}</span>
-                    <span class="text">refugees registered</span>
-                </h2>
-            </div>
-        </div>
-
-        {% else %}
-
         <div class="time-box">
             <div class="time-inner">
                 <div class="time-counter" id="countup"></div>
@@ -55,10 +44,24 @@
             </div>
             <p class="help-text">on 10 October, 10:10am, refugee seekers will be able to contact refuge providers if there are 2,000 available beds on MyRefuge</p>
         </div>
-
-        {% endif %}
     </div>
 </div>
+
+<div class="launch overlay">
+    <div class="overlay-inner">
+        <div class="overlay-cover">
+            <div class="overlay-content">
+                <p>
+                    <a href="" class="btn btn-launch">LAUNCH</a><br>
+                    <a href="" class="logo">&nbsp;</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not launch_date %}
+{% endif %}
 
 {% endblock %}
 
@@ -136,8 +139,19 @@
                 countdown.setTime(diff/1000);
                 countdown.start();
             }
+            {% if launch_date %}
+                startTimer();
+            {% endif %}
 
-            startTimer();
+
+            $('.btn.btn-launch').on('click', function() {
+                $.get('{% url "launch_update" %}');
+
+                $('.launch.overlay').addClass('close');
+
+                startTimer();
+                return false;
+            });
         });
     </script>
 {% endblock %}

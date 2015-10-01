@@ -1,3 +1,41 @@
+.overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+
+    .overlay-inner {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+
+    .overlay-cover {
+        display: table-row;
+    }
+
+    .overlay-content {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        color: $white;
+        p {
+            &.free {
+                margin: 0;
+            }
+            img {
+                margin-bottom: 0;
+            }
+        }
+        &.text-wrap {
+            .text.free {
+                margin-top: 5px;
+            }
+        }
+    }
+}
 
 .help-text {
     @extend .font-body;
@@ -30,5 +68,73 @@
         margin-top: -10px;
         z-index: 1;
         text-align: center;
+    }
+}
+
+.time-box {
+    text-align: center;
+    color: $white;
+    max-width: 670px;
+    margin: 0 auto;
+
+    .time-inner {
+        @include clearfix();
+        margin: 20px 0;
+
+        text-align: left;
+    }
+
+    .time-counter {
+        max-width: 465px;
+        margin: 15px auto;
+        display: inline-block;
+        float: left;
+    }
+
+    .extra-text {
+        display: inline-block;
+        line-height: 35px;
+        margin: 15px;
+    }
+
+    p {
+        margin: 15px 0;
+    }
+
+    .flip-clock-wrapper ul {
+        width: 10px;
+        height: 30px;
+        font-size: 15px;
+        line-height: 15px;
+
+        li {
+            line-height: 28px;
+            a div div.inn {
+                font-size: 15px;
+            }
+        }
+    }
+
+    .flip-clock-divider {
+        height: 30px;
+        width: 20px;
+
+        .flip-clock-label {
+            color: $white;
+            display: none;
+        }
+    }
+
+    .flip-clock-dot {
+        @include box-shadow(0 0 0);
+        height: 5px;
+        width: 5px;
+        border-radius: 0 0 0;
+        &.top {
+            top: 10px;
+        }
+        &.bottom {
+            bottom: 0px;
+        }
     }
 }

@@ -1,0 +1,49 @@
+.launch {
+    background-color: $dark;
+    background-image: url($imgDir + '/main-bg.jpg');
+    position: fixed;
+    z-index: 10;
+
+    @include tera-background-format();
+
+
+    .btn {
+        &.btn-launch {
+            background-color: rgba(255, 255, 255, 0.3);
+            width: 150px;
+            height: 150px;
+            line-height: 150px;
+            border-radius: 50%;
+            padding: 0;
+            color: #2F2D2D;
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: 20px;
+            border: 2px solid $white;
+            transition: all 0.3s linear;
+
+            &:hover {
+                color: $white;
+                background-color: rgba(0, 0, 0, 0.3);
+            }
+        }
+    }
+
+    .logo {
+        background: {
+            color: transparent;
+            image: url($imgDir + '/myrefuge_logo.png');
+            size: auto 50px;
+            repeat: no-repeat;
+            position: center center;
+        }
+        height: 50px;
+        display: block;
+    }
+
+    &.close {
+        transition: visibility 0s 1s, opacity 1s linear;
+        opacity: 0;
+        visibility: hidden;
+    }
+}

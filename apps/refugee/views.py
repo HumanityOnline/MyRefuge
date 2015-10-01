@@ -116,9 +116,10 @@ class RefugeDetail(TemplateView):
     def get_context_data(self, form=None, **kwargs):
         context = super(RefugeDetail, self).get_context_data(**kwargs)
         context['profile'] = self.request.user.my_profile
-        context['citizen'] = self.request.user.refugee
-        context['family_members'] = self.request.user.refugee.familymember_set.all()
-        context['family_form'] = form or RefugeFamilyCreateForm()
+        if hasattr(self.request.user, 'refugee'):
+            context['citizen'] = self.request.user.refugee
+            context['family_members'] = self.request.user.refugee.familymember_set.all()
+            context['family_form'] = form or RefugeFamilyCreateForm()
         context['gender_list'] = GENDER[1:]
         context['countries_list'] = countries
         return context

@@ -3,7 +3,7 @@ from userena.forms import EditProfileForm, SignupForm
 from django.forms.models import inlineformset_factory, formset_factory
 from address.forms import AddressField
 
-from .models import CitizenRefuge, CitizenSpace, DateRange, SpacePhoto, Application
+from .models import CitizenRefuge, CitizenSpace, DateRange, SpacePhoto, Application, Launch
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS
 
 
@@ -160,3 +160,11 @@ class ApplicationStatusForm(forms.ModelForm):
         model = Application
 
         fields = ('status', )
+
+
+class LaunchForm(forms.ModelForm):
+    class Meta:
+        model = Launch
+
+        fields = ('start_date', )
+

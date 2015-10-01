@@ -108,3 +108,7 @@ class Message(BaseMessage):
     application = models.ForeignKey(Application)
 
     objects = MessageManager()
+
+
+class Launch(models.Model):
+    start_date = models.DateTimeField()

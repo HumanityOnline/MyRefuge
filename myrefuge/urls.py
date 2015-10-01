@@ -21,12 +21,16 @@ from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceL
                                   CitizenRefugeSpaceApplication, CitizenRefugeMySpaceList,
                                   CitizenRefugeSpaceMessage, CitizenRefugeSpaceApplicationList,
                                   CitizenRefugeSpaceStatus, CitizenRefugeSearchResultView,
-                                  CitizenRefugeSpaceEdit, CitizenRefugeSpaceCreate)
+                                  CitizenRefugeSpaceEdit, CitizenRefugeSpaceCreate,
+                                  LaunchView, LaunchUpdateView)
 
 urlpatterns = [
     url(r'^home/$', 'common.views.home', name='home'),
     url(r'^$', CitizenRefugeSearchView.as_view(), name='search_home'),
     url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),
+    url(r'^launch/update/$', LaunchUpdateView.as_view(), name='launch_update'),
+    url(r'^launch/', LaunchView.as_view(), name='launch'),
+
 
     url(r'^accounts/(?P<username>(?!signout|signup|signin)[\@\.\w-]+)/update/'+
                         '(?P<type>(personal|family-delete|family))?/',

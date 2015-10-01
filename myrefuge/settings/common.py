@@ -130,7 +130,8 @@ BOWER_INSTALLED_APPS = (
     'fontawesome',
     'bootstrap-datepicker#1.4.1',
     'leaflet',
-    'x-editable#1.5.1'
+    'x-editable#1.5.1',
+    'FlipClock#0.7.7',
 )
 
 

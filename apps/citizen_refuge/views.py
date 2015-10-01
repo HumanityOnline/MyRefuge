@@ -12,10 +12,11 @@ from django.contrib.auth.decorators import login_required, permission_required
 from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
-                        Application, Message)
+                        Application, Message, Launch)
 from refugee.models import Refugee, FamilyMember
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
 from django.core.exceptions import PermissionDenied
+from datetime import datetime
 
 
 KEYS = ['userena', 'about', 'space']
@@ -329,7 +330,41 @@ class CitizenRefugeSearchView(TemplateView):
         context['spaces_number'] = CitizenSpace.objects.count()
         context['refugees_number'] = Refugee.objects.count() + FamilyMember.objects.count()
         context['form'] = CitizenRefugeeSearchForm()
+        context['current_date'] = datetime.now()
+        context['launch_date'] = Launch.objects.last()
         return context
+
+class LaunchView(CitizenRefugeSearchView):
+    template_name = 'citizen_refuge/launch.html'
+
+    @property
+    def is_superuser(self):
+        return self.request.user.is_superuser
+
+    def get(self, request, *args, **kwargs):
+        if not self.is_superuser:
+            raise PermissionDenied
+
+        return self.render_to_response(self.get_context_data(**kwargs))
+
+class LaunchUpdateView(TemplateView):
+    template_name = None
+
+    @property
+    def is_superuser(self):
+        return self.request.user.is_superuser
+
+    def get(self, request, *args, **kwargs):
+        if not self.is_superuser:
+            raise PermissionDenied
+
+        if not Launch.objects.first():
+            launch = Launch(start_date=datetime.now())
+            launch.save()
+            return JsonResponse({'success': True})
+
+        return JsonResponse({'success': False})
+
 
 
 class CitizenRefugeSearchResultView(FormView):
