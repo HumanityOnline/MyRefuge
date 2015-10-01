@@ -3,7 +3,7 @@ Heroku Staging Deployment
 
 #install heroku toolbelt
 
-update inital-data.json and prod.py for the right domain
+update initial-data.json and prod.py for the right domain
 
 # Fill heroku password here
 
@@ -15,6 +15,7 @@ $ heroku login
 ```
 $ heroku apps:create myrefuge_test
 $ heroku addons:create newrelic
+$ heroku addons:create memcachier:dev
 ```
 
 #To use with postgresql
@@ -68,11 +69,11 @@ $ heroku config:set BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-mu
 
 $ git push heroku master
 
-$ heroku run python manage.py migrate;
-$ heroku run python manage.py migrate auth;
-$ heroku run python manage.py migrate sites;
-$ heroku run python manage.py migrate address;
-$ heroku run python manage.py migrate;
+$ heroku run python manage.py migrate
+$ heroku run python manage.py migrate auth
+$ heroku run python manage.py migrate sites
+$ heroku run python manage.py migrate address
+$ heroku run python manage.py migrate
 $ heroku run python manage.py check_permissions
 ```
 
