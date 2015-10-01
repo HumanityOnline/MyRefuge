@@ -3,6 +3,7 @@ django-formtools
 django-sekizai
 django-userena
 django-select-multiple-field
+django-countries
 dj-database-url
 django-bower
 django-leaflet
