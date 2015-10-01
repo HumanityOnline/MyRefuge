@@ -122,8 +122,8 @@
                     launchDate = currentDate;
 
                 {% if launch_date %}
-                    launchDate = moment('{{launch_date.start_date|date:"d-m-Y H:i"}}', 'DD-MM-YYYY HH:mm');
-                    currentDate = moment('{{current_date|date:"d-m-Y H:i"}}', 'DD-MM-YYYY HH:mm');
+                    launchDate = moment('{{launch_date.start_date|date:"d-m-Y H:i:s"}}', 'DD-MM-YYYY HH:mm:ss');
+                    currentDate = moment('{{current_date|date:"d-m-Y H:i:s"}}', 'DD-MM-YYYY HH:mm:ss');
                 {% endif %}
 
 
@@ -133,7 +133,7 @@
                 countup.setTime(diff/1000);
                 countup.start();
 
-                var releaseDate  = moment('10-10-2015 10:10', 'DD-MM-YYYY HH:mm'),
+                var releaseDate  = moment('10-10-2015 10:10:00', 'DD-MM-YYYY HH:mm:ss'),
                     diff = releaseDate.diff(currentDate);
 
                 countdown.setTime(diff/1000);
