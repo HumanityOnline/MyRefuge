@@ -4,6 +4,10 @@
     border: 0 none;
     border-bottom: 1px solid $gray-darken;
 
+    .search & {
+        border-bottom: 0 none;
+    }
+
     border-radius: 0 0 0;
 
     .navbar-nav {

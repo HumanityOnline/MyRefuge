@@ -16,7 +16,7 @@ from .models import Refugee, FamilyMember
 from citizen_refuge.models import Application
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import ProcessFormView
-from common.helpers import GENDER
+from common.helpers import GENDER, APPLICATION_STATUS
 from django.core.exceptions import PermissionDenied
 
 KEYS = ['userena', 'basic', 'family', 'address', 'country']
@@ -93,6 +93,12 @@ class RefugeSpaceWishList(ListView):
             return self.model._default_manager.filter(refugee=self.request.user.refugee)
 
         return self.model._default_manager.none()
+
+    def get_context_data(self, **kwargs):
+        context = super(RefugeSpaceWishList, self).get_context_data(**kwargs)
+        context['status_list'] = APPLICATION_STATUS
+
+        return context
 
 class RefugeDetail(TemplateView):
     template_name = 'common/profile_detail.html'

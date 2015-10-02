@@ -211,13 +211,21 @@ body {
 }
 
 .booking-list {
+    &.border-top {
+        border-top: 1px solid $blur;
+    }
     .media {
         border-bottom: 1px solid $blur;
         overflow: visible;
+        padding-bottom: 15px;
 
         &:last-child {
             border-bottom: 0 none;
+            padding-bottom: 0;
         }
+    }
+    .media-inner {
+        margin: 0 auto;
     }
     .media-object {
         margin: 15px auto;

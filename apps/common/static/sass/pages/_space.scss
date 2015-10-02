@@ -49,7 +49,11 @@
     width: 100%;
     display: block;
     height: 300px;
-    margin-top: -51px;
+    
+
+    .hide-brand & {
+        margin-top: -51px;
+    }
 
     @include tera-background-format();
 }
