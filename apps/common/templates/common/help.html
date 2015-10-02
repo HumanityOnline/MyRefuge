@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n sekizai_tags staticfiles %}
+{% load common_filters %}
+
+{% block title %}MyRefuge - {% trans "Help" %}{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="container-inner narrow">
+        <h1 class="entry-title">Help</h1>
+        <p>
+            MyRefuge is the AirBnB for refugees.<br><br>
+
+            You can currently register as a refuge provider (an awesome person who wants to share their home with a refugee) and as a refugee. Soon, refugees will be able to contact refuge providers directly and request to stay in their home.<br><br>
+
+            To ensure that this works well we are currently working on<br><br>
+
+            <ul>
+                <li>Identity authentication</li>
+                <li>Refugee status confirmation</li>
+                <li>Integration of NGOs so that they can support refuge seekers and refuge providers forming relationships </li>
+            </ul>
+
+            If you have any questions or suggestions about MyRefuge, or if you'd like to work with us, please message us on <a href="https://www.facebook.com/MyRefugeApp">https://www.facebook.com/MyRefugeApp</a><br>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

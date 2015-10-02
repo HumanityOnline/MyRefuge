@@ -74,81 +74,51 @@
 .time-box {
     text-align: center;
     color: $white;
-    max-width: 670px;
+    max-width: 460px;
     margin: 0 auto;
 
     .time-inner {
         @include clearfix();
         margin: 20px 0;
-
+        padding: 10px 20px;
+        background-color: rgba(86, 86, 86, 0.5);
         text-align: left;
     }
 
+    .time-block {
+        display: inline-block;
+        text-align: center;
+        margin: 0 10px;
+
+        span {
+            font-weight: 600;
+            font-size: 16px;
+        }
+    }
+
     .time-counter {
-        max-width: 465px;
+        width: 100%;
         margin: 15px auto;
         display: inline-block;
-        float: left;
+        text-align: center;
     }
 
     .extra-text {
-        display: inline-block;
-        line-height: 35px;
+        text-align: center;
+        line-height: 20px;
         margin: 15px;
+        font-weight: 600;
+
+        a {
+            color: $white;
+            text-decoration: underline;
+            font-weight: 400;
+            font-size: 13px;
+        }
     }
 
     p {
         margin: 15px 0;
-    }
-
-    .flip-clock-wrapper ul {
-        width: 10px;
-        height: 30px;
-        font-size: 15px;
-        line-height: 15px;
-
-        li {
-            line-height: 28px;
-            a div div.inn {
-                font-size: 15px;
-            }
-        }
-    }
-
-    .flip-clock-divider {
-        height: 30px;
-        width: 20px;
-
-        .flip-clock-label {
-            color: $white;
-            display: none;
-        }
-
-        &.days {
-            .flip-clock-label {
-                display: block;
-            }
-        }
-
-        &.hours {
-            .flip-clock-label {
-                color: $white;
-                display: none;
-            }
-        }
-    }
-
-    .flip-clock-dot {
-        @include box-shadow(0 0 0);
-        height: 5px;
-        width: 5px;
-        border-radius: 0 0 0;
-        &.top {
-            top: 10px;
-        }
-        &.bottom {
-            bottom: 0px;
-        }
     }
 }
 
@@ -162,5 +132,20 @@
     }
     &.A {
         color: $green;
+    }
+}
+
+@media(min-width: 768px) {
+
+    .time-box {
+        .time-counter {
+            width: auto;
+            float: left;
+        }
+        .extra-text {
+            max-width: 140px;
+            display: inline-block;
+            text-align: left;
+        }
     }
 }

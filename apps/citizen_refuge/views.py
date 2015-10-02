@@ -344,6 +344,7 @@ class CitizenRefugeSearchView(TemplateView):
         context['current_date'] = current_date
         context['launch_date'] = Launch.objects.last()
         context['site_ready'] = current_date >= READY_DATE
+        context['final_date'] = READY_DATE
         return context
 
 class LaunchView(CitizenRefugeSearchView):

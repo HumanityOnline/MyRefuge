@@ -5,8 +5,9 @@ from django.core.exceptions import PermissionDenied
 from citizen_refuge.views import (CitizenRefugeDetail as crd, CitizenRefugeDetailUpdate as crdu)
 from refugee.views import (RefugeDetail as rd, RefugeDetailUpdate as rdu)
 
-from django.views.generic import TemplateView
+from django.views.generic import DetailView, TemplateView
 from django.conf import settings
+from .models import Page
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -33,3 +34,13 @@ def profile_update(request, username, **kwargs):
     if user_type == 'C':
         return crdu.as_view()(request, **kwargs)
     return rdu.as_view()(request, **kwargs)
+
+
+class PageView(DetailView):
+    model = Page
+    template_name = 'common/page.html'
+
+# for now
+
+class HelpView(TemplateView):
+    template_name = 'common/help.html'

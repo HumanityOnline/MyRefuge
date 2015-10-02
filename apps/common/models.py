@@ -27,3 +27,7 @@ class UserProfile(UserenaLanguageBaseProfile):
 class Photo(models.Model):
     image = models.ImageField(upload_to=UniqueMediaPath('gallery'))
     profile = models.ForeignKey(UserProfile)
+
+class Page(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()

@@ -10,7 +10,6 @@
 
 {% block css_ %}
 <link rel="stylesheet" href="{% static "bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" %}" />
-<link rel="stylesheet" href="{% static "flipclock/compiled/flipclock.css" %}" />
 {% endblock %}
 
 
@@ -28,25 +27,6 @@
             <h1 class="title">{% trans "Welcome home" %}</h1>
             <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
         </div>
-        
-        
-        {% if site_ready %}
-        {% elif launch_date %}
-
-        <div class="time-box">
-            <div class="time-inner">
-                <div class="time-counter" id="countup"></div>
-                <span class="extra-text">{% trans "Since launch" %}</span>
-            </div>
-            <div class="time-inner">
-                <div class="time-counter" id="countdown"></div>
-                <p class="extra-text">{% trans "Until" %} <strong>10/10/2015 10:10:00</strong></p>
-            </div>
-            <p class="help-text">on 10 October, 10:10am, refugee seekers will be able to contact refuge providers if there are 2,000 available beds on MyRefuge</p>
-        </div>
-
-        {% endif %}
-
         <div class="container-inner narrow counters">
             <div class="row">
                 <h2 class="spaces-counter col-sm-6">
@@ -59,6 +39,17 @@
                 </h2>
             </div>
         </div>
+        
+        {% if site_ready %}
+        {% elif launch_date %}
+        <div class="time-box">
+            <div class="time-inner">
+                <div class="time-counter" id="countdown"></div>
+                <p class="extra-text">{% trans "Until host requests enabled." %} <a href="{% url 'myrefuge_help' %}">{% trans "Learn more" %}</a></p>
+            </div>
+            <!-- <p class="help-text">on 10 October, 10:10am, refugee seekers will be able to contact refuge providers if there are 2,000 available beds on MyRefuge</p> -->
+        </div>
+        {% endif %}
 
     </div>
 </div>
@@ -70,7 +61,7 @@
     <script src="{% static "js/jquery.geocomplete.min.js" %}" type="text/javascript"></script>
     <script src="{% static "address/js/address.js" %}" type="text/javascript"></script>
     <script src="{% static "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" %}" type="text/javascript"></script>
-    <script src="{% static "flipclock/compiled/flipclock.min.js" %}" type="text/javascript"></script>
+    <script src="{% static "jquery.countdown/dist/jquery.countdown.min.js" %}" type="text/javascript"></script>
 
     <script type="text/javascript">
         whenAvailable('google', function() {
@@ -108,38 +99,16 @@
                 checkout = $to.data('datepicker');
 
             {% if not site_ready %}
-
-                var countup = $('#countup').FlipClock({
-                    clockFace: 'DailyCounter',
-                    autoStart: false,
-                });
-                var countdown = $('#countdown').FlipClock({
-                    clockFace: 'DailyCounter',
-                    countdown: true,
-                    autoStart: false,
-                });
-
                 function startTimer() {
-                    var currentDate = moment(),
-                        launchDate = currentDate;
-
-                    {% if launch_date %}
-                        launchDate = moment('{{launch_date.start_date|date:"d-m-Y H:i:s"}}', 'DD-MM-YYYY HH:mm:ss');
-                        currentDate = moment('{{current_date|date:"d-m-Y H:i:s"}}', 'DD-MM-YYYY HH:mm:ss');
-                    {% endif %}
-
-
-                    var diff = currentDate.diff(launchDate);
-
-
-                    countup.setTime(diff/1000);
-                    countup.start();
-
-                    var releaseDate  = moment('10-10-2015 10:10:00', 'DD-MM-YYYY HH:mm:ss'),
-                        diff = releaseDate.diff(currentDate);
-
-                    countdown.setTime(diff/1000);
-                    countdown.start();
+                    $('#countdown').countdown('{{final_date|date:"Y/m/d H:i:s"}}',
+                        function(event) {
+                            $(this).html(event.strftime(
+                                '<span class="time-block"><span>%D</span><br>days</span>' +
+                                '<span class="time-block"><span>%H</span><br>hours</span></span>' +
+                                '<span class="time-block"><span>%M</span><br>minutes</span></span>' +
+                                '<span class="time-block"><span>%S</span><br>seconds</span></span>'));
+                        }
+                    );
                 }
 
                 startTimer();

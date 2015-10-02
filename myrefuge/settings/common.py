@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django_wysiwyg',
     'address',
     'django_countries',
     'djangobower',
@@ -131,7 +132,7 @@ BOWER_INSTALLED_APPS = (
     'bootstrap-datepicker#1.4.1',
     'leaflet',
     'x-editable#1.5.1',
-    'FlipClock#0.7.7',
+    'jquery.countdown#2.1.0',
 )
 
 
