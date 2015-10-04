@@ -27,6 +27,19 @@ class CitizenRefuge(models.Model):
     def __unicode__(self):
         return self.__repr__()
 
+class Ngo(models.Model):
+    name = models.CharField(max_length=255)
+    url = models.URLField()
+    location = models.CharField(max_length=255)
+    postcode = models.CharField(max_length=10)
+    latitude = models.CharField(max_length=20)
+    longitude = models.CharField(max_length=20)
+    area_working = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    other = models.CharField(max_length=255)
+    charity_no = models.CharField(max_length=255)
+    is_christian_org = models.BooleanField()
+
 class CitizenSpace(models.Model):
     headline = models.CharField(max_length=255)
     full_description = models.TextField()
