@@ -18,6 +18,7 @@ from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, G
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 
+import mandrill
 
 KEYS = ['userena', 'about', 'space']
 FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
@@ -63,6 +64,10 @@ class CitizenRefugeSignupWizard(SessionWizardView):
         space.citizen = citizen
         space.save()
 
+        # Send an email to local NGO if within the area of the space.
+        self.findNGOs(space.latitude, space.longitude, space.id)
+
+
         for dataset in self.image_form.cleaned_data:
             if len(dataset):
                 sp = SpacePhoto(image=dataset.get('image'), space=space)
@@ -75,6 +80,55 @@ class CitizenRefugeSignupWizard(SessionWizardView):
                 daterage.save()
 
         return HttpResponseRedirect(reverse('userena_signup_complete', kwargs={'username': user.username}))
+
+
+    def createMsg():
+        print("creating message")
+        return 'A message'
+
+
+
+
+    def SendEmail(ngoName):
+        #conn = sqlite3.connect(ngo.db)
+        #c = conn.cursor()
+        #ngo_email, ngo_name = c.execute(SELECT ngo_email,ngo_name FROM ngo WHERE ngo_name = {}.format(ngoName)
+        try:
+            mandrill_client = mandrill.Mandrill(API_KEY)
+            message = {
+                text=this.createMsg(),
+                subject="New MyRefuge Space available",
+                from_email="main@MyRefuge.com",
+                from_name="My Refuge",
+                to=[[ngo_email,ngo_name],[]],
+                header="MyRefuge Space Available",
+                important=True
+            }
+
+        except mandrill.Error, e:
+            pass
+
+
+    def findNGOs(spaceLat, spaceLng, spaceId):
+
+
+        //NGOconn = sqlite3.connect(NGOs+.db)
+        //NGOcursor = NGOconn.cursor()
+
+        #SpaceLat and SpaceLng are In miles
+
+
+        squareArea = 1
+
+
+        for id, lgn, lat in NGOcursor(SELECT id, longitude, latitude FROM  ngo)
+            if (spaceLng-squareArea) > (lng) and (spaceLng+squareArea) < (lng):
+
+                if (spaceLat-squareArea) > (lat) and (spaceLat+squareArea) < (lat):
+
+                    self.SendEmail(id, spaceId)
+
+
 
     def post(self, *args, **kwargs):
         if self.request.POST.get('citizen_refuge_signup_wizard-current_step', None) == 'space':
