@@ -13,12 +13,13 @@ from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
                         Application, Message, Launch)
+from citizen_refuge.models import Ngo
 from refugee.models import Refugee, FamilyMember
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 
-import mandrill
+from django.core.mail import EmailMultiAlternatives
 
 KEYS = ['userena', 'about', 'space']
 FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
@@ -81,32 +82,34 @@ class CitizenRefugeSignupWizard(SessionWizardView):
 
         return HttpResponseRedirect(reverse('userena_signup_complete', kwargs={'username': user.username}))
 
-
-    def createMsg():
-        print("creating message")
-        return 'A message'
-
-
-
-
-    def SendEmail(ngoName):
-        #conn = sqlite3.connect(ngo.db)
-        #c = conn.cursor()
-        #ngo_email, ngo_name = c.execute(SELECT ngo_email,ngo_name FROM ngo WHERE ngo_name = {}.format(ngoName)
+        
+   def createMsg(self, spaceId):
+        msg = “New Space has been add close to your location/nhttp://myrefuge.world/refuge-spaces/{}/ /nFrom/n MyRefuge”.format(spaceId)
+        return Msg
+        
+    def SendEmail(self, space_id, ngoName):
+        email_msg = self.createMsg(space_id)
+        ngoEmail = ""
         try:
-            mandrill_client = mandrill.Mandrill(API_KEY)
-            message = {
-                text=this.createMsg(),
-                subject="New MyRefuge Space available",
-                from_email="main@MyRefuge.com",
-                from_name="My Refuge",
-                to=[[ngo_email,ngo_name],[]],
-                header="MyRefuge Space Available",
-                important=True
-            }
+            msg = EmailMultiAlternatives(subject="MyRefuge new room avaliable near",body=email_msg,from_email="",to=ngoEmail)
+            msg.send()
+            response = msg.mandrill_response()
+            if response is None:
+                print("Error while sending an email")
+            else:
+                print("Success while sending")
+        except Exception e:
+            print(e)
 
-        except mandrill.Error, e:
-            pass
+
+    def findNGOs(self, spaceLat, spaceLng, spaceId):
+        latitude_range = 0.8
+        longitude_range = 0.8
+        ngos = Ngo.objects.filter(latitude__range=(spaceLat-latitude_range,spaceLat+latitude_range),
+            longitude__range=(spaceLng-longitude_range,spaceLng+longitude_range))
+
+        for ngo in ngos:
+            self.SendEmail(spaceId,ngo.email)
 
 
     def findNGOs(spaceLat, spaceLng, spaceId):
