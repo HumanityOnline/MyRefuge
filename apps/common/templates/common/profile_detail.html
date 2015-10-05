@@ -55,8 +55,8 @@
               <form class="editableform family-form media media-center" data-pk="{{family_member.id}}">
                 <a href="#" class="delete btn pull-right red"><i class="fa fa-trash"></i></a>
                 <div class="media-left">
-                  <div class="media-inner" href="#">
-                    <img class="media-object" src="{{family_member.image}}" alt="{{ profile.user.username }}">
+                  <div class="media-inner" href="{{family_member.image.url}}">
+                    <img class="media-object" src="{{family_member.image.url}}" alt="{{ family_member.name }}">
                   </div>
                 </div>
                 <div class="media-body">
