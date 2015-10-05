@@ -30,6 +30,12 @@ class Refugee(models.Model):
         choices=tuple(countries),
     )
 
+    def __repr__(self):
+        return '<Refugee(pk={pk}, user={user})>'.format(pk=self.pk, user=self.user)
+
+    def __unicode__(self):
+        return self.__repr__()
+
 class FamilyMember(models.Model):
     name = models.CharField(max_length=1000)
     dob = models.DateField()

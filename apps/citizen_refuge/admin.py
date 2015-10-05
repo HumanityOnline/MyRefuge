@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CitizenSpace, DateRange, SpacePhoto
+from .models import CitizenRefuge, CitizenSpace, DateRange, SpacePhoto
 
 
 class DateRangeInline(admin.StackedInline):
@@ -22,3 +22,4 @@ class CitizenSpaceAdmin(admin.ModelAdmin):
     readonly_fields = ('public_address', 'city', 'country',)
 
 admin.site.register(CitizenSpace, CitizenSpaceAdmin)
+admin.site.register(CitizenRefuge)
