@@ -13,12 +13,13 @@ from common.forms import UserenaEditProfileForm
 from .forms import *
 from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
                         Application, Message, Launch)
+from citizen_refuge.models import Ngo
 from refugee.models import Refugee, FamilyMember
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 
-#import mandrill
+from django.core.mail import EmailMultiAlternatives
 
 KEYS = ['userena', 'about', 'space']
 FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
@@ -63,9 +64,9 @@ class CitizenRefugeSignupWizard(SessionWizardView):
         space = space_form.save(commit=False)
         space.citizen = citizen
         space.save()
-        #
-        # # Send an email to local NGO if within the area of the space.
-        # self.findNGOs(space.latitude, space.longitude, space.id)
+
+        # Send an email to local NGO if within the area of the space.
+        self.findNGOs(space.latitude, space.longitude, space.id)
 
 
         for dataset in self.image_form.cleaned_data:
@@ -80,53 +81,55 @@ class CitizenRefugeSignupWizard(SessionWizardView):
                 daterage.save()
 
         return HttpResponseRedirect(reverse('userena_signup_complete', kwargs={'username': user.username}))
-    #
-    #
-    # def createMsg():
-    #     print("creating message")
-    #     return 'A message'
+
+        
+   def createMsg(self, spaceId):
+        msg = “New Space has been add close to your location/nhttp://myrefuge.world/refuge-spaces/{}/ /nFrom/n MyRefuge”.format(spaceId)
+        return Msg
+        
+    def SendEmail(self, space_id, ngoName):
+        email_msg = self.createMsg(space_id)
+        ngoEmail = ""
+        try:
+            msg = EmailMultiAlternatives(subject="MyRefuge new room avaliable near",body=email_msg,from_email="",to=ngoEmail)
+            msg.send()
+            response = msg.mandrill_response()
+            if response is None:
+                print("Error while sending an email")
+            else:
+                print("Success while sending")
+        except Exception e:
+            print(e)
 
 
+    def findNGOs(self, spaceLat, spaceLng, spaceId):
+        latitude_range = 0.8
+        longitude_range = 0.8
+        ngos = Ngo.objects.filter(latitude__range=(spaceLat-latitude_range,spaceLat+latitude_range),
+            longitude__range=(spaceLng-longitude_range,spaceLng+longitude_range))
 
-    #
-    # def SendEmail(ngoName):
-    #     #conn = sqlite3.connect(ngo.db)
-    #     #c = conn.cursor()
-    #     #ngo_email, ngo_name = c.execute(SELECT ngo_email,ngo_name FROM ngo WHERE ngo_name = {}.format(ngoName)
-    #     try:
-    #         mandrill_client = mandrill.Mandrill(API_KEY)
-    #         message = {
-    #             text=this.createMsg(),
-    #             subject="New MyRefuge Space available",
-    #             from_email="main@MyRefuge.com",
-    #             from_name="My Refuge",
-    #             to=[[ngo_email,ngo_name],[]],
-    #             header="MyRefuge Space Available",
-    #             important=True
-    #         }
-    #
-    #     except mandrill.Error, e:
-    #         pass
-    #
-    #
-    # def findNGOs(spaceLat, spaceLng, spaceId):
-    #
-    #
-    #     //NGOconn = sqlite3.connect(NGOs+.db)
-    #     //NGOcursor = NGOconn.cursor()
-    #
-    #     #SpaceLat and SpaceLng are In miles
-    #
-    #
-    #     squareArea = 1
-    #
-    #
-    #     for id, lgn, lat in NGOcursor(SELECT id, longitude, latitude FROM  ngo)
-    #         if (spaceLng-squareArea) > (lng) and (spaceLng+squareArea) < (lng):
-    #
-    #             if (spaceLat-squareArea) > (lat) and (spaceLat+squareArea) < (lat):
-    #
-    #                 self.SendEmail(id, spaceId)
+        for ngo in ngos:
+            self.SendEmail(spaceId,ngo.email)
+
+
+    def findNGOs(spaceLat, spaceLng, spaceId):
+
+
+        //NGOconn = sqlite3.connect(NGOs+.db)
+        //NGOcursor = NGOconn.cursor()
+
+        #SpaceLat and SpaceLng are In miles
+
+
+        squareArea = 1
+
+
+        for id, lgn, lat in NGOcursor(SELECT id, longitude, latitude FROM  ngo)
+            if (spaceLng-squareArea) > (lng) and (spaceLng+squareArea) < (lng):
+
+                if (spaceLat-squareArea) > (lat) and (spaceLat+squareArea) < (lat):
+
+                    self.SendEmail(id, spaceId)
 
 
 
