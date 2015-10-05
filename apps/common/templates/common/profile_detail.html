@@ -55,8 +55,14 @@
               <form class="editableform family-form media media-center" data-pk="{{family_member.id}}">
                 <a href="#" class="delete btn pull-right red"><i class="fa fa-trash"></i></a>
                 <div class="media-left">
-                  <div class="media-inner" href="{{family_member.image.url}}">
-                    <img class="media-object" src="{{family_member.image.url}}" alt="{{ family_member.name }}">
+                  <div class="media-inner">
+                    {% if family_member.image %}
+                    <a href="{{family_member.image.url}}" target="_blank">
+                      <img class="media-object" src="{{family_member.image.url}}" alt="{{ family_member.name }}">
+                    </a>
+                    {% else %}
+                      <span>image not found, need to re-add this family member.</span>
+                    {% endif %}
                   </div>
                 </div>
                 <div class="media-body">
