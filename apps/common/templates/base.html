@@ -12,7 +12,9 @@
   <link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}" />
   <link rel="stylesheet" href="{% static "base.css" %}" />
   <title>{% block title %}Userena{% endblock %}</title>
-  {% block meta %}{% endblock %}
+  {% block meta %}
+    <meta property="og:title" content="MyRefuge - the 'AirBnB' for Refugees to find citizens opening their homes for free">
+  {% endblock %}
   {% render_block "css" %}
   {% block css_ %}{% endblock %}
 </head>
