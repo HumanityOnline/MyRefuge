@@ -31,4 +31,5 @@ SECRET_KEY = 'changethisinproduction'
 
 MIDDLEWARE_CLASSES += (
     'django_pdb.middleware.PdbMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 )
