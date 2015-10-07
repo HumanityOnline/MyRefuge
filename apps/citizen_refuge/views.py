@@ -541,14 +541,30 @@ class CitizenRefugeDetailUpdate(ProcessFormView):
     template_name = 'common/profile_detail.html'
 
     def post(self, request, *args, **kwargs):
-        form = CitizenRefugePersonalDetailForm(self.request.POST, instance=self.request.user.citizenrefuge)
+        
+
+        if len(self.request.FILES):
+            form = CitizenRefugePersonalImageForm(self.request.POST, self.request.FILES,
+                        instance=self.request.user.citizenrefuge)
+        else:
+            form = CitizenRefugePersonalDetailForm(self.request.POST,
+                        instance=self.request.user.citizenrefuge)
+
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        form.save()
+        model = form.save()
+        if hasattr(model, 'user'):
+            url = model.user.my_profile.get_mugshot_url()
+        else:
+            url = ''
+
+        if len(self.request.FILES):
+            return JsonResponse({'success': True, 'url': url})
+
         return JsonResponse({'success': True})
 
     def form_invalid(self, form):

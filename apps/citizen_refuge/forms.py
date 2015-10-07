@@ -47,6 +47,26 @@ class CitizenRefugePersonalDetailForm(CitizenRefugeAboutForm):
     agree = forms.BooleanField(required=False)
     address = AddressField(required=False)
 
+class CitizenRefugePersonalImageForm(forms.ModelForm):
+    mugshot = forms.ImageField()
+
+    def save(self, *args, **kwargs):
+        citizen = super(CitizenRefugePersonalImageForm, self).save(commit=False)
+    
+        if self.instance.pk is None:
+            return citizen
+
+        if self.cleaned_data.get('mugshot'):
+            user = citizen.user
+            user.my_profile.mugshot = self.cleaned_data.get('mugshot')
+            user.my_profile.save()
+
+        return citizen
+
+    class Meta:
+        model = CitizenRefuge
+        fields = ('mugshot', )
+
 
 class DateCorrectForm(forms.ModelForm):
     start_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),

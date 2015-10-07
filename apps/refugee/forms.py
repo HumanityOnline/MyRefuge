@@ -27,6 +27,22 @@ class RefugeeSignUpBasic(forms.ModelForm):
         model = Refugee
         fields = ('dob', 'gender',)
 
+class RefugePersonalImageForm(forms.ModelForm):
+    mugshot = forms.ImageField()
+
+    def save(self, *args, **kwargs):
+        refugee = super(RefugePersonalImageForm, self).save(commit=False)
+        if self.cleaned_data.get('mugshot'):
+            user = refugee.user
+            user.my_profile.mugshot = self.cleaned_data.get('mugshot')
+            user.my_profile.save()
+
+        return refugee
+
+    class Meta:
+        model = Refugee
+        fields = ('mugshot', )
+
 class RefugePersonalDetailForm(RefugeeSignUpBasic):
     mugshot = forms.ImageField(required=False)
     hometown = forms.CharField(max_length=255)
@@ -37,15 +53,22 @@ class RefugePersonalDetailForm(RefugeeSignUpBasic):
         model = Refugee
         fields = ('dob', 'gender', 'hometown', 'current_address', 'story')
 
+class RefugeFamilyImageForm(forms.ModelForm):
+    image = forms.ImageField()
+
+    class Meta:
+        model = FamilyMember
+        fields = ('image',)
+
 class RefugeFamilyDetailForm(forms.ModelForm):
     image = forms.ImageField(required=False)
     dob = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
                           input_formats=('%d/%m/%Y',))
 
+
     class Meta:
         model = FamilyMember
-        fields = ('name', 'dob', 'gender', 'relationship',)
-
+        fields = ('name', 'dob', 'gender', 'relationship')
 
 class RefugeFamilyCreateForm(RefugeFamilyDetailForm):
     image = forms.ImageField()

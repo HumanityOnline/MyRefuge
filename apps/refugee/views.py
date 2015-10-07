@@ -124,7 +124,8 @@ class RefugeDetail(TemplateView):
         context['profile'] = self.request.user.my_profile
         if hasattr(self.request.user, 'refugee'):
             context['citizen'] = self.request.user.refugee
-            context['family_members'] = self.request.user.refugee.familymember_set.all()
+            context['family_members'] = self.request.user.refugee.\
+                                            familymember_set.order_by('pk').all()
             context['family_form'] = form or RefugeFamilyCreateForm()
         context['gender_list'] = GENDER[1:]
         context['countries_list'] = countries
@@ -140,7 +141,11 @@ class RefugeDetailUpdate(ProcessFormView):
         if self.kwargs.get('type') == 'family':
             family = FamilyMember.objects.filter(pk=self.request.POST.get('id'),
                         refugee=self.request.user.refugee).first()
-            form = RefugeFamilyDetailForm(self.request.POST, instance=family)
+            if len(self.request.FILES):
+                form = RefugeFamilyImageForm(self.request.POST, self.request.FILES,
+                        instance=family)
+            else:
+                form = RefugeFamilyCreateForm(self.request.POST, instance=family)
 
         elif self.kwargs.get('type') == 'family-delete':
             family = FamilyMember.objects.filter(pk=self.request.POST.get('id'),
@@ -150,7 +155,12 @@ class RefugeDetailUpdate(ProcessFormView):
                 return JsonResponse({'success': True})
             return JsonResponse({'success': False})
         else:
-            form = RefugePersonalDetailForm(self.request.POST, instance=self.request.user.refugee)
+            if len(self.request.FILES):
+                form = RefugePersonalImageForm(self.request.POST, self.request.FILES,
+                        instance=self.request.user.refugee)
+            else:
+                form = RefugePersonalDetailForm(self.request.POST,
+                            instance=self.request.user.refugee)
 
         if form.is_valid():
             return self.form_valid(form)
@@ -163,7 +173,18 @@ class RefugeDetailUpdate(ProcessFormView):
             member.refugee = self.request.user.refugee
             member.save()
         else:
-            (form.save(commit=False)).save()
+            model = form.save(commit=False)
+            model.save()
+
+            if hasattr(model, 'user'):
+                url = model.user.my_profile.get_mugshot_url()
+            elif model.image:
+                url = model.image.url
+            else:
+                url = ''
+
+            if len(self.request.FILES):
+                return JsonResponse({'success': True, 'url': url})
 
         return JsonResponse({'success': True})
 

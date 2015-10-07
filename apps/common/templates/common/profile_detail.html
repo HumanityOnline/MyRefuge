@@ -16,9 +16,10 @@
 <div class="container">
     <div class="profile container-inner narrow">
         {% block profile_details %}
-            <form class="editableform profile-form media media-center">
+            <form class="editableform profile-form media media-center" enctype="multipart/form-data">
               <div class="media-left">
                 <div class="media-inner" href="#">
+                  <a class="btn btn-edit-image" href="#"><i class="fa fa-pencil"></i></a>
                   <img class="media-object" src="{{profile.get_mugshot_url}}" alt="{{ profile.user.username }}">
                 </div>
               </div>
@@ -52,10 +53,11 @@
             {% if profile.type == "R" %}
 
             {% for family_member in family_members %}
-              <form class="editableform family-form media media-center" data-pk="{{family_member.id}}">
+              <form class="editableform family-form media media-center" data-pk="{{family_member.id}}"  enctype="multipart/form-data">
                 <a href="#" class="delete btn pull-right red"><i class="fa fa-trash"></i></a>
                 <div class="media-left">
                   <div class="media-inner">
+                    <a class="btn btn-edit-image" href="#"><i class="fa fa-pencil"></i></a>
                     {% if family_member.image %}
                     <a href="{{family_member.image.url}}" target="_blank">
                       <img class="media-object" src="{{family_member.image.url}}" alt="{{ family_member.name }}">
@@ -189,6 +191,13 @@
       defaultDate: $input.val()
     });
   }
+  function readFileImage(files) {
+    var file = files[0];
+    if (!file.type.match('image.*')) {
+      return;
+    }
+    return [file, file.name];
+  }
   $.fn.editableform.buttons = '<button class="btn btn-primary btn-sm editable-submit" type="submit"><i class="fa fa-check"></i></button><button class="btn btn-default btn-sm editable-cancel" type="button"><i class="fa fa-remove"></i></button>';
 
   $(function() {
@@ -221,6 +230,10 @@
       return false;
     });
 
+    {% if family_form and family_form.errors %}
+      $('.btn.more-family').click();
+    {% endif %}
+
     $('.btn.save').click(function(event) {
       $('.profile-form .editable').editable('submit', {
         url: '{% url "profile_update" user.username "personal" %}',
@@ -249,13 +262,14 @@
 
       $('.family-form').each(function() {
         var $fm = $(this);
+
         $fm.find('.editable').editable('submit', { 
           url: '{% url "profile_update" user.username "family" %}',
           data: {
-            id: $fm.data('pk')
+            id: $fm.data('pk'),
           },
           ajaxOptions: {
-            dataType: 'json'
+            dataType: 'json',
           },
           success: function(data, config) {
             if(data && data.success) {
@@ -274,7 +288,9 @@
             }
           },
         });
-      })
+      });
+
+      return false;
     });
     $('.btn.delete').click(function() {
       $fm = $(this).parents('form');
@@ -286,6 +302,59 @@
         } else if(res && res.errors) {
         }
       });
+      return false;
+    });
+
+    $('.btn.btn-edit-image').click(function() {
+      var $form = $(this).parents('form'),
+          $mugshot = $form.find('.mugshot-field');
+      if (!$mugshot.length) {
+        $mugshot = $('<input type="file" name="mushot" class="hide mugshot-field" />');
+        $form.append($mugshot);
+        $mugshot.on('change', function() {
+          var image = readFileImage($(this)[0].files),
+              formData = new FormData();
+          if (image) {
+            $form.find('.media-inner').addClass('loading');
+            function onSuccess(resp) {
+              $form.find('.media-object').attr('src', resp.url);
+              $form.find('.media-inner').removeClass('loading');
+            }
+            function onError() {
+              $form.find('.media-inner').removeClass('loading');
+            }
+
+            if ($form.hasClass('family-form')) {
+              formData.append('image', image[0], image[1]);
+              formData.append('id', $form.data('pk'));
+
+              $.ajax({
+                url: '{% url "profile_update" user.username "family" %}',
+                type: "POST",
+                data: formData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,   // tell jQuery not to set contentType
+                success: onSuccess,
+                error: onError,
+              });
+            } else if ($form.hasClass('profile-form')) {
+              formData.append('mugshot', image[0], image[1]);
+
+              $.ajax({
+                url: '{% url "profile_update" user.username "personal" %}',
+                type: "POST",
+                data: formData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,   // tell jQuery not to set contentType
+                success: onSuccess,
+                error: onError,
+              });
+            }
+            
+          }
+        });
+      }
+      $mugshot.click();
       return false;
     });
     createDatepicker($('#id_dob'))
