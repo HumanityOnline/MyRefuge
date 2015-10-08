@@ -26,6 +26,7 @@ from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceL
                                   LaunchView, LaunchUpdateView)
 
 urlpatterns = [
+    url(r'^', include('favicon.urls')),
     url(r'^home/$', 'common.views.home', name='home'),
     url(r'^$', CitizenRefugeSearchView.as_view(), name='search_home'),
     url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),

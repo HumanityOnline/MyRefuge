@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'citizen_refuge',
     'leaflet',
     'analytical',
+    'favicon',
 )
 
 MIDDLEWARE_CLASSES = (
