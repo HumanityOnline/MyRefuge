@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
@@ -24,7 +25,7 @@ FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
 FORM_LIST = zip(KEYS, FORMS)
 TEMPLATES = dict(zip(KEYS, ['citizen_refuge/' + k + '.html' for k in KEYS]))
 
-READY_DATE = datetime.strptime('10-10-2015 10:10', '%d-%m-%Y %H:%M')
+READY_DATE = datetime.strptime(settings.MY_REFUGE_READY_HOST_REQUESTS_DATE, '%d-%m-%Y %H:%M')
 
 class CitizenRefugeSignupWizard(SessionWizardView):
     form_list = FORM_LIST
