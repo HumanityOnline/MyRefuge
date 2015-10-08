@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'refugee',
     'citizen_refuge',
     'leaflet',
+    'analytical',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -164,3 +165,5 @@ GEO_CLIENT_ID = os.environ.get('GEO_CLIENT_ID', None)
 GEO_SECRET_KEY = os.environ.get('GEO_SECRET_KEY', None)
 
 MY_REFUGE_READY_HOST_REQUESTS_DATE = os.environ.get('MY_REFUGE_READY_HOST_REQUESTS_DATE', '18-10-2015 0:0')
+
+GOOGLE_ANALYTICS_PROPERTY_ID = os.environ.get('GOOGLE_ANALYTICS_PROPERTY_ID', None)

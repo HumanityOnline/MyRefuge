@@ -1,10 +1,12 @@
 {% load staticfiles sekizai_tags %}
 {% load i18n %}
+{% load analytical %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
 
 <html lang="en">
 <head>
+  {% analytical_head_top %}
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,300,600,700|Oswald|Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
@@ -17,8 +19,10 @@
   {% endblock %}
   {% render_block "css" %}
   {% block css_ %}{% endblock %}
+  {% analytical_head_bottom %}
 </head>
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %} {% render_block body_class_ %}">
+  {% analytical_body_top %}
   <div id="body">
     {% block body %}
       {% block header %}
@@ -109,5 +113,6 @@
   <script src="{% static "js/script.js" %}"></script>
   {% render_block "js" %}
   {% block js_ %}{% endblock %}
+  {% analytical_body_bottom %}
 </body>
 </html>

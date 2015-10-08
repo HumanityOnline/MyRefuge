@@ -14,3 +14,4 @@ psycopg2
 geopy
 Unidecode
 git+https://github.com/furious-luke/django-address.git
+django-analytical
