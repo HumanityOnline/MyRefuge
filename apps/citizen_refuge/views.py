@@ -1,24 +1,20 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.shortcuts import render
-from django.views.generic import (ListView, DetailView, FormView, UpdateView, TemplateView,
-                                    CreateView)
+from django.db import models
+from django.http import HttpResponseRedirect, JsonResponse
+from django.views.generic import (ListView, DetailView, FormView, UpdateView, TemplateView, CreateView)
 from django.views.generic.edit import ProcessFormView
 from formtools.wizard.views import SessionWizardView
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required, permission_required
 
-from common.forms import UserenaEditProfileForm
+from django.core.exceptions import PermissionDenied
+
 from .forms import *
-from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
-                        Application, Message, Launch)
+from .models import (SpacePhoto, DateRange, CitizenSpace, Application, Message, Launch)
 from refugee.models import Refugee, FamilyMember
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
-from django.core.exceptions import PermissionDenied
-from datetime import datetime
-
 
 KEYS = ['userena', 'about', 'space']
 FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
@@ -339,7 +335,8 @@ class CitizenRefugeSearchView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(CitizenRefugeSearchView, self).get_context_data(**kwargs)
         current_date = datetime.now()
-        context['spaces_number'] = CitizenSpace.objects.count()
+        #context['spaces_number'] = CitizenSpace.objects.count()
+        context['guests_number'] = CitizenSpace.objects.aggregate(guests=models.Sum('guests'))['guests']
         context['refugees_number'] = Refugee.objects.count() + FamilyMember.objects.count()
         context['form'] = CitizenRefugeeSearchForm()
         context['current_date'] = current_date
@@ -399,7 +396,7 @@ class CitizenRefugeSearchResultView(FormView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        
+
         spaces = CitizenSpace.objects.search(
                     address=form.cleaned_data.get('address'),
                     date_range=(form.cleaned_data.get('start_date'),
@@ -543,7 +540,7 @@ class CitizenRefugeDetailUpdate(ProcessFormView):
     template_name = 'common/profile_detail.html'
 
     def post(self, request, *args, **kwargs):
-        
+
 
         if len(self.request.FILES):
             form = CitizenRefugePersonalImageForm(self.request.POST, self.request.FILES,
