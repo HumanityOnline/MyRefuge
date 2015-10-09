@@ -144,8 +144,14 @@
                 var detail = e.originalEvent ?
                              e.originalEvent.detail : e.detail,
                     map = detail.map,
-                    loc = null,
-                    coords = [{{citizenspace.location.y}}, {{citizenspace.location.x}}];
+                    loc = null;
+
+                {% random_coords citizenspace.location.y citizenspace.location.x as coords %}
+                var coords = [{{coords.0}}, {{coords.1}}];
+
+                {% if citizenspace.citizen.user == user or citizenspace|has_been_accepted:user %}
+                  coords = [{{citizenspace.location.y}}, {{citizenspace.location.x}}];
+                {% endif %}
 
                 map.setView(coords, 13);
                 L.marker(coords).addTo(map);

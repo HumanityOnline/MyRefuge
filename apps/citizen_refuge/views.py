@@ -411,6 +411,7 @@ class CitizenRefugeSearchResultView(FormView):
                         spaces=spaces,
                     ))
 
+
 class CitizenRefugeSpaceApplication(UpdateView):
     model = Application
 

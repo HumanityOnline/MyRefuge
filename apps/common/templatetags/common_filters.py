@@ -2,6 +2,7 @@ from django import template
 from django.conf import settings
 import random
 import math
+from citizen_refuge.models import Application
 
 register = template.Library()
 
@@ -32,10 +33,16 @@ def display(val):
 #_min_distance = settings.RANDOM_COORDS_MIN_DISTANCE # meters
 #_max_distance = settings.RANDOM_COORDS_MAX_DISTANCE
 #ref: http://gis.stackexchange.com/questions/25877/how-to-generate-random-locations-nearby-my-location
+@register.assignment_tag
 def random_coords(x0, y0, max_distance=None):
     """generate random coordinates nearby a specified coordinates"""
     if max_distance is None:
         max_distance = settings.RANDOM_COORDS_MAX_DISTANCE
+
+    if not x0 or type(x0) is str:
+        x0 = 0
+    if not y0 or type(x0) is str:
+        y0 = 0;
 
     u = random.random()
     v = random.random()
@@ -45,3 +52,13 @@ def random_coords(x0, y0, max_distance=None):
     x = w * math.cos(t)
     y = w * math.sin(t)
     return x+x0, y+y0
+
+@register.filter
+def has_been_accepted(space, user):
+    if user.is_authenticated and user.my_profile.type == 'R':
+
+        application = Application.objects.filter(refugee=user.refugee,space=space).first()
+
+        return application.status == 'A' if application else False
+
+    return False

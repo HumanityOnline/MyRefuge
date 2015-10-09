@@ -38,10 +38,16 @@
                         <div class="col-sm-6">
                             {% include "citizen_refuge/space-block.html" with space=space %}
                             <script type="text/javascript">
+                            {% random_coords space.location.y space.location.x as coords %}
                             LOCATIONS['space-{{space.id}}'] = {
                                 marker: null,
-                                coords: [{{space.location.y}}, {{space.location.x}}]
-                            }
+                                coords: [{{coords.0}}, {{coords.1}}]
+                            };
+
+                            {% if space.citizen.user == user or space|has_been_accepted:user %}
+                                LOCATIONS['space-{{space.id}}'].coords = [{{space.location.y}}, {{space.location.x}}];
+                            {%  endif %}
+
                             </script>
                         </div>
                     {% if forloop.counter|divisibleby:2 and forloop.counter != 0 %}
