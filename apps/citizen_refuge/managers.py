@@ -11,6 +11,7 @@ from common.geo import (address_to_location, location_to_latlon, location_to_cit
                         location_to_country)
 from common.helpers import normalize_name
 
+#from .models import (Ngo)
 
 class CitizenSpaceManager(gis_models.GeoManager):
 
@@ -57,6 +58,14 @@ class CitizenSpaceManager(gis_models.GeoManager):
                                                      measure.D(**distance_from_point)))
         return query.distance(current_point).order_by('distance')
 
+class NgoManager(gis_models.GeoManager):
+
+    def resave_ngo_with_location(self):
+        print self
+        # ngos = Ngo.objects.all()
+        #
+        # for ngo in ngos:
+        #     ngo.save()
 
 class MessageManager(BaseMessageManager):
 
@@ -97,3 +106,5 @@ class MessageManager(BaseMessageManager):
                                  messagerecipient__deleted_at__isnull=True,
                                  application=application)).order_by('sent_at')
         return messages
+
+

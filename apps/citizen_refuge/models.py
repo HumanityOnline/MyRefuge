@@ -12,7 +12,7 @@ from common.geo import (address_to_location, location_to_latlon, location_to_cit
                         location_to_country, location_to_public_address)
 from refugee.models import Refugee
 
-from .managers import CitizenSpaceManager, MessageManager, normalize_name
+from .managers import CitizenSpaceManager, MessageManager, NgoManager, normalize_name
 
 
 class CitizenRefuge(models.Model):
@@ -30,15 +30,29 @@ class CitizenRefuge(models.Model):
 class Ngo(models.Model):
     name = models.CharField(max_length=255)
     url = models.URLField()
-    location = models.CharField(max_length=255)
+    #address = AddressField()
+    location = gis_models.PointField(u"longitude/latitude",
+                                 geography=True, blank=True, null=True)
+
     postcode = models.CharField(max_length=10)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
-    area_working = models.CharField(max_length=255)
+    area_working = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(max_length=255)
-    other = models.CharField(max_length=255)
-    charity_no = models.CharField(max_length=255)
-    is_christian_org = models.BooleanField()
+    other = models.CharField(max_length=255, blank=True, null=True)
+    charity_no = models.CharField(max_length=255, blank=True, null=True)
+    is_christian_org = models.BooleanField(default=False)
+
+    objects = NgoManager()
+
+    def save(self, **kwargs):
+        #location = address_to_location(self.address.raw)
+        #lat, lon = location_to_latlon(location)
+
+        point = 'POINT(%s %s)' % (self.longitude, self.latitude)
+        self.location = geos.fromstr(point)
+
+        super(Ngo, self).save()
 
 class CitizenSpace(models.Model):
     headline = models.CharField(max_length=255)

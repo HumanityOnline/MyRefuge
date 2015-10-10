@@ -1,27 +1,22 @@
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.shortcuts import render
 from django.views.generic import (ListView, DetailView, FormView, UpdateView, TemplateView,
                                   CreateView)
 from django.views.generic.edit import ProcessFormView
 from formtools.wizard.views import SessionWizardView
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required, permission_required
 
-from common.forms import UserenaEditProfileForm
 from .forms import *
-from .models import (CitizenRefuge, SpacePhoto, DateRange, CitizenSpace, CitizenSpaceManager,
+from .models import (SpacePhoto, DateRange, CitizenSpace,
                      Application, Message, Launch)
-from citizen_refuge.models import Ngo
+
 from refugee.models import Refugee, FamilyMember
 from common.helpers import CITIZEN_SPACE_ADDITIONAL_SHORT, APPLICATION_STATUS, GENDER
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 
-from django.core.mail import EmailMultiAlternatives
+from .utils import NgoUtils
 
-import logging
 
 KEYS = ['userena', 'about', 'space']
 FORMS = [CitizenSignupBasicForm, CitizenRefugeAboutForm, CitizenRefugeSpaceForm]
@@ -284,38 +279,6 @@ class CitizenRefugeSpaceCreate(CreateView):
         ))
 
 
-    def createMsg(self, spaceId):
-        msg = "New Space has been add close to your location/nhttp://myrefuge.world/refuge-spaces/{}/ /nFrom/n MyRefuge".format(
-            spaceId)
-        return msg
-
-    def SendEmail(self, space_id, ngoEmail):
-        email_msg = self.createMsg(space_id)
-        ngoEmail = ["Nathan", "nathan@eit.co.nz"]
-        try:
-            msg = EmailMultiAlternatives(subject="MyRefuge new room avaliable near", body=email_msg,
-                                         from_email="help@myrefuge.world", to=ngoEmail)
-            response = msg.send()
-            #response = msg.mandrill_response()
-            if response is None:
-                logging.info("Error while sending an email")
-            else:
-                logging.info('Success while sending')
-        except Exception as e:
-            raise
-
-    def findNGOs(self, spaceLat, spaceLng, spaceId):
-        latitude_range = 0.8
-        longitude_range = 0.8
-
-        latituderange=(spaceLat - latitude_range, spaceLat + latitude_range)
-        longituderange=(spaceLng - longitude_range, spaceLng + longitude_range)
-
-        ngos = Ngo.objects.filter(latitude__range=latituderange, longitude__range=longituderange)
-
-        for ngo in ngos:
-            self.SendEmail(spaceId, ngo.email)
-
     def post(self, request, *args, **kwargs):
         self.object = None
 
@@ -346,7 +309,8 @@ class CitizenRefugeSpaceCreate(CreateView):
                     daterage.save()
 
             # Send an email to local NGO if within the area of the space.
-            self.findNGOs(-2.227750075, 53.48653765, space.id)
+
+            NgoUtils.findNGOs(space.address, space.id)
 
             return HttpResponseRedirect(
                 reverse('refuge_space_detail', kwargs={'pk': space.pk}))
