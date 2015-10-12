@@ -28,6 +28,8 @@ from citizen_refuge.views import (CitizenRefugeSignupWizard, CitizenRefugeSpaceL
 urlpatterns = [
     url(r'^', include('favicon.urls')),
     url(r'^home/$', 'common.views.home', name='home'),
+    url(r'^a7f30687a7805b52c1e8a674434d609626869b13de8a58b7a6f9fc01c0c11db1.txt$', 'common.views.security_scan_file',
+        name='security_scan_file'), # support for security scanning
     url(r'^$', CitizenRefugeSearchView.as_view(), name='search_home'),
     url(r'^search/', CitizenRefugeSearchResultView.as_view(), name='search'),
     url(r'^launch/update/$', LaunchUpdateView.as_view(), name='launch_update'),

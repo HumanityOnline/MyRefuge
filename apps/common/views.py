@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.core.exceptions import PermissionDenied
 
 from citizen_refuge.views import (CitizenRefugeDetail as crd, CitizenRefugeDetailUpdate as crdu)
@@ -44,3 +44,8 @@ class PageView(DetailView):
 
 class HelpView(TemplateView):
     template_name = 'common/help.html'
+
+
+def security_scan_file(request):
+    content = '6b53be211839d9ea4fc48579a179214d9a503fa36a122f8eb61fa77767d195a2'
+    return HttpResponse(content)
