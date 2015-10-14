@@ -27,6 +27,7 @@
             <h1 class="title">{% trans "Welcome home" %}</h1>
             <h3 class="subtitle">{% trans "Find a place to stay with hosts around the world" %}</h3>
         </div>
+        {% comment %}
         <div class="container-inner narrow counters">
             <div class="row">
                 <h2 class="spaces-counter col-sm-6">
@@ -50,6 +51,18 @@
             <!-- <p class="help-text">on 10 October, 10:10am, refugee seekers will be able to contact refuge providers if there are 2,000 available beds on MyRefuge</p> -->
         </div>
         {% endif %}
+
+        {% endcomment %}
+
+        <div class="gray-box row">
+            <h4 class="title">Register now</h4>
+            <div class="col-sm-6">
+                <a href="{% url 'refugee' %}" class="btn btn-primary btn-block btn-lg">Refugee</a>
+            </div>
+            <div class="col-sm-6">
+                <a href="{% url 'refuge_provider' %}" class="btn btn-primary btn-block btn-lg">Refuge provider</a>
+            </div>
+        </div>
 
     </div>
 </div>

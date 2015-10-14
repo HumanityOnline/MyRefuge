@@ -18,5 +18,24 @@
         margin-top: 10%;
     }
 
-    
+    .gray-box {
+        max-width: 500px;
+        margin: 30px auto 15px;
+        padding: 15px;
+        background-color: rgba(86, 86, 86, 0.5);
+
+        .title {
+            color: $white;
+            font-size: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 0 0 15px;
+        }
+
+        .btn {
+            border-radius: 0 0 0;
+            margin-bottom: 5px;
+        }
+    }
 }

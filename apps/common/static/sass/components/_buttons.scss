@@ -29,6 +29,10 @@
     &.red {
         color: $blood;
     }
+
+    &.btn-block {
+        display: block;
+    }
 }
 
 .btn-add-form {
