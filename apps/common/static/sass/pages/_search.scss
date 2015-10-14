@@ -9,33 +9,52 @@
             background-color: rgba(0,0,0,0.1);
         }
     }
-    
-    
-    
 
     .search-wrapper {
         background-color: rgba(0,0,0,0.5);
-        margin-top: 10%;
+        margin-top: 60px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .gray-box {
-        max-width: 500px;
-        margin: 30px auto 15px;
-        padding: 15px;
+        max-width: 800px;
+        margin: 90px auto 15px;
+        padding: 25px 15px;
         background-color: rgba(86, 86, 86, 0.5);
 
         .title {
             color: $white;
-            font-size: 20px;
+            font-size: 24px;
             text-align: center;
             text-transform: uppercase;
             font-weight: 600;
-            margin: 0 0 15px;
+            margin: 0 0 25px;
         }
 
         .btn {
             border-radius: 0 0 0;
             margin-bottom: 5px;
+            font-size: 18px;
+            padding: 20px 16px;
+        }
+    }
+}
+
+
+@media(min-width: 768px) {
+
+    .search {
+        .container-inner {
+            max-width: 100%;
+            display: inline-block;
+        }
+
+        .search-wrapper {
+            margin-top: 10%;
+            text-align: center;
+            padding-left: 0;
+            padding-right: 0;
         }
     }
 }
