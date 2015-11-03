@@ -54,7 +54,20 @@ MIGRATION_MODULES = {
 }
 
 ADMINS = (
-    (os.environ.get('ADMIN_NAME'), os.environ.get('ADMIN_EMAIL'))
+    (os.environ.get('ADMIN_NAME'), os.environ.get('ADMIN_EMAIL')),
+)
+
+#TODO(hoatle): allow multiple admins, managers
+# ADMINS = ('name', 'email'), ('name', 'email')
+# import re
+# from ast import literal_eval as make_tuple
+# admins = re.findall('\[[^\]]*\]|\([^\)]*\)|\"[^\"]*\"|\S+', os.environ.get('ADMINS'))
+# for admin in admins:
+#     ADMINS += make_tuple(admin)
+
+
+MANAGERS = ADMINS + (
+    (os.environ.get('MANAGER_NAME'), os.environ.get('MANAGER_EMAIL')),
 )
 
 # amazon S3 for storing and serving media files
