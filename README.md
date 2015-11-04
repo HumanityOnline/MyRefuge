@@ -26,3 +26,17 @@ cd /vagrant
 Now navigate to `http://localhost:8001` and there's the site :)
 
 You can dev locally as the repo is mounted onto the vagrant box.
+
+# How to build sass stuff
+
+`sass` stuff is located at `/apps/common/static/sass`
+
+to build:
+
+```
+$ vagrant ssh
+$ cd /vagrant
+$ npm run sass:dev
+```
+
+See more: https://github.com/HumanityOnline/MyRefuge/blob/master/package.json#L8
