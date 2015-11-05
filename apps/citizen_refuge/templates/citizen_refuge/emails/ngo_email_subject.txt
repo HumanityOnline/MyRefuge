@@ -1,0 +1,2 @@
+{% load i18n %}
+{% trans "A space created for refugees nearby your organization" %}

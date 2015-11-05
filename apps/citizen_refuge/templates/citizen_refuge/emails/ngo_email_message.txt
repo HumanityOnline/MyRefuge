@@ -1,0 +1,12 @@
+{% load i18n %}{% autoescape off %}{% load url from future %}
+{% blocktrans with ngo.name as ngo_name %}Dear {{ngo_name}},{% endblocktrans %}
+
+{% trans "A space has been created nearby your organization:" %}
+
+http://{{ site.domain }}{% url 'refuge_space_detail' space.id %}
+
+{% trans "Thanks for using our site!" %}
+
+{% trans "Sincerely" %},
+{{ site.name }}
+{% endautoescape %}

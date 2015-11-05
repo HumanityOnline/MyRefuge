@@ -1,7 +1,11 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis import geos
+from django.contrib.sites.models import Site
+from django.template.loader import render_to_string
 
 from select_multiple_field.models import SelectMultipleField
 from address.models import AddressField
@@ -10,9 +14,10 @@ from userena.contrib.umessages.models import Message as BaseMessage
 from common.helpers import APPLICATION_STATUS, CITIZEN_SPACE_ADDITIONAL, GENDER, UniqueMediaPath
 from common.geo import (address_to_location, location_to_latlon, location_to_city,
                         location_to_country, location_to_public_address)
+from common.mail import send_mass_mail
 from refugee.models import Refugee
 
-from .managers import CitizenSpaceManager, MessageManager, normalize_name
+from .managers import CitizenSpaceManager, NGOManager, MessageManager, normalize_name
 
 
 class CitizenRefuge(models.Model):
@@ -26,6 +31,36 @@ class CitizenRefuge(models.Model):
 
     def __unicode__(self):
         return self.__repr__()
+
+
+class NGO(models.Model):
+    name = models.CharField(max_length=255)
+    url = models.URLField()
+    address = AddressField()
+    location = gis_models.PointField(u"longitude/latitude",
+                                     geography=True, blank=True, null=True)
+    email = models.EmailField(max_length=255)
+    other = models.CharField(max_length=255, blank=True, null=True)
+    charity_no = models.CharField(max_length=255, blank=True, null=True)
+    is_christian_org = models.BooleanField(default=False)
+
+    objects = NGOManager()
+
+    def save(self, **kwargs):
+        # TODO(hoatle): update location only if address is changed
+        # https://github.com/smn/django-dirtyfields
+        location = address_to_location(self.address.raw)
+        lat, lon = location_to_latlon(location)
+        point = 'POINT(%s %s)' % (lon, lat)
+        self.location = geos.fromstr(point)
+        super(NGO, self).save()
+
+    def __repr__(self):
+        return '<NGO(pk={pk}, name="{name}")>'.format(pk=self.pk, name=self.name)
+
+    def __unicode__(self):
+        return self.__repr__()
+
 
 class CitizenSpace(models.Model):
     headline = models.CharField(max_length=255)
@@ -112,3 +147,31 @@ class Message(BaseMessage):
 
 class Launch(models.Model):
     start_date = models.DateTimeField()
+
+
+def email_ngos(ngos, space):
+    """send emails to nearby ngos to a new created space"""
+    data_list = []
+    email_from = settings.DEFAULT_FROM_EMAIL
+    custom_headers = attachments = None
+    for ngo in ngos:
+        context = {
+            'ngo': ngo,
+            'space': space,
+            'site': Site.objects.get_current()
+        }
+
+        subject = render_to_string('citizen_refuge/emails/ngo_email_subject.txt', context)
+        subject = ''.join(subject.splitlines())
+        msg_plain = render_to_string('citizen_refuge/emails/ngo_email_message.txt', context)
+        msg_html = render_to_string('citizen_refuge/emails/ng_email_message.html', context)
+        data_list.append((subject, msg_plain, msg_html, email_from, [ngo.email], custom_headers, attachments))
+
+    send_mass_mail(tuple(data_list))
+
+
+@receiver(post_save, sender=CitizenSpace)
+def notify_nearby_ngos_on_space_created(sender, instance, created, **kwargs):
+    if created:
+        ngos = NGO.objects.find_nearby(instance)
+        email_ngos(ngos, instance)

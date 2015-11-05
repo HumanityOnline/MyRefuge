@@ -58,6 +58,21 @@ class CitizenSpaceManager(gis_models.GeoManager):
         return query.distance(current_point).order_by('distance')
 
 
+class NGOManager(gis_models.GeoManager):
+
+    def find_nearby(self, space, distance=5000, **kwargs):
+        """Find nearby NGOs from a provided space
+        :param space the provide space with address
+        """
+        location = address_to_location(space.address.raw)
+        address_lat, address_lon = location_to_latlon(location)
+        current_point = geos.fromstr('POINT(%s %s)' % (address_lon, address_lat))
+        distance_from_point = {'m': distance}
+        query = self.filter(location__distance_lte=(current_point,
+                                                    measure.D(**distance_from_point)))
+        return query.distance(current_point).order_by('distance')
+
+
 class MessageManager(BaseMessageManager):
 
     def send_message(self, sender, application, body):
