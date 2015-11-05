@@ -1,3 +1,2 @@
 # Heroku reads this file
--r requirements/common.txt
 -r requirements/prod.txt

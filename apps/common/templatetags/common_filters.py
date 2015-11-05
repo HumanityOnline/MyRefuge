@@ -30,9 +30,9 @@ def display(val):
     return val
 
 # maybe support min_distance later?
-#_min_distance = settings.RANDOM_COORDS_MIN_DISTANCE # meters
-#_max_distance = settings.RANDOM_COORDS_MAX_DISTANCE
-#ref: http://gis.stackexchange.com/questions/25877/how-to-generate-random-locations-nearby-my-location
+# _min_distance = settings.RANDOM_COORDS_MIN_DISTANCE # meters
+# _max_distance = settings.RANDOM_COORDS_MAX_DISTANCE
+# ref: http://gis.stackexchange.com/questions/25877/how-to-generate-random-locations-nearby-my-location
 @register.assignment_tag
 def random_coords(x0, y0, max_distance=None):
     """generate random coordinates nearby a specified coordinates"""
@@ -42,7 +42,7 @@ def random_coords(x0, y0, max_distance=None):
     if not x0 or type(x0) is str:
         x0 = 0
     if not y0 or type(x0) is str:
-        y0 = 0;
+        y0 = 0
 
     u = random.random()
     v = random.random()
