@@ -1,2 +1,1 @@
-{% load i18n %}
-{% trans "A space created for refugees nearby your organization" %}
+{{ space.citizen.user.username }} can host {{ space.guests }} refugees in {{ space.public_address }}!

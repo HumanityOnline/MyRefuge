@@ -164,7 +164,7 @@ def email_ngos(ngos, space):
         subject = render_to_string('citizen_refuge/emails/ngo_email_subject.txt', context)
         subject = ''.join(subject.splitlines())
         msg_plain = render_to_string('citizen_refuge/emails/ngo_email_message.txt', context)
-        msg_html = render_to_string('citizen_refuge/emails/ng_email_message.html', context)
+        msg_html = render_to_string('citizen_refuge/emails/ngo_email_message.html', context)
         data_list.append((subject, msg_plain, msg_html, email_from, [ngo.email], custom_headers, attachments))
 
     send_mass_mail(tuple(data_list))

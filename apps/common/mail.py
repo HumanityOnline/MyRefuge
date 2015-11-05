@@ -25,7 +25,12 @@ def send_mass_mail(datatuple):
     datatuple = ((subject, msg_plain, msg_html, email_from, email_to, custom_headers, attachments),)
     """
     connection = get_connection()
-    messages = [EmailMultiAlternatives(
-        **create_message(subject, message_plain, message_html, email_from, email_to, custom_headers, attachments))
-        for subject, message_plain, message_html, email_from, email_to, custom_headers, attachments in datatuple]
+    messages = []
+    for subject, message_plain, message_html, email_from, email_to, custom_headers, attachments in datatuple:
+        msg = EmailMultiAlternatives(
+            **create_message(subject, message_plain, message_html, email_from, email_to, custom_headers, attachments))
+        if message_html:
+            msg.attach_alternative(message_html, 'text/html')
+        messages.append(msg)
+
     return connection.send_messages(messages)

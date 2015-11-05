@@ -1,12 +1,17 @@
 {% load i18n %}{% autoescape off %}{% load url from future %}
-{% blocktrans with ngo.name as ngo_name %}Dear {{ngo_name}},{% endblocktrans %}
+Dear {{ngo.name}},
 
-{% trans "A space has been created nearby your organization:" %}
+{{ space.citizen.user.username }} wants to host up to {{ space.guests }} in their property, which is in {{ space.public_address }}.
 
-http://{{ site.domain }}{% url 'refuge_space_detail' space.id %}
+To view more about this listing, click http://{{ site.domain }}{% url 'refuge_space_detail' space.id %}
 
-{% trans "Thanks for using our site!" %}
+If you are supporting a refugee that could benefit from this offer, please get in touch with us on hosting@myrefuge.world
 
-{% trans "Sincerely" %},
-{{ site.name }}
+Looking forward to working together
+
+Sholi Loewenthal
+CEO
+MyRefuge.World
+
+MyRefuge.World is working in partnership with NACCOM and other NGOs to develop a 'one-stop-shop' technology to help refugees integrate into hosting communities. The goal is to bring together communities around the world to help refugees out of refugee camps and into communities where they can build a future. We are currently piloting a small scale UK collaboration around accommodation and building features into MyRefuge to enable other provisions - including social, employment, education etc - to be offered and found via the platform.
 {% endautoescape %}
