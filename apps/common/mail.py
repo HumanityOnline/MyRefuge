@@ -19,7 +19,7 @@ def create_message(subject, message_plain, message_html, email_from, email_to,
             'attachments': attachments or (), 'headers': custom_headers or {}}
 
 
-def send_mass_mail(datatuple):
+def send_mass_html_mail(datatuple):
     """send mass EmailMultiAlternatives emails
     see: http://stackoverflow.com/questions/7583801/send-mass-emails-with-emailmultialternatives
     datatuple = ((subject, msg_plain, msg_html, email_from, email_to, custom_headers, attachments),)

@@ -14,7 +14,7 @@ from userena.contrib.umessages.models import Message as BaseMessage
 from common.helpers import APPLICATION_STATUS, CITIZEN_SPACE_ADDITIONAL, GENDER, UniqueMediaPath
 from common.geo import (address_to_location, location_to_latlon, location_to_city,
                         location_to_country, location_to_public_address)
-from common.mail import send_mass_mail
+from common.mail import send_mass_html_mail
 from refugee.models import Refugee
 
 from .managers import CitizenSpaceManager, NGOManager, MessageManager, normalize_name
@@ -167,7 +167,7 @@ def email_ngos(ngos, space):
         msg_html = render_to_string('citizen_refuge/emails/ngo_email_message.html', context)
         data_list.append((subject, msg_plain, msg_html, email_from, [ngo.email], custom_headers, attachments))
 
-    send_mass_mail(tuple(data_list))
+    send_mass_html_mail(tuple(data_list))
 
 
 @receiver(post_save, sender=CitizenSpace)
