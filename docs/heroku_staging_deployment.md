@@ -16,6 +16,7 @@ $ heroku login
 $ heroku apps:create myrefuge_test
 $ heroku addons:create newrelic
 $ heroku addons:create memcachier:dev
+$ heroku addons:create cloudamqp:lemur
 ```
 
 #To use with postgresql
@@ -61,6 +62,11 @@ Refer to:
 Refer to:
 
 - https://developers.google.com/maps/documentation/geocoding/get-api-key#key 
+
+# Celery
+
+- Need to set `BROKER_URL` provided from cloudamqp addons above.
+- and start worker: `$ heroku ps:scale worker=1`
 
 # Finally:
 
