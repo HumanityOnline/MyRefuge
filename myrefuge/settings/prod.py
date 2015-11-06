@@ -6,6 +6,11 @@ DATABASES = {
     'default': dj_database_url.config(engine='django.contrib.gis.db.backends.postgis'),
 }
 
+INSTALLED_APPS += (
+    'djcelery_email',
+)
+
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
 ALLOWED_HOSTS = ['demo.myrefuge.terapp.com']
 

@@ -172,3 +172,5 @@ GOOGLE_ANALYTICS_PROPERTY_ID = os.environ.get('GOOGLE_ANALYTICS_PROPERTY_ID', No
 RANDOM_COORDS_MAX_DISTANCE = os.environ.get('RANDOM_COORDS_MAX_DISTANCE', 250)  # meters
 
 NGO_MAX_DISTANCE = os.environ.get('NGO_MAX_DISTANCE', 5000)  # meters
+
+BROKER_URL = os.environ.get('BROKER_URL', None)  # broker_url for celery

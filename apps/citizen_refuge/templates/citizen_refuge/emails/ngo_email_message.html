@@ -3,7 +3,7 @@
   <body>
     <p>Dear {{ngo.name}},</p>
     <p>
-      {{ space.citizen.user.username }} wants to host up to {{ space.guests }} in their property, which is in {{ space.public_address }}.
+      {{ space.citizen.user.username }} wants to host up to {{ space.guests }} in their property, which is in {{ area }}.
     </p>
     <p>
       To view more about this listing, click http://{{ site.domain }}{% url 'refuge_space_detail' space.id %}

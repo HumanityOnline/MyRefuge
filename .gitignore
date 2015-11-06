@@ -14,3 +14,4 @@ myrefuge/components
 *.iml
 
 npm-debug*
+celerybeat-schedule

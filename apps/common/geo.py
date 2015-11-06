@@ -83,3 +83,26 @@ def location_to_public_address(location):
                  if addr is not None]
 
     return ', '.join(addresses)
+
+
+def location_to_administrative_area(location):
+    """convert the location to area address which should not display street number but only
+    from administrative_area_level_2, administrative_area_level_1, country
+
+    For example:
+    51 Khuong Trung, Thanh Xuan, Hanoi, Vietnam => Thanh Xuan, Hanoi, Vietnam
+    """
+    address_components = location.raw['address_components']
+    area_level_2 = area_level_1 = country = None
+    for component in address_components:
+        if u'administrative_area_level_2' in component['types']:
+            area_level_2 = component['long_name']
+        elif u'administrative_area_level_1' in component['types']:
+            area_level_1 = component['long_name']
+        elif u'country' in component['types']:
+            country = component['long_name']
+
+    addresses = [addr for addr in [area_level_2, area_level_1, country]
+                 if addr is not None]
+
+    return ', '.join(addresses)

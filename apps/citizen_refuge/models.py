@@ -13,7 +13,7 @@ from userena.contrib.umessages.models import Message as BaseMessage
 
 from common.helpers import APPLICATION_STATUS, CITIZEN_SPACE_ADDITIONAL, GENDER, UniqueMediaPath
 from common.geo import (address_to_location, location_to_latlon, location_to_city,
-                        location_to_country, location_to_public_address)
+                        location_to_country, location_to_public_address, location_to_administrative_area)
 from common.mail import send_mass_html_mail
 from refugee.models import Refugee
 
@@ -158,7 +158,8 @@ def email_ngos(ngos, space):
         context = {
             'ngo': ngo,
             'space': space,
-            'site': Site.objects.get_current()
+            'site': Site.objects.get_current(),
+            'area': location_to_administrative_area(address_to_location(space.address.raw))
         }
 
         subject = render_to_string('citizen_refuge/emails/ngo_email_subject.txt', context)

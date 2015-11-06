@@ -5,3 +5,4 @@ pylibmc
 django-pylibmc
 django-storages
 boto
+django-celery-email

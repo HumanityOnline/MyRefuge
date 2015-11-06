@@ -1,7 +1,7 @@
 {% load i18n %}{% autoescape off %}{% load url from future %}
 Dear {{ngo.name}},
 
-{{ space.citizen.user.username }} wants to host up to {{ space.guests }} in their property, which is in {{ space.public_address }}.
+{{ space.citizen.user.username }} wants to host up to {{ space.guests }} in their property, which is in {{ area }}.
 
 To view more about this listing, click http://{{ site.domain }}{% url 'refuge_space_detail' space.id %}
 
