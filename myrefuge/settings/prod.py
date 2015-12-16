@@ -12,7 +12,7 @@ INSTALLED_APPS += (
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
-ALLOWED_HOSTS = ['demo.myrefuge.terapp.com']
+ALLOWED_HOSTS = ['myrefuge.world', 'www.myrefuge.world']
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
